@@ -528,10 +528,10 @@ void CBaseMonster::BecomeDead( void )
 
 	// make the corpse fly away from the attack vector
 	pev->movetype = MOVETYPE_TOSS;
-	//pev->flags &= ~FL_ONGROUND;
-	//pev->origin.z += 2;
-	//pev->velocity = g_vecAttackDir * -1;
-	//pev->velocity = pev->velocity * RANDOM_FLOAT( 300, 400 );
+	pev->flags &= ~FL_ONGROUND;
+	pev->origin.z += 2;
+	pev->velocity = g_vecAttackDir * -1;
+	pev->velocity = pev->velocity * RANDOM_FLOAT( 300, 400 );
 }
 
 BOOL CBaseMonster::ShouldGibMonster( int iGib )
@@ -1045,8 +1045,6 @@ int CBaseMonster::DeadTakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacke
 		}
 	}
 
-#if 0// turn this back on when the bounding box issues are resolved.
-
 	pev->flags &= ~FL_ONGROUND;
 	pev->origin.z += 1;
 	
@@ -1055,7 +1053,7 @@ int CBaseMonster::DeadTakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacke
 	{
 		pev->velocity = pev->velocity + vecDir * -DamageForce( flDamage );
 	}
-#endif
+
 	// kill the corpse if enough damage was done to destroy the corpse and the damage is of a type that is allowed to destroy the corpse.
 	if( bitsDamageType & DMG_GIB_CORPSE )
 	{
