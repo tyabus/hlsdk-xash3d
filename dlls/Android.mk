@@ -132,6 +132,7 @@ LOCAL_SRC_FILES := agrunt.cpp airtank.cpp \
 	   cleansuit_scientist.cpp \
 	   skeleton.cpp \
 	   zombie_soldier.cpp \
+	   construction.cpp \
 	   zombie_barney.cpp \
 	   poisoncrab.cpp \
            gravgun.cpp \
