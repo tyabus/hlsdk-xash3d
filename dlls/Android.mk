@@ -129,6 +129,7 @@ LOCAL_SRC_FILES := agrunt.cpp airtank.cpp \
            xen.cpp \
            zombie.cpp \
            prop.cpp \
+	   poisoncrab.cpp \
            gravgun.cpp \
            ar2.cpp \
            big_cock.cpp \
