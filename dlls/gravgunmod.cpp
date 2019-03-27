@@ -10,6 +10,7 @@
 
 cvar_t cvar_allow_gravgun = { "mp_allow_gravgun","2", FCVAR_SERVER };
 cvar_t cvar_allow_ar2 = { "mp_allow_ar2","0", FCVAR_SERVER };
+cvar_t cvar_allow_knife = { "mp_allow_knife","0", FCVAR_SERVER };
 cvar_t cvar_ar2_mp5 = { "mp_ar2_mp5","0", FCVAR_SERVER };
 cvar_t cvar_ar2_balls = { "mp_ar2_balls","0", FCVAR_SERVER };
 cvar_t cvar_ar2_bullets = { "mp_ar2_bullets","0", FCVAR_SERVER };
@@ -3101,6 +3102,7 @@ Call on server load
 */
 void GGM_RegisterCVars( void )
 {
+	CVAR_REGISTER( &cvar_allow_knife );
 	CVAR_REGISTER( &cvar_allow_ar2 );
 	CVAR_REGISTER( &cvar_allow_gravgun );
 	CVAR_REGISTER( &cvar_ar2_mp5 );
