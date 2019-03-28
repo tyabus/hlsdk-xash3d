@@ -3391,3 +3391,45 @@ BOOL CBaseMonster::ShouldFadeOnDeath( void )
 
 	return FALSE;
 }
+void CBaseMonster::GlowShellOn( Vector color, float flDuration )
+{ 
+	if( !m_glowShellUpdate )
+	{
+		m_prevRenderMode = pev->rendermode; 
+		m_prevRenderColor = pev->rendercolor;
+		m_prevRenderAmt = pev->renderamt; 
+		m_prevRenderFx = pev->renderfx;
+
+		pev->renderamt = 5; 
+		pev->rendercolor = color;
+		pev->renderfx = kRenderFxGlowShell;
+ 
+		m_glowShellColor = color;
+		m_glowShellDuration = flDuration; 
+		m_glowShellStartTime = gpGlobals->time;
+		m_glowShellUpdate = TRUE;
+	}
+	m_glowShellDuration += flDuration;
+}
+
+void CBaseMonster::GlowShellOff( void )
+{
+	pev->renderamt = m_prevRenderAmt;
+	pev->rendercolor = m_prevRenderColor;
+	pev->renderfx = m_prevRenderFx;
+	pev->rendermode = m_prevRenderMode;
+
+	m_glowShellDuration = 0.0f;
+	m_glowShellStartTime = 0.0f;
+
+	m_glowShellUpdate = FALSE;
+}
+
+void CBaseMonster::GlowShellUpdate( void )
+{
+	if( m_glowShellUpdate )
+	{
+		if( gpGlobals->time - m_glowShellStartTime >= m_glowShellDuration )
+			GlowShellOff();
+	}
+}

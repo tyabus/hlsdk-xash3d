@@ -365,7 +365,8 @@ void W_Precache( void )
 		UTIL_PrecacheOtherWeapon( "weapon_gateofbabylon" );
 	if( cvar_allow_knife.value )
 		UTIL_PrecacheOtherWeapon( "weapon_knife" );
-
+	if( cvar_allow_shockrifle.value )
+		UTIL_PrecacheOtherWeapon( "weapon_shockrifle" );
 
 #if !defined( OEM_BUILD ) && !defined( HLDEMO_BUILD )
 	if ( g_pGameRules->IsDeathmatch() )

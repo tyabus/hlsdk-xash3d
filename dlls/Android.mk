@@ -52,7 +52,7 @@ LOCAL_SRC_FILES := agrunt.cpp airtank.cpp \
            effects.cpp \
            egon.cpp \
            explode.cpp \
-		   enttools.cpp \
+	   enttools.cpp \
            flyingmonster.cpp \
            func_break.cpp \
            func_tank.cpp \
@@ -139,6 +139,8 @@ LOCAL_SRC_FILES := agrunt.cpp airtank.cpp \
 	   zombie_barney.cpp \
 	   poisoncrab.cpp \
            gravgun.cpp \
+	   shock.cpp \
+	   shockrifle.cpp \
            ar2.cpp \
            big_cock.cpp \
            unpredictedweapon.cpp \
