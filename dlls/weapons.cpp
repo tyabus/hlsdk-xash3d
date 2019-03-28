@@ -367,6 +367,8 @@ void W_Precache( void )
 		UTIL_PrecacheOtherWeapon( "weapon_knife" );
 	if( cvar_allow_shockrifle.value )
 		UTIL_PrecacheOtherWeapon( "weapon_shockrifle" );
+	if( cvar_allow_m249.value )
+		UTIL_PrecacheOtherWeapon( "weapon_m249" );
 
 #if !defined( OEM_BUILD ) && !defined( HLDEMO_BUILD )
 	if ( g_pGameRules->IsDeathmatch() )
