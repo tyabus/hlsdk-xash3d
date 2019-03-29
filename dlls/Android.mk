@@ -46,6 +46,7 @@ LOCAL_SRC_FILES := agrunt.cpp airtank.cpp \
            combat.cpp \
            controller.cpp \
            crossbow.cpp \
+	   BMOD_flyingcrowbar.cpp \
            crowbar.cpp \
            defaultai.cpp \
            doors.cpp \
