@@ -1,25 +1,8 @@
-# Half-Life SDK for Xash3D [![Build Status](https://travis-ci.org/FWGS/hlsdk-xash3d.svg)](https://travis-ci.org/FWGS/hlsdk-xash3d) [![Windows Build Status](https://ci.appveyor.com/api/projects/status/github/FWGS/hlsdk-xash3d?svg=true)](https://ci.appveyor.com/project/a1batross/hlsdk-xash3d)
+# Half-Life SDK for Xash3D
 
 Half-Life SDK for Xash3D & GoldSource with some fixes.
 
 ## How to build
-
-### CMake as most universal way
-
-    mkdir build && cd build
-    cmake ../
-    make
-
-Crosscompiling using mingw:
-
-    mkdir build-mingw && cd build-mingw
-    TOOLCHAIN_PREFIX=i686-w64-mingw32 # check up the actual mingw prefix of your mingw installation
-    cmake ../ -DCMAKE_SYSTEM_NAME=Windows -DCMAKE_C_COMPILER="$TOOLCHAIN_PREFIX-gcc" -DCMAKE_CXX_COMPILER="$TOOLCHAIN_PREFIX-g++"
-
-You may enable or disable some build options by -Dkey=value. All available build options are defined in CMakeLists.txt at root directory.
-See below if you want to build the GoldSource compatible libraries.
-
-See below, if CMake is not suitable for you:
 
 ### Windows
 
@@ -45,17 +28,18 @@ TODO
 
 ### Linux
 
-    (cd dlls && make)
-    (cd cl_dll && make)
+    (git clone https://github.com/FWGS/microndk.git)
+    (cd dlls && make -f ~/path/to/microndk.mk)
+    (cd cl_dll && make -f ~/path/to/microndk.mk)
 
 ### OS X
 
 Nothing here.
 
 ### FreeBSD
-
-    (cd dlls && gmake CXX=clang++ CC=clang)
-    (cd cl_dll && gmake CXX=clang++ CC=clang)
+    (git clone https://github.com/FWGS/microndk.git)
+    (cd dlls && gmake CXX=clang++ CC=clang -f ~/path/to/microndk.mk)
+    (cd cl_dll && gmake CXX=clang++ CC=clang -f ~/path/to/microndk.mk)
 
 ### Android
 
@@ -65,10 +49,6 @@ TODO: describe what it is.
 ### Building GoldSource-compatible libraries
 
 To enable building the goldsource compatible client library add GOLDSOURCE_SUPPORT flag when calling cmake:
-
-    cmake .. -DGOLDSOURCE_SUPPORT=ON
-
-or when using make without cmake:
 
     make GOLDSOURCE_SUPPORT=1
 
@@ -83,7 +63,7 @@ If your Linux distribution does not provide compatible g++ version you have seve
 
 This one is the most simple but has a drawback.
 
-    cmake ../ -DGOLDSOURCE_SUPPORT=ON -DCMAKE_C_FLAGS="-static-libstdc++ -static-libgcc"
+    make ../ -DGOLDSOURCE_SUPPORT=ON LOCAL_CFLAGS+="-static-libstdc++ -static-libgcc" -f /path/to/microndk.mk
 
 The drawback is that the compiled libraries will be larger in size.
 
@@ -98,8 +78,11 @@ Clone https://github.com/ValveSoftware/steam-runtime and follow instructions htt
 Then use cmake and make as usual, but prepend the commands with `schroot --chroot steamrt_scout_i386 --`:
 
     mkdir build-in-steamrt && cd build-in-steamrt
-    schroot --chroot steamrt_scout_i386 -- cmake ../ -DGOLDSOURCE_SUPPORT=ON
-    schroot --chroot steamrt_scout_i386 -- make
+    schroot --chroot steamrt_scout_i386 -- cd dlls
+    schroot --chroot steamrt_scout_i386 -- make -f ~/path/to/microndk.mk
+    schroot --chroot steamrt_scout_i386 -- cd cl_dlls
+    schroot --chroot steamrt_scout_i386 -- make -f ~/path/to/microndk.mk
+
 
 #### Method 3: Create your own chroot with older distro that includes g++ 4.
 
