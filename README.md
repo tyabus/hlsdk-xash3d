@@ -62,8 +62,9 @@ If your Linux distribution does not provide compatible g++ version you have seve
 #### Method 1: Statically build with c++ library
 
 This one is the most simple but has a drawback.
+Add this line to LOCAL_CFLAGS -static-libstdc++ -static-libgcc in Android.mk
 
-    make ../ -DGOLDSOURCE_SUPPORT=ON LOCAL_CFLAGS+="-static-libstdc++ -static-libgcc" -f /path/to/microndk.mk
+    make -DGOLDSOURCE_SUPPORT=1 -f /path/to/microndk.mk
 
 The drawback is that the compiled libraries will be larger in size.
 
