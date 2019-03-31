@@ -22,6 +22,7 @@
 #include "player.h"
 #include "effects.h"
 #include "gamerules.h"
+#include "gravgunmod.h"
 
 #define	TRIPMINE_PRIMARY_VOLUME		450
 
@@ -219,7 +220,11 @@ void CTripmineGrenade::PowerupThink( void )
 	if( gpGlobals->time > m_flPowerUp )
 	{
 		// make solid
-		pev->solid = SOLID_BBOX;
+		if( !cvar_coop_tripmineskip.value )
+		{
+			pev->solid = SOLID_BBOX;
+		}
+
 		UTIL_SetOrigin( pev, pev->origin );
 
 		MakeBeam();

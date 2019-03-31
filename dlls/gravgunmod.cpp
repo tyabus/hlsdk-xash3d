@@ -18,6 +18,8 @@ cvar_t cvar_ar2_bullets = { "mp_ar2_bullets","0", FCVAR_SERVER };
 cvar_t cvar_allow_bigcock = { "mp_allow_bigcock","0", FCVAR_SERVER };
 cvar_t cvar_allow_gateofbabylon = { "mp_allow_gateofbabylon","0", FCVAR_SERVER };
 
+cvar_t cvar_coop_tripmineskip = { "mp_coop_tripmineskip","0", FCVAR_SERVER };
+
 cvar_t cvar_wresptime = { "mp_wresptime","20", FCVAR_SERVER };
 cvar_t cvar_iresptime = { "mp_iresptime","30", FCVAR_SERVER };
 cvar_t cvar_gibtime = { "mp_gibtime","250", FCVAR_SERVER };
