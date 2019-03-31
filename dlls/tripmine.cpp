@@ -220,7 +220,7 @@ void CTripmineGrenade::PowerupThink( void )
 	if( gpGlobals->time > m_flPowerUp )
 	{
 		// make solid
-		if( !cvar_coop_tripmineskip.value )
+		if( cvar_coop_tripmineskip.value )
 		{
 			pev->solid = SOLID_BBOX;
 		}
