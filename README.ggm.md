@@ -5,7 +5,8 @@ Extended Half-Life mod
 
 ### Main features:
 
-* New weapons (GravGun, AR2, BIG_COCK, Gate of Babylon)
+* New weapons (GravGun, AR2, BIG_COCK, Gate of Babylon, M249, Knife, ShockRifle)
+* New monsters (Poisoncrab, Cleansuit Scientist, Dead Skeleton, Zombie Soldier, Zombie Barney, Dead Construction Workerer, Construction Workerer, Diablo, Dead Houndeye)
 * Pseudo-physics for weapons, ammo, items, props
 * Co-op mode
 * Advanced game-side enitity tools
@@ -63,6 +64,7 @@ set mp_semclip 1 // semclip mode. prevent players blocking narrow places
 set mp_coop_checkpoints 1 // allow checkpoints. every player may create checkpoint to continue after respawn
 set mp_coop_strongcheckpoints 1 // do not allow changelevel back if map has checkpoints. This preventing some STUPID players from breaking the game
 set mp_coop_noangry 1 // prevent ally npc from angrying on bad players
+set mp_coop_tripmineskip 1 // prevent players standing on tripmine. This preventing some players from skipping levels
 ```
 
 ## Entity tools
