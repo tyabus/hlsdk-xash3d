@@ -31,7 +31,6 @@
 enum
 {
 	SCHED_HIDE = LAST_TALKMONSTER_SCHEDULE + 1,
-	SCHED_FEAR,
 	SCHED_PANIC,
 	SCHED_STARTLE,
 	SCHED_TARGET_CHASE_SCARED,
@@ -39,7 +38,6 @@ enum
 
 enum
 {
-	TASK_SAY_FEAR,
 	TASK_RUN_PATH_SCARED,
 	TASK_MOVE_TO_TARGET_RANGE_SCARED
 };
@@ -66,7 +64,6 @@ public:
 	int ISoundMask( void );
 
 	float CoverRadius( void ) { return 1200; }
-	BOOL DisregardEnemy( CBaseEntity *pEnemy ) { return !pEnemy->IsAlive() || ( gpGlobals->time - m_fearTime ) > 15; }
 	
 	// Override these to set behavior
 	Schedule_t *GetScheduleOfType( int Type );
@@ -88,7 +85,6 @@ public:
 
 private:	
 	float m_painTime;
-	float m_fearTime;
 };
 
 LINK_ENTITY_TO_CLASS( monster_construction, CConstruction )
@@ -96,7 +92,6 @@ LINK_ENTITY_TO_CLASS( monster_construction, CConstruction )
 TYPEDESCRIPTION	CConstruction::m_SaveData[] =
 {
 	DEFINE_FIELD( CConstruction, m_painTime, FIELD_TIME ),
-	DEFINE_FIELD( CConstruction, m_fearTime, FIELD_TIME ),
 };
 
 IMPLEMENT_SAVERESTORE( CConstruction, CTalkMonster )
@@ -307,31 +302,11 @@ Schedule_t slScientistStartle1[] =
 	},
 };
 
-Task_t tlFear1[] =
-{
-	{ TASK_STOP_MOVING, (float)0 },
-	{ TASK_FACE_ENEMY, (float)0 },
-	{ TASK_SAY_FEAR, (float)0 },
-	//{ TASK_PLAY_SEQUENCE, (float)ACT_FEAR_DISPLAY },
-};
-
-Schedule_t slFear1[] =
-{
-	{
-		tlFear1,
-		ARRAYSIZE( tlFear1 ),
-		bits_COND_NEW_ENEMY,
-		0,
-		"Fear"
-	},
-};
-
 DEFINE_CUSTOM_SCHEDULES( CConstruction )
 {
 	clFollow,
 	slFaceTarget1,
 	slIdleSciStand1,
-	slFear1,
 	slScientistCover1,
 	slScientistHide1,
 	slScientistStartle1,
@@ -353,21 +328,6 @@ void CConstruction::StartTask( Task_t *pTask )
 {
 	switch( pTask->iTask )
 	{
-	case TASK_SAY_FEAR:
-		if( FOkToSpeak() )
-		{
-			Talk( 2 );
-			m_hTalkTarget = m_hEnemy;
-
-			//The enemy can be null here. - Solokiller
-			//Discovered while testing the barnacle grapple on headcrabs with scientists in view.
-			if( m_hEnemy != 0 && m_hEnemy->IsPlayer() )
-				PlaySentence( "SC_PLFEAR", 5, VOL_NORM, ATTN_NORM );
-			else
-				PlaySentence( "SC_FEAR", 5, VOL_NORM, ATTN_NORM );
-		}
-		TaskComplete();
-		break;
 	case TASK_RUN_PATH_SCARED:
 		m_movementActivity = ACT_RUN_SCARED;
 		break;
@@ -522,11 +482,10 @@ void CConstruction::Spawn( void )
 void CConstruction::Precache( void )
 {
 	PRECACHE_MODEL( "models/construction.mdl" );
-	PRECACHE_SOUND( "scientist/sci_pain1.wav" );
-	PRECACHE_SOUND( "scientist/sci_pain2.wav" );
-	PRECACHE_SOUND( "scientist/sci_pain3.wav" );
-	PRECACHE_SOUND( "scientist/sci_pain4.wav" );
-	PRECACHE_SOUND( "scientist/sci_pain5.wav" );
+
+	PRECACHE_SOUND( "barney/ba_pain1.wav" );
+	PRECACHE_SOUND( "barney/ba_pain2.wav" );
+	PRECACHE_SOUND( "barney/ba_pain3.wav" );
 
 	// every new scientist must call this, otherwise
 	// when a level is loaded, nobody will talk (time is reset to 0)
@@ -605,22 +564,16 @@ void CConstruction::PainSound( void )
 
 	m_painTime = gpGlobals->time + RANDOM_FLOAT( 0.5, 0.75 );
 
-	switch( RANDOM_LONG( 0, 4 ) )
+	switch( RANDOM_LONG( 0, 2 ) )
 	{
 	case 0:
-		EMIT_SOUND_DYN( ENT( pev ), CHAN_VOICE, "scientist/sci_pain1.wav", 1, ATTN_NORM, 0, GetVoicePitch() );
+		EMIT_SOUND_DYN( ENT( pev ), CHAN_VOICE, "barney/ba_pain1.wav", 1, ATTN_NORM, 0, GetVoicePitch() );
 		break;
 	case 1:
-		EMIT_SOUND_DYN( ENT( pev ), CHAN_VOICE, "scientist/sci_pain2.wav", 1, ATTN_NORM, 0, GetVoicePitch() );
+		EMIT_SOUND_DYN( ENT( pev ), CHAN_VOICE, "barney/ba_pain2.wav", 1, ATTN_NORM, 0, GetVoicePitch() );
 		break;
 	case 2:
-		EMIT_SOUND_DYN( ENT( pev ), CHAN_VOICE, "scientist/sci_pain3.wav", 1, ATTN_NORM, 0, GetVoicePitch() );
-		break;
-	case 3:
-		EMIT_SOUND_DYN( ENT( pev ), CHAN_VOICE, "scientist/sci_pain4.wav", 1, ATTN_NORM, 0, GetVoicePitch() );
-		break;
-	case 4:
-		EMIT_SOUND_DYN( ENT( pev ), CHAN_VOICE, "scientist/sci_pain5.wav", 1, ATTN_NORM, 0, GetVoicePitch() );
+		EMIT_SOUND_DYN( ENT( pev ), CHAN_VOICE, "barney/ba_pain3.wav", 1, ATTN_NORM, 0, GetVoicePitch() );
 		break;
 	}
 }
@@ -688,8 +641,6 @@ Schedule_t *CConstruction::GetScheduleOfType( int Type )
 		return slScientistHide1;
 	case SCHED_STARTLE:
 		return slScientistStartle1;
-	case SCHED_FEAR:
-		return slFear1;
 	}
 
 	return CTalkMonster::GetScheduleOfType( Type );
@@ -714,16 +665,6 @@ Schedule_t *CConstruction::GetSchedule( void )
 	{
 	case MONSTERSTATE_ALERT:
 	case MONSTERSTATE_IDLE:
-		if( pEnemy )
-		{
-			if( HasConditions( bits_COND_SEE_ENEMY ) )
-				m_fearTime = gpGlobals->time;
-			else if( DisregardEnemy( pEnemy ) )		// After 15 seconds of being hidden, return to alert
-			{
-				m_hEnemy = 0;
-				pEnemy = 0;
-			}
-		}
 
 		if( HasConditions( bits_COND_LIGHT_DAMAGE | bits_COND_HEAVY_DAMAGE ) )
 		{
@@ -738,17 +679,6 @@ Schedule_t *CConstruction::GetSchedule( void )
 			pSound = PBestSound();
 
 			ASSERT( pSound != NULL );
-			if( pSound )
-			{
-				if( pSound->m_iType & ( bits_SOUND_DANGER | bits_SOUND_COMBAT ) )
-				{
-					if( gpGlobals->time - m_fearTime > 3 )	// Only cower every 3 seconds or so
-					{
-						m_fearTime = gpGlobals->time;		// Update last fear
-						return GetScheduleOfType( SCHED_STARTLE );	// This will just duck for a second
-					}
-				}
-			}
 		}
 
 		// Behavior for following the player
@@ -777,11 +707,6 @@ Schedule_t *CConstruction::GetSchedule( void )
 						return GetScheduleOfType( SCHED_MOVE_AWAY_FOLLOW );
 				}
 				return GetScheduleOfType( SCHED_TARGET_FACE );	// Just face and follow.
-			}
-			else	// UNDONE: When afraid, scientist won't move out of your way.  Keep This?  If not, write move away scared
-			{
-				if( HasConditions( bits_COND_NEW_ENEMY ) ) // I just saw something new and scary, react
-					return GetScheduleOfType( SCHED_FEAR );					// React to something scary
 			}
 		}
 
@@ -839,13 +764,6 @@ MONSTERSTATE CConstruction::GetIdealState( void )
 			CBaseEntity *pEnemy = m_hEnemy;
 			if( pEnemy != NULL )
 			{
-				if( DisregardEnemy( pEnemy ) )		// After 15 seconds of being hidden, return to alert
-				{
-					// Strip enemy when going to alert
-					m_IdealMonsterState = MONSTERSTATE_ALERT;
-					m_hEnemy = 0;
-					return m_IdealMonsterState;
-				}
 
 				// Follow if only scared a little
 				if( m_hTargetEnt != 0 )
@@ -856,7 +774,6 @@ MONSTERSTATE CConstruction::GetIdealState( void )
 
 				if( HasConditions( bits_COND_SEE_ENEMY ) )
 				{
-					m_fearTime = gpGlobals->time;
 					m_IdealMonsterState = MONSTERSTATE_COMBAT;
 					return m_IdealMonsterState;
 				}
