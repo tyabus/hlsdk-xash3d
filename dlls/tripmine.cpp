@@ -220,17 +220,14 @@ void CTripmineGrenade::PowerupThink( void )
 	if( gpGlobals->time > m_flPowerUp )
 	{
 		// make solid
-		if( !mp_coop_tripmineskip.value )
+		if( !mp_coop.value || !mp_coop_tripmineskip.value )
 		{
 			pev->solid = SOLID_BBOX;
 		}
-		if( mp_coop.value )
+		if( mp_coop.value || mp_coop_tripmineskip.value )
 		{
-			if( mp_coop_tripmineskip.value )
-			{
-				pev->renderfx = kRenderFxGlowShell;
-				pev->rendercolor.x = 255;
-			}
+			pev->renderfx = kRenderFxGlowShell;
+			pev->rendercolor.x = 255;
 		}
 		UTIL_SetOrigin( pev, pev->origin );
 
