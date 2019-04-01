@@ -5,7 +5,7 @@ extern cvar_t mp_coop;
 extern cvar_t mp_coop_nofriendlyfire;
 extern cvar_t mp_coop_checkpoints;
 extern cvar_t mp_coop_strongcheckpoints;
-
+extern cvar_t mp_coop_tripmineskip;
 
 extern cvar_t mp_semclip;
 extern cvar_t mp_coop_reconnect_hack;

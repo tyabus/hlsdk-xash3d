@@ -18,8 +18,6 @@ extern cvar_t mp_gravgun_players;
 extern cvar_t mp_skipdefaults;
 extern cvar_t mp_unduck;
 
-extern cvar_t cvar_coop_tripmineskip;
-
 extern cvar_t cvar_gibtime;
 extern cvar_t cvar_hgibcount;
 extern cvar_t cvar_agibcount;
