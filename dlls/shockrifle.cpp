@@ -92,6 +92,8 @@ void CShockrifle::Precache(void)
 	m_iLight = PRECACHE_MODEL("sprites/lgtning.spr");
 	PRECACHE_MODEL("sprites/flare3.spr");
 
+	PRECACHE_GENERIC("sprites/weapon_shockrifle.txt");
+
 	UTIL_PrecacheOther("shock_beam");
 }
 

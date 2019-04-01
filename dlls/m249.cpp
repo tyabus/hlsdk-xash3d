@@ -103,6 +103,8 @@ void CM249::Precache(void)
 	PRECACHE_SOUND("weapons/saw_reload2.wav");
 
 	PRECACHE_SOUND("weapons/357_cock1.wav");
+
+	PRECACHE_GENERIC("sprites/weapon_m249.txt");
 }
 
 int CM249::GetItemInfo(ItemInfo *p)
