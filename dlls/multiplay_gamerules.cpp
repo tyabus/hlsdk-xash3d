@@ -645,6 +645,12 @@ void CHalfLifeMultiplay::PlayerSpawn( CBasePlayer *pPlayer )
 			pPlayer->GiveNamedItem( "weapon_big_cock" );
 		if( (int)cvar_allow_gateofbabylon.value == 2 )
 			pPlayer->GiveNamedItem( "weapon_gateofbabylon" );
+		if( (int)cvar_allow_knife.value == 2 )
+                        pPlayer->GiveNamedItem( "weapon_knife" );
+                if( (int)cvar_allow_shockrifle.value == 2 )
+                        pPlayer->GiveNamedItem( "weapon_shockrifle" );
+                if( (int)cvar_allow_m249.value == 2 )
+                        pPlayer->GiveNamedItem( "weapon_m249" );
 	}
 	else
 	{
