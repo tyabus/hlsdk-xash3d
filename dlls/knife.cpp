@@ -23,7 +23,6 @@
 #include "gamerules.h"
 #include "customweapons.h"
 #include "unpredictedweapon.h"
-#include "gravgunmod.h"
 
 class CKnife : public CBasePlayerWeaponU
 {
@@ -70,11 +69,6 @@ enum knife_e {
 
 void CKnife::Spawn()
 {
-        if( !cvar_allow_knife.value )
-        {
-                pev->flags = FL_KILLME;
-                return;
-        }
 	Precache();
 	m_iId = WEAPON_KNIFE;
 	SET_MODEL(ENT(pev), "models/w_knife.mdl");
@@ -86,24 +80,16 @@ void CKnife::Spawn()
 
 void CKnife::Precache(void)
 {
-        if( !cvar_allow_knife.value )
-        {
-                return;
-        }
 	PRECACHE_MODEL("models/v_knife.mdl");
 	PRECACHE_MODEL("models/w_knife.mdl");
 	PRECACHE_MODEL("models/p_knife.mdl");
-
 	PRECACHE_SOUND("weapons/knife_hit_flesh1.wav");
 	PRECACHE_SOUND("weapons/knife_hit_flesh2.wav");
 	PRECACHE_SOUND("weapons/knife_hit_wall1.wav");
 	PRECACHE_SOUND("weapons/knife_hit_wall2.wav");
-
 	PRECACHE_SOUND("weapons/knife1.wav");
 	PRECACHE_SOUND("weapons/knife2.wav");
 	PRECACHE_SOUND("weapons/knife3.wav");
-
-	PRECACHE_GENERIC("sprites/weapon_knife.txt");
 }
 
 int CKnife::GetItemInfo(ItemInfo *p)
