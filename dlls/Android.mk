@@ -136,6 +136,7 @@ LOCAL_SRC_FILES := agrunt.cpp airtank.cpp \
 	   xtree.cpp \
 	   diablo.cpp \
 	   houndeye_dead.cpp \
+	   construction.cpp \
 	   construction_dead.cpp \
 	   zombie_barney.cpp \
 	   poisoncrab.cpp \
@@ -144,6 +145,7 @@ LOCAL_SRC_FILES := agrunt.cpp airtank.cpp \
 	   shockrifle.cpp \
            ar2.cpp \
 	   m249.cpp \
+	   knife.cpp \
            big_cock.cpp \
            unpredictedweapon.cpp \
 	   ../pm_shared/pm_debug.c \
