@@ -46,6 +46,11 @@ public:
 		pev->absmax = pev->origin + Vector( 16 * N_SCALE, 16 * N_SCALE, 28 * N_SCALE );
 	}
 
+        float TouchGravGun( CBaseEntity *attacker, int stage )
+        {
+                return FALSE;
+        }
+
 	void HandleAnimEvent( MonsterEvent_t *pEvent );
 
 	void EXPORT StartupThink( void );

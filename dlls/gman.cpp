@@ -40,6 +40,12 @@ public:
 	int Restore( CRestore &restore );
 	static TYPEDESCRIPTION m_SaveData[];
 
+        float TouchGravGun( CBaseEntity *attacker, int stage )
+        {
+
+                return FALSE;
+        }
+
 	void StartTask( Task_t *pTask );
 	void RunTask( Task_t *pTask );
 	int TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType );

@@ -72,6 +72,11 @@ public:
 	MONSTERSTATE GetIdealState( void ) { return MONSTERSTATE_IDLE; };
 	int CanPlaySequence( BOOL fDisregardState ) { return TRUE; };
 
+	float TouchGravGun( CBaseEntity *attacker, int stage )
+	{
+		return FALSE;
+	}
+
 	int Classify( void );
 
 	int Level( float dz );

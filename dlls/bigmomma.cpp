@@ -44,6 +44,11 @@ public:
 	// Reach target in pev->message
 	// Reach delay in pev->speed
 	// Reach sequence in pev->netname
+        float TouchGravGun( CBaseEntity *attacker, int stage )
+        {
+
+                return FALSE;
+        }
 	
 	virtual int Save( CSave &save );
 	virtual int Restore( CRestore &restore );

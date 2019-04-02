@@ -216,6 +216,11 @@ public:
 		pev->absmax = pev->origin + Vector( 80, 80, 214 );
 	}
 
+        float TouchGravGun( CBaseEntity *attacker, int stage )
+        {
+                return FALSE;
+        }
+
 	Schedule_t *GetScheduleOfType( int Type );
 	void StartTask( Task_t *pTask );
 	void RunTask( Task_t *pTask );
