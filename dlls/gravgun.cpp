@@ -157,10 +157,10 @@ void CGravGun::Precache(void)
 	PRECACHE_SOUND(GRAV_SOUND_FAILRUN);
 	PRECACHE_SOUND(GRAV_SOUND_STARTUP);
 
-	PRECACHE_SOUND("sounds/gravgun/dry.wav");
-        PRECACHE_SOUND("sounds/gravgun/drop.wav");
-        PRECACHE_SOUND("sounds/gravgun/hold.wav");
-        PRECACHE_SOUND("sounds/gravgun/pickup.wav");
+	PRECACHE_SOUND("sound/gravgun/dry.wav");
+        PRECACHE_SOUND("sound/gravgun/drop.wav");
+        PRECACHE_SOUND("sound/gravgun/hold.wav");
+        PRECACHE_SOUND("sound/gravgun/pickup.wav");
 
 	PRECACHE_MODEL(GRAV_BEAM_SPRITE);
 	PRECACHE_MODEL("sprites/hotglow.spr");
