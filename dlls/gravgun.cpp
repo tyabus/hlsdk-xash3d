@@ -167,6 +167,7 @@ void CGravGun::Precache(void)
 
 	PRECACHE_SOUND("weapons/357_cock1.wav");
 	PRECACHE_GENERIC("sprites/weapon_gravgun.txt");
+	PRECACHE_GENERIC("sprites/grav.spr");
 
 }
 

@@ -268,7 +268,6 @@ void CProp::Precache( void )
 	if( pGibName )
 		m_idShard = PRECACHE_MODEL( (char *)pGibName );
 	PRECACHE_MODEL( (char *)STRING(pev->model) );
-	PRECACHE_SOUND("misc/ear_ringing.wav");
 }
 
 void CProp::DamageSound( void )
@@ -880,7 +879,6 @@ void CProp::TolchokTouch( CBaseEntity *pOther )
 	pPlayer->pev->deadflag = DEAD_DYING;
 	pPlayer->RemoveAllItems( TRUE );
 	respawn( pPlayer->pev, !( pPlayer->m_afPhysicsFlags & PFLAG_OBSERVER ) );
-	EMIT_SOUND( ENT( pPlayer->pev ), CHAN_VOICE, "misc/ear_ringing.wav", 1, ATTN_NORM );
 	Killed( NULL, NULL);
 }
 
