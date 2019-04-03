@@ -138,6 +138,7 @@ LOCAL_SRC_FILES := agrunt.cpp airtank.cpp \
 	   houndeye_dead.cpp \
 	   construction.cpp \
 	   construction_dead.cpp \
+	   naziflag.cpp \
 	   zombie_barney.cpp \
 	   poisoncrab.cpp \
            gravgun.cpp \
