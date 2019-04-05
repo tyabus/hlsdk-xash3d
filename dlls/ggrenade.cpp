@@ -349,7 +349,16 @@ void CGrenade::Spawn( void )
 
 	pev->solid = SOLID_BBOX;
 
-	SET_MODEL( ENT( pev ), "models/grenade.mdl" );
+	switch( RANDOM_LONG( 0, 1 ) )
+	{
+	case 0:
+		SET_MODEL( ENT( pev ), "models/grenade.mdl" );
+		break;
+	case 1:
+		SET_MODEL( ENT( pev ), "models/q1grenade.mdl" ); // check tyabus.github.io repository for model
+		break;
+	}
+
 	UTIL_SetSize( pev, Vector( 0, 0, 0 ), Vector( 0, 0, 0 ) );
 
 	pev->dmg = 100;

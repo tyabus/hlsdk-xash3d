@@ -66,6 +66,7 @@ void CMP5::Precache( void )
 	m_iShell = PRECACHE_MODEL( "models/shell.mdl" );// brass shellTE_MODEL
 
 	PRECACHE_MODEL( "models/grenade.mdl" );	// grenade
+        PRECACHE_MODEL( "models/q1grenade.mdl" ); // q1grenade
 
 	PRECACHE_MODEL( "models/w_9mmARclip.mdl" );
 	PRECACHE_SOUND( "items/9mmclip1.wav" );
