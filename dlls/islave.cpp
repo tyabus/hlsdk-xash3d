@@ -203,7 +203,6 @@ void CISlave::IdleSound( void )
 	{
 		SENTENCEG_PlayRndSz( ENT( pev ), "SLV_IDLE", 0.85, ATTN_NORM, 0, m_voicePitch );
 	}
-#if 0
 	int side = RANDOM_LONG( 0, 1 ) * 2 - 1;
 
 	ClearBeams();
@@ -225,7 +224,6 @@ void CISlave::IdleSound( void )
 	MESSAGE_END();
 
 	EMIT_SOUND_DYN( ENT( pev ), CHAN_WEAPON, "debris/zap1.wav", 1, ATTN_NORM, 0, 100 );
-#endif
 }
 
 //=========================================================

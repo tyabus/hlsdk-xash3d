@@ -315,18 +315,15 @@ const char *CGargantua::pAttackMissSounds[] =
 
 const char *CGargantua::pRicSounds[] =
 {
-#if 0
 	"weapons/ric1.wav",
 	"weapons/ric2.wav",
 	"weapons/ric3.wav",
 	"weapons/ric4.wav",
 	"weapons/ric5.wav",
-#else
 	"debris/metal4.wav",
 	"debris/metal6.wav",
 	"weapons/ric4.wav",
 	"weapons/ric5.wav",
-#endif
 };
 
 const char *CGargantua::pFootSounds[] =
