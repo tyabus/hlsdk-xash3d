@@ -165,6 +165,7 @@ mp_hgibcount - human gibs count
 mp_agibcount - alien gibs count
 mp_gibtime - set gib stay time
 mp_fixhornetbug - enable workaround for hornetgun bug
+mp_megahornet - enable a new type of hornet
 mp_fixsavetime - cut down time when loading
 save (useful for very LOOOOONG game and sandbox
 servers with save)
