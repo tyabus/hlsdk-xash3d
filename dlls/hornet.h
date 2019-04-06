@@ -23,6 +23,8 @@
 //=========================================================
 #define HORNET_TYPE_RED			0
 #define HORNET_TYPE_ORANGE		1
+#define HORNET_TYPE_MEGA		2
+#define HORNET_MEGA_SPEED		(float)850
 #define HORNET_RED_SPEED		(float)600
 #define HORNET_ORANGE_SPEED		(float)800
 #define	HORNET_BUZZ_VOLUME		(float)0.8

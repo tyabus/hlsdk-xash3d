@@ -79,15 +79,27 @@ void CHornet::Spawn( void )
 
 	m_flFieldOfView = 0.9; // +- 25 degrees
 
-	if( RANDOM_LONG( 1, 5 ) <= 2 )
+	switch( RANDOM_LONG( 0, 2 ) )
 	{
+	case 0:
 		m_iHornetType = HORNET_TYPE_RED;
 		m_flFlySpeed = HORNET_RED_SPEED;
-	}
-	else
-	{
+		break;
+	case 1:
 		m_iHornetType = HORNET_TYPE_ORANGE;
 		m_flFlySpeed = HORNET_ORANGE_SPEED;
+		break;
+	case 2:
+		if( mp_megahornet.value )
+		{
+		m_iHornetType = HORNET_TYPE_MEGA;
+		m_flFlySpeed = HORNET_MEGA_SPEED;
+		break;
+		}
+		else
+		m_iHornetType = HORNET_TYPE_ORANGE;
+                m_flFlySpeed = HORNET_ORANGE_SPEED * 0.25;
+                break;
 	}
 
 	SET_MODEL( ENT( pev ), "models/hornet.mdl" );
@@ -98,7 +110,7 @@ void CHornet::Spawn( void )
 
 	edict_t *pSoundEnt = pev->owner;
 	if( !pSoundEnt )
-		pSoundEnt = edict();
+		 pSoundEnt = edict();
 
 	if( !FNullEnt( pev->owner ) && ( pev->owner->v.flags & FL_CLIENT ) )
 	{
@@ -233,6 +245,10 @@ old colors
 			WRITE_BYTE( 128 );   // r, g, b
 			WRITE_BYTE( 0 );   // r, g, b
 			break;
+		case HORNET_TYPE_MEGA:
+			WRITE_BYTE ( 88 );
+			WRITE_BYTE ( 118 );
+			WRITE_BYTE ( 78 );
 		}
 
 		WRITE_BYTE( 128 );	// brightness
@@ -328,6 +344,11 @@ void CHornet::TrackTarget( void )
 			pev->velocity = pev->velocity * m_flFlySpeed;// do not have to slow down to turn.
 			pev->nextthink = gpGlobals->time + 0.1;// fixed think time
 			break;
+		case HORNET_TYPE_MEGA:
+			pev->health = pev->health + 9;
+			pev->velocity = pev->velocity * m_flFlySpeed * 1.3;
+			pev->nextthink = gpGlobals->time + 0.08;
+			pev->dmg = pev->dmg * 0.40;
 	}
 
 	pev->angles = UTIL_VecToAngles( pev->velocity );

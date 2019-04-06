@@ -17,6 +17,7 @@ extern cvar_t cvar_iresptime;
 extern cvar_t mp_gravgun_players;
 extern cvar_t mp_skipdefaults;
 extern cvar_t mp_unduck;
+extern cvar_t mp_megahornet;
 
 extern cvar_t cvar_gibtime;
 extern cvar_t cvar_hgibcount;

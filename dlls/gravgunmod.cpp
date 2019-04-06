@@ -27,6 +27,7 @@ cvar_t mp_gravgun_players = { "mp_gravgun_players", "0", FCVAR_SERVER };
 cvar_t mp_skipdefaults = { "mp_skipdefaults", "0", FCVAR_SERVER };
 cvar_t mp_spectator = { "mp_spectator", "0", FCVAR_SERVER };
 cvar_t mp_unduck = { "mp_unduck", "0", FCVAR_SERVER };
+cvar_t mp_megahornet = { "mp_megahornet", "0", FCVAR_SERVER };
 
 cvar_t mp_fixhornetbug = { "mp_fixhornetbug", "0", FCVAR_SERVER };
 cvar_t mp_fixsavetime = { "mp_fixsavetime", "0", FCVAR_SERVER };
@@ -3119,6 +3120,7 @@ void GGM_RegisterCVars( void )
 	CVAR_REGISTER( &cvar_hgibcount );
 	CVAR_REGISTER( &cvar_agibcount );
 	CVAR_REGISTER( &mp_gravgun_players );
+	CVAR_REGISTER( &mp_megahornet );
 	CVAR_REGISTER( &mp_fixhornetbug );
 	CVAR_REGISTER( &mp_fixsavetime );
 	CVAR_REGISTER( &mp_checkentities );
