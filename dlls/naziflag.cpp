@@ -24,7 +24,7 @@ void CNaziFlag::Spawn( void )
 
 	pev->solid = SOLID_BBOX;
 
-	UTIL_SetSize( pev, Vector( 0, 0, 0), Vector( 0, 0, 0 ) );
+	UTIL_SetSize( pev, Vector( 0, 0, 0 ), Vector( 0, 0, 0 ) );
 	UTIL_SetOrigin( pev, pev->origin );
 
 	pev->takedamage = DAMAGE_NO;
