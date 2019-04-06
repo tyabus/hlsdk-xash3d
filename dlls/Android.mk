@@ -132,10 +132,10 @@ LOCAL_SRC_FILES := agrunt.cpp airtank.cpp \
            prop.cpp \
 	   cleansuit_scientist.cpp \
 	   skeleton.cpp \
-	   zombie_soldier.cpp \
 	   xtree.cpp \
 	   diablo.cpp \
 	   houndeye_dead.cpp \
+	   h_player.cpp \
 	   construction.cpp \
 	   construction_dead.cpp \
 	   naziflag.cpp \
