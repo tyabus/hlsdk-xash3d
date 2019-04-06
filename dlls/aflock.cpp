@@ -317,7 +317,7 @@ void CFlockingFlyer::FallHack( void )
 		else
 		{
 			pev->velocity = g_vecZero;
-			SetThink( NULL );
+			SetThink( &CBaseEntity::SUB_Remove );
 		}
 	}
 }
@@ -330,8 +330,9 @@ void CFlockingFlyer::SpawnCommonCode()
 	pev->classname = MAKE_STRING( "monster_flyer" );
 	pev->solid = SOLID_SLIDEBOX;
 	pev->movetype = MOVETYPE_FLY;
-	pev->takedamage	= DAMAGE_NO;
-	pev->health = 1;
+	m_bloodColor = BLOOD_COLOR_GREEN;
+	pev->takedamage	= DAMAGE_YES;
+	pev->health = 30;
 
 	m_fPathBlocked	= FALSE;// obstacles will be detected
 	m_flFieldOfView	= 0.2;
