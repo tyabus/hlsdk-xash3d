@@ -8,6 +8,7 @@ public:
 	void Spawn( void );
 	void Precache( void );
 	void Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
+	virtual int ObjectCaps( void ) { return (CBaseEntity::ObjectCaps() | FCAP_CONTINUOUS_USE) & ~FCAP_ACROSS_TRANSITION; }
 	float TouchGravGun( CBaseEntity *attacker, int stage )
 	{
         	return 1000;
@@ -30,8 +31,6 @@ void CHPlayer::Spawn( void )
 	pev->solid = SOLID_BBOX;
 	pev->movetype = MOVETYPE_TOSS;
 
-	SetUse( &CHPlayer::Use );
-
 	UTIL_SetSize( pev, Vector( -16, -16, 0), Vector( 16, 16, 36 ) );
 	UTIL_SetOrigin( pev, pev->origin );
 
@@ -42,12 +41,10 @@ void CHPlayer::Spawn( void )
 
 void CHPlayer::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value )
 {
-	// Make sure that we have a caller
-        if( !pActivator )
-		return;
-        // if it's not a player, ignore
-        if( !pActivator->IsPlayer() )
-		return;
+	if ( !pActivator )
+		return; // make sure we have a activator
+	if ( !pActivator->IsPlayer() )
+		return; // make sure our activator is a player
 
 	UTIL_ShowMessage( "Dopefish Lives!", pActivator );
 }
