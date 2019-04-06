@@ -16,7 +16,7 @@
 
 /*
 
-	h_tentacle.cpp - silo of death tentacle monster (half life)
+	tentacle.cpp - silo of death tentacle monster (half life)
 
 */
 
@@ -491,7 +491,6 @@ void CTentacle::Cycle( void )
 			m_flSoundYaw += 360;
 		if( m_flSoundYaw > 180 )
 			m_flSoundYaw -= 360;
-#if 0
 		// ALERT( at_console, "sound %d %.0f\n", m_iSoundLevel, m_flSoundYaw );
 		if( m_flSoundTime < gpGlobals->time )
 		{
@@ -510,7 +509,6 @@ void CTentacle::Cycle( void )
 
 			// UTIL_EmitAmbientSound( ENT( pev ), pev->origin + Vector( 0, 0, MyHeight() ), sound, 1.0, ATTN_NORM, 0, 100 );
 		}
-#endif
 		m_flSoundTime = gpGlobals->time + RANDOM_FLOAT( 5.0, 10.0 );
 	}
 
