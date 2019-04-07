@@ -67,7 +67,7 @@ void CHornet::Spawn( void )
 	pev->flags |= FL_MONSTER;
 	pev->health = 1;// weak!
 
-	if( g_pGameRules->IsMultiplayer() )
+	if( g_pGameRules->IsMultiplayer() || ( !mp_coop.value ) )
 	{
 		// hornets don't live as long in multiplayer
 		m_flStopAttack = gpGlobals->time + 3.5;
@@ -346,9 +346,9 @@ void CHornet::TrackTarget( void )
 			break;
 		case HORNET_TYPE_MEGA:
 			pev->health = pev->health + 9;
-			pev->velocity = pev->velocity * m_flFlySpeed * 1.3;
-			pev->nextthink = gpGlobals->time + 0.08;
-			pev->dmg = pev->dmg * 0.40;
+			pev->velocity = pev->velocity * m_flFlySpeed * 1.35;
+			pev->nextthink = gpGlobals->time + 0.07;
+			pev->dmg = pev->dmg * 0.70;
 	}
 
 	pev->angles = UTIL_VecToAngles( pev->velocity );

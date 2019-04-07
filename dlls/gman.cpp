@@ -21,6 +21,7 @@
 #include	"monsters.h"
 #include	"schedule.h"
 #include	"weapons.h"
+#include	"coop_util.h"
 
 //=========================================================
 // Monster's Anim Events Go Here
@@ -42,7 +43,6 @@ public:
 
         float TouchGravGun( CBaseEntity *attacker, int stage )
         {
-
                 return FALSE;
         }
 
