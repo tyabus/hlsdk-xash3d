@@ -23,6 +23,7 @@
 #include	"cbase.h"
 #include	"monsters.h"
 #include	"schedule.h"
+#include	"weapons.h"
 
 //=========================================================
 // Monster's Anim Events Go Here
@@ -61,6 +62,8 @@ public:
 	BOOL CheckRangeAttack1( float flDot, float flDist ) { return FALSE; }
 	BOOL CheckRangeAttack2( float flDot, float flDist ) { return FALSE; }
 	int TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType );
+
+	void TraceAttack( entvars_t *pevAttacker, float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType );
 };
 
 LINK_ENTITY_TO_CLASS( monster_zombie, CZombie )
@@ -260,6 +263,22 @@ void CZombie::HandleAnimEvent( MonsterEvent_t *pEvent )
 }
 
 //=========================================================
+// TraceAttack
+//=========================================================
+void CZombie::TraceAttack( entvars_t *pevAttacker, float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType )
+{
+   if( ptr->iHitgroup )
+   {
+	if ( ptr->iHitgroup == HITGROUP_HEAD )
+          SpawnBlood(ptr->vecEndPos, BLOOD_COLOR_YELLOW, flDamage * 5.0);
+	else
+	  SpawnBlood(ptr->vecEndPos, BLOOD_COLOR_RED, flDamage * 5.0);
+   }
+CBaseMonster::TraceAttack( pevAttacker, flDamage, vecDir, ptr, bitsDamageType );
+}
+
+
+//=========================================================
 // Spawn
 //=========================================================
 void CZombie::Spawn()
@@ -271,7 +290,7 @@ void CZombie::Spawn()
 
 	pev->solid		= SOLID_SLIDEBOX;
 	pev->movetype		= MOVETYPE_STEP;
-	m_bloodColor		= BLOOD_COLOR_GREEN;
+	m_bloodColor		= DONT_BLEED;
 	pev->health		= gSkillData.zombieHealth;
 	pev->view_ofs		= VEC_VIEW;// position of the eyes relative to monster's origin.
 	m_flFieldOfView		= 0.5;// indicates the width of this monster's forward view cone ( as a dotproduct result )
