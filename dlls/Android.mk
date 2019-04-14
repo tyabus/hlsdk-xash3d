@@ -145,6 +145,7 @@ LOCAL_SRC_FILES := agrunt.cpp airtank.cpp \
 	   shock.cpp \
 	   shockrifle.cpp \
            ar2.cpp \
+	   lamp.cpp \
 	   m249.cpp \
 	   knife.cpp \
            big_cock.cpp \
