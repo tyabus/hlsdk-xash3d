@@ -151,6 +151,9 @@ weapon switches:
 mp_allow_gravgun
 mp_allow_ar2
 mp_allow_bigcock
+mp_allow_knife
+mp_allow_m249
+mp_allow_shockrifle
 mp_allow_gateofbabylon
 0 - disable, 1 - enable (precache), 2 - give to player
 ```
