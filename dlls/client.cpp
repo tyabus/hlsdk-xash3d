@@ -47,7 +47,6 @@ extern DLL_GLOBAL int		g_iSkillLevel;
 extern DLL_GLOBAL ULONG		g_ulFrameCount;
 
 extern void CopyToBodyQue(entvars_t* pev);
-extern int giPrecacheGrunt;
 extern int gmsgSayText;
 extern int gmsgBhopcap;
 
@@ -1030,9 +1029,6 @@ void ClientPrecache( void )
 	PRECACHE_SOUND("player/geiger3.wav");
 	PRECACHE_SOUND("player/geiger2.wav");
 	PRECACHE_SOUND("player/geiger1.wav");
-
-	if (giPrecacheGrunt)
-		UTIL_PrecacheOther("monster_human_grunt");
 }
 
 /*

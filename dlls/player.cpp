@@ -147,7 +147,6 @@ TYPEDESCRIPTION	CBasePlayer::m_playerSaveData[] =
 	//DEFINE_FIELD( CBasePlayer, m_nCustomSprayFrames, FIELD_INTEGER ), // Don't need to restore
 };	
 
-int giPrecacheGrunt = 0;
 int gmsgShake = 0;
 int gmsgFade = 0;
 int gmsgSelAmmo = 0;
@@ -3578,18 +3577,6 @@ void CBasePlayer::CheatImpulseCommands( int iImpulse )
 
 	switch( iImpulse )
 	{
-	case 76:
-		if( !giPrecacheGrunt )
-		{
-			giPrecacheGrunt = 1;
-			ALERT( at_console, "You must now restart to use Grunt-o-matic.\n" );
-		}
-		else
-		{
-			UTIL_MakeVectors( Vector( 0, pev->v_angle.y, 0 ) );
-			Create( "monster_human_grunt", pev->origin + gpGlobals->v_forward * 128, pev->angles );
-		}
-		break;
 	case 101:
 		gEvilImpulse101 = TRUE;
 		GiveNamedItem( "item_suit" );

@@ -3156,6 +3156,5 @@ void GGM_RegisterCVars( void )
 
 	zombietime = CVAR_GET_POINTER("zombietime");
 
-
 	GET_GAME_DIR(gamedir);
 }
