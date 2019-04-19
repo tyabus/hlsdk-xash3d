@@ -30,6 +30,7 @@ void CHPlayer::Spawn( void )
 
 	pev->solid = SOLID_BBOX;
 	pev->movetype = MOVETYPE_TOSS;
+	pev->dmg = 1000;
 
 	UTIL_SetSize( pev, Vector( -16, -16, 0), Vector( 16, 16, 36 ) );
 	UTIL_SetOrigin( pev, pev->origin );
@@ -46,5 +47,7 @@ void CHPlayer::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useT
 	if ( !pActivator->IsPlayer() )
 		return; // make sure our activator is a player
 
-	UTIL_ShowMessage( "Dopefish Lives!", pActivator );
+	UTIL_ShowMessage( "Dopefish Not Lives!", pActivator );
+
+	pActivator->TakeDamage( pev, pev, pev->dmg, DMG_NEVERGIB );
 }
