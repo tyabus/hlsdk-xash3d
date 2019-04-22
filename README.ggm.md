@@ -162,6 +162,7 @@ tweaks:
 mp_ar2_mp5 - make ar2 use mp5 ammo
 mp_ar2_bullets - default ar2 bullets count
 mp_ar2_balls - default ar2 balls count
+mp_ar2_allow_balls - allow ar2 balls ( can prevent crash on coop during transfer ar2grenade entity)
 mp_wresptime - weapon respawn time
 mp_iresptime - item respawn time
 mp_hgibcount - human gibs count

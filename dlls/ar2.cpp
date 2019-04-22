@@ -117,12 +117,22 @@ int CAR2Ball::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float 
 
 void CAR2Ball::Precache()
 {
+	if ( !cvar_ar2_allow_balls.value )
+	{
+		return;
+	}
+
 	m_iShockWaveTexture = PRECACHE_MODEL( "sprites/shockwave.spr" );
 	PRECACHE_MODEL( "models/ar2grenade.mdl" );
 }
 
 void CAR2Ball::Spawn()
 {
+	if ( !cvar_ar2_allow_balls.value )
+	{
+		return;
+	}
+
 	Precache();
 	pev->movetype = MOVETYPE_BOUNCE;
 	pev->solid = SOLID_BBOX;
@@ -438,15 +448,31 @@ int CAR2::GetItemInfo(ItemInfo *p)
 	{
 		p->pszAmmo1 = "AR2";
 		p->iMaxAmmo1 = 120;
-		p->pszAmmo2 = "AR2grenades";
-		p->iMaxAmmo2 = 3;
+		if ( cvar_ar2_allow_balls.value )
+		{
+			p->pszAmmo2 = "AR2grenades";
+			p->iMaxAmmo2 = 3;
+		}
+		else
+		{
+			p->pszAmmo2 = "NULL";
+			p->iMaxAmmo2 = NULL;
+		}
 	}
 	else
 	{
 		p->pszAmmo1 = "9mm";
 		p->iMaxAmmo1 = _9MM_MAX_CARRY;
-		p->pszAmmo2 = "ARgrenades";
-		p->iMaxAmmo2 = M203_GRENADE_MAX_CARRY;
+		if ( cvar_ar2_allow_balls.value )
+		{
+			p->pszAmmo2 = "ARgrenades";
+			p->iMaxAmmo2 = M203_GRENADE_MAX_CARRY;
+		}
+		else
+		{
+			p->pszAmmo2 = "NULL";
+			p->iMaxAmmo2 = NULL;
+		}
 	}
 	p->iMaxClip = 30;
 	p->iSlot = 2;
@@ -560,7 +586,8 @@ void CAR2::PrimaryAttack()
 	m_flTimeWeaponIdle = gpGlobals->time  + UTIL_SharedRandomFloat(m_pPlayer->random_seed, 10, 15);
 }
 
-void CAR2::Cleaner(void) {
+void CAR2::Cleaner(void)
+{
 
 	if( m_pBeam1 )
 		UTIL_Remove(m_pBeam1);
@@ -570,6 +597,12 @@ void CAR2::Cleaner(void) {
 
 void CAR2::SecondaryAttack(void)
 {
+	if ( !cvar_ar2_allow_balls.value )
+	{
+		PlayEmptySound();
+		return;
+	}
+
 	// don't fire underwater
 	if (m_pPlayer->pev->waterlevel == 3)
 	{

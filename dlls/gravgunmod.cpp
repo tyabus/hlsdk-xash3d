@@ -14,6 +14,7 @@ cvar_t cvar_allow_m249 = { "mp_allow_m249","0", FCVAR_SERVER };
 cvar_t cvar_allow_shockrifle = { "mp_allow_shockrifle","0", FCVAR_SERVER };
 cvar_t cvar_ar2_mp5 = { "mp_ar2_mp5","0", FCVAR_SERVER };
 cvar_t cvar_ar2_balls = { "mp_ar2_balls","0", FCVAR_SERVER };
+cvar_t cvar_ar2_allow_balls = { "mp_ar2_allow_balls","1", FCVAR_SERVER };
 cvar_t cvar_ar2_bullets = { "mp_ar2_bullets","0", FCVAR_SERVER };
 cvar_t cvar_allow_bigcock = { "mp_allow_bigcock","0", FCVAR_SERVER };
 cvar_t cvar_allow_gateofbabylon = { "mp_allow_gateofbabylon","0", FCVAR_SERVER };
@@ -3111,6 +3112,7 @@ void GGM_RegisterCVars( void )
 	CVAR_REGISTER( &cvar_allow_gravgun );
 	CVAR_REGISTER( &cvar_ar2_mp5 );
 	CVAR_REGISTER( &cvar_ar2_bullets );
+	CVAR_REGISTER( &cvar_ar2_allow_balls );
 	CVAR_REGISTER( &cvar_ar2_balls );
 	CVAR_REGISTER( &cvar_allow_bigcock );
 	CVAR_REGISTER( &cvar_allow_gateofbabylon );
