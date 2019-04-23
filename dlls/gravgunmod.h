@@ -1,7 +1,6 @@
 #ifndef GRAVGUNMOD_H
 #define GRAVGUNMOD_H
 
-
 extern cvar_t cvar_allow_gravgun;
 extern cvar_t cvar_allow_ar2;
 extern cvar_t cvar_allow_knife;
@@ -15,6 +14,7 @@ extern cvar_t cvar_allow_bigcock;
 extern cvar_t cvar_allow_gateofbabylon;
 extern cvar_t cvar_wresptime;
 extern cvar_t cvar_iresptime;
+extern cvar_t mp_q1grenade;
 extern cvar_t mp_gravgun_players;
 extern cvar_t mp_skipdefaults;
 extern cvar_t mp_unduck;

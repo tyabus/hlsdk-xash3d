@@ -26,6 +26,7 @@
 #include "nodes.h"
 #include "soundent.h"
 #include "decals.h"
+#include "gravgunmod.h"
 
 //===================grenade
 
@@ -349,7 +350,9 @@ void CGrenade::Spawn( void )
 
 	pev->solid = SOLID_BBOX;
 
-	switch( RANDOM_LONG( 0, 1 ) )
+	if ( mp_q1grenade.value)
+	{
+		switch( RANDOM_LONG( 0, 1 ) )
 	{
 	case 0:
 		SET_MODEL( ENT( pev ), "models/grenade.mdl" );
@@ -357,6 +360,11 @@ void CGrenade::Spawn( void )
 	case 1:
 		SET_MODEL( ENT( pev ), "models/q1grenade.mdl" ); // check tyabus.github.io repository for model
 		break;
+	}
+	}
+	else
+	{
+		SET_MODEL( ENT( pev), "models/grenade.mdl" );
 	}
 
 	UTIL_SetSize( pev, Vector( 0, 0, 0 ), Vector( 0, 0, 0 ) );
