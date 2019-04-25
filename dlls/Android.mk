@@ -3,6 +3,10 @@
 
 LOCAL_PATH := $(call my-dir)
 
+CXX_VER := $(shell $(CXX) -dumpversion)
+
+GGM_COMMIT := $(firstword $(shell cd $(LOCAL_PATH)&&git rev-parse --short=6 HEAD) unknown)
+
 include $(CLEAR_VARS)
 
 LOCAL_MODULE := server
@@ -13,9 +17,8 @@ ifeq ($(TARGET_ARCH_ABI),armeabi-v7a-hard)
 LOCAL_MODULE_FILENAME = libserver_hardfp
 endif
 
-LOCAL_CFLAGS += -D_LINUX -DCLIENT_WEAPONS -Dstricmp=strcasecmp -Dstrnicmp=strncasecmp -D_snprintf=snprintf \
+LOCAL_CFLAGS += -DGGM_COMMIT=\"$(GGM_COMMIT)\" -DCXX_VER=\"$(CXX_VER)\" -DCXX=\"$(CXX)\" -D_LINUX -DCLIENT_WEAPONS -Dstricmp=strcasecmp -Dstrnicmp=strncasecmp -D_snprintf=snprintf \
 	-fno-exceptions -fvisibility=hidden -DNO_VOICEGAMEMGR -Wno-conversion-null -Wno-write-strings -fpermissive -std=gnu++98 -Wno-invalid-offsetof
-
 
 LOCAL_CPPFLAGS := $(LOCAL_CFLAGS)
 

@@ -20,6 +20,10 @@ extern cvar_t mp_skipdefaults;
 extern cvar_t mp_unduck;
 extern cvar_t mp_megahornet;
 
+extern cvar_t ggm_arch;
+extern cvar_t ggm_platform;
+extern cvar_t ggm_commit;
+
 extern cvar_t cvar_gibtime;
 extern cvar_t cvar_hgibcount;
 extern cvar_t cvar_agibcount;
@@ -53,6 +57,49 @@ extern cvar_t mp_maxtentdist;
 // only limit decal count on different models
 
 extern cvar_t mp_maxdecals;
+
+// processor architecture defines
+#if defined(__amd64__) || defined(_M_X64)
+#define GGM_ARCH	"amd64"
+#elif defined(__aarch64__)
+#define GGM_ARCH	"arm64"
+#elif defined(__i386__) || defined(_X86_) || defined(_M_IX86)
+#define GGM_ARCH	"i386"
+#elif defined(__arm__) || defined(_M_ARM)
+#define GGM_ARCH	"arm"
+#elif defined(__mips__)
+#define GGM_ARCH	"mips"
+#elif defined (__powerpc__)
+#define GGM_ARCH	"powerpc"
+#elif defined (__sparc__)
+#define GGM_ARCH	"sparc"
+#else
+#warning "GGM_ARCH is undefined, defining to unknown architecture"
+#define GGM_ARCH	"unknown"
+#endif
+// platform defines
+#if defined(_WIN32) && defined(__MINGW32_)
+#define GGM_PLATFORM	"WIN32-MinGW"
+#elif defined(__ANDROID__)
+#define GGM_PLATFORM	"Android"
+#elif defined(__APPLE__) && ( defined(__arm__) || defined(__aarch64__) )
+#define GGM_PLATFORM	"ios"
+#elif defined(__APPLE__)
+#define GGM_PLATFORM	"Apple"
+#elif defined(__FreeBSD__)
+#define GGM_PLATFORM	"FreeBSD"
+#elif defined(__NetBSD__)
+#define GGM_PLATFORM	"NetBSD"
+#elif defined(__OpenBSD__)
+#define GGM_PLATFORM	"OpenBSD"
+#elif defined(__DragonFly__)
+#define GGM_PLATFORM	"DragonFly"
+#elif defined(__linux) && defined(__linux__)
+#define GGM_PLATFORM	"Linux"
+#else
+#warning "GGM_PLATFORM is undefined, defining to unknown"
+#define GGM_PLATFORM	"unknown"
+#endif
 
 void GGM_RegisterCVars( void );
 #define GC_COMMON (1<<0)

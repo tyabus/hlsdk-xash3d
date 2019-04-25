@@ -31,6 +31,10 @@ cvar_t mp_unduck = { "mp_unduck", "0", FCVAR_SERVER };
 cvar_t mp_megahornet = { "mp_megahornet", "0", FCVAR_SERVER };
 cvar_t mp_q1grenade = { "mp_q1grenade", "1", FCVAR_SERVER };
 
+cvar_t ggm_arch = { "ggm_arch", "", FCVAR_SERVER | FCVAR_UNLOGGED };
+cvar_t ggm_platform = { "ggm_platform", "", FCVAR_SERVER | FCVAR_UNLOGGED };
+cvar_t ggm_commit = { "ggm_commit", "", FCVAR_SERVER | FCVAR_UNLOGGED };
+
 cvar_t mp_fixhornetbug = { "mp_fixhornetbug", "0", FCVAR_SERVER };
 cvar_t mp_fixsavetime = { "mp_fixsavetime", "0", FCVAR_SERVER };
 cvar_t mp_checkentities = { "mp_checkentities", "0", FCVAR_SERVER };
@@ -3086,6 +3090,15 @@ void GGM_SayText_f( void )
 	GGM_SayText(CMD_ARGS());
 }
 
+void GGM_Version_f( void )
+{
+	ALERT(at_console, "Build time: %s\n", __DATE__);
+	ALERT(at_console, "Build compiler: %s version %s\n", CXX, CXX_VER);
+	ALERT(at_console, "Build architecture: %s\n", CVAR_GET_STRING("ggm_arch") );
+	ALERT(at_console, "Build commit: %s\n", CVAR_GET_STRING("ggm_commit") );
+	ALERT(at_console, "Build platform: %s\n", CVAR_GET_STRING("ggm_platform") );
+}
+
 int GGM_ConnectionlessPacket( const struct netadr_s *net_from, const char *args, char *response_buffer, int *response_buffer_size )
 {
 	if( !strncmp( args, "ggm_chat ", 9 ) )
@@ -3106,6 +3119,9 @@ Call on server load
 */
 void GGM_RegisterCVars( void )
 {
+	CVAR_REGISTER( &ggm_commit );
+	CVAR_REGISTER( &ggm_arch );
+	CVAR_REGISTER( &ggm_platform );
 	CVAR_REGISTER( &cvar_allow_m249 );
 	CVAR_REGISTER( &cvar_allow_shockrifle );
 	CVAR_REGISTER( &cvar_allow_knife );
@@ -3157,6 +3173,11 @@ void GGM_RegisterCVars( void )
 	g_engfuncs.pfnAddServerCommand( "ggm_votecommand", GGM_VoteCommand_f );
 	g_engfuncs.pfnAddServerCommand( "ggm_pause", GGM_Pause_f );
 	g_engfuncs.pfnAddServerCommand( "ggm_saytext", GGM_SayText_f );
+	g_engfuncs.pfnAddServerCommand( "ggm_version", GGM_Version_f );
+
+	g_engfuncs.pfnCvar_DirectSet( &ggm_platform, UTIL_VarArgs( "%s", GGM_PLATFORM ) );
+	g_engfuncs.pfnCvar_DirectSet( &ggm_arch, UTIL_VarArgs( "%s", GGM_ARCH ) );
+	g_engfuncs.pfnCvar_DirectSet( &ggm_commit, UTIL_VarArgs( "%s", GGM_COMMIT ) );
 
 	zombietime = CVAR_GET_POINTER("zombietime");
 
