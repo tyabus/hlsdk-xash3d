@@ -3090,10 +3090,18 @@ void GGM_SayText_f( void )
 	GGM_SayText(CMD_ARGS());
 }
 
+/*
+=====================
+GGM_Version
+
+call on ggm_version serverside command
+=====================
+
+*/
 void GGM_Version_f( void )
 {
-	ALERT(at_console, "Build time: %s\n", __DATE__);
-	ALERT(at_console, "Build compiler: %s version %s\n", CXX, CXX_VER);
+	ALERT(at_console, "Build date: %s\n", __DATE__);
+	ALERT(at_console, "Compiled with: %s version %s\n", CXX, CXX_VER);
 	ALERT(at_console, "Build architecture: %s\n", CVAR_GET_STRING("ggm_arch") );
 	ALERT(at_console, "Build commit: %s\n", CVAR_GET_STRING("ggm_commit") );
 	ALERT(at_console, "Build platform: %s\n", CVAR_GET_STRING("ggm_platform") );
