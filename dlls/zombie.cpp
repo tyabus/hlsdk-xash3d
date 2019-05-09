@@ -270,9 +270,9 @@ void CZombie::TraceAttack( entvars_t *pevAttacker, float flDamage, Vector vecDir
    if( ptr->iHitgroup )
    {
 	if ( ptr->iHitgroup == HITGROUP_HEAD )
-          SpawnBlood(ptr->vecEndPos, BLOOD_COLOR_YELLOW, flDamage * 4.0);
+          SpawnBlood( ptr->vecEndPos, BLOOD_COLOR_YELLOW, flDamage * 2.0 );
 	else
-	  SpawnBlood(ptr->vecEndPos, BLOOD_COLOR_RED, flDamage * 4.0);
+	  SpawnBlood( ptr->vecEndPos, BLOOD_COLOR_RED, flDamage * 2.0 );
    }
 CBaseMonster::TraceAttack( pevAttacker, flDamage, vecDir, ptr, bitsDamageType );
 }

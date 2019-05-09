@@ -322,7 +322,7 @@ void CBaseMonster::GibMonster( void )
 		if( CVAR_GET_FLOAT( "violence_hgibs" ) != 0 )	// Only the player will ever get here
 		{
 			CGib::SpawnHeadGib( pev );
-			CGib::SpawnRandomGibs( pev, 4, 1 | disintegrate );	// throw some human gibs.
+			CGib::SpawnRandomGibs( pev, 6, 1 | disintegrate );	// throw some human gibs.
 		}
 		gibbed = TRUE;
 	}
@@ -330,7 +330,7 @@ void CBaseMonster::GibMonster( void )
 	{
 		if( CVAR_GET_FLOAT( "violence_agibs" ) != 0 )	// Should never get here, but someone might call it directly
 		{
-			CGib::SpawnRandomGibs( pev, 4, disintegrate );	// Throw alien gibs
+			CGib::SpawnRandomGibs( pev, 6, disintegrate );	// Throw alien gibs
 		}
 		gibbed = TRUE;
 	}
