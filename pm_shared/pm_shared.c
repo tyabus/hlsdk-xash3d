@@ -24,9 +24,6 @@
 //#include <stdio.h>  // NULL
 #include <math.h>   // sqrt
 #include <string.h> // strcpy
-#ifdef stricmp
-#include <strings.h> // strncasecmp
-#endif
 #include <stdlib.h> // atoi
 #include <ctype.h>  // isspace
 
@@ -131,14 +128,6 @@ static char grgchTextureType[CTEXTURESMAX];
 
 int g_onladder = 0;
 
-#ifdef CLIENT_DLL
-#define materials_path "sound/materials.txt"
-#else
-#include "cvardef.h"
-extern cvar_t materials_txt;
-#define materials_path materials_txt.string
-#endif
-
 void PM_SwapTextures( int i, int j )
 {
 	char chTemp;
@@ -190,9 +179,7 @@ void PM_InitTextureTypes()
 
 	gcTextures = 0;
 
-	fileSize = pmove->COM_FileSize( materials_path );
-	pMemFile = pmove->COM_LoadFile( materials_path, 5, &fileSize );
-
+	pMemFile = pmove->COM_LoadFile( "sound/materials.txt", 5, &fileSize );
 	if( !pMemFile )
 		return;
 
