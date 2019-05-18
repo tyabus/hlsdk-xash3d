@@ -23,7 +23,6 @@
 #include	"cbase.h"
 #include	"monsters.h"
 #include	"schedule.h"
-#include	"weapons.h"
 
 //=========================================================
 // Monster's Anim Events Go Here
@@ -270,9 +269,9 @@ void CZombie::TraceAttack( entvars_t *pevAttacker, float flDamage, Vector vecDir
    if( ptr->iHitgroup )
    {
 	if ( ptr->iHitgroup == HITGROUP_HEAD )
-          SpawnBlood( ptr->vecEndPos, BLOOD_COLOR_YELLOW, flDamage * 2.0 );
+	  m_bloodColor = BLOOD_COLOR_YELLOW;
 	else
-	  SpawnBlood( ptr->vecEndPos, BLOOD_COLOR_RED, flDamage * 2.0 );
+	  m_bloodColor = BLOOD_COLOR_RED;
    }
 CBaseMonster::TraceAttack( pevAttacker, flDamage, vecDir, ptr, bitsDamageType );
 }
@@ -290,7 +289,7 @@ void CZombie::Spawn()
 
 	pev->solid		= SOLID_SLIDEBOX;
 	pev->movetype		= MOVETYPE_STEP;
-	m_bloodColor		= DONT_BLEED;
+	m_bloodColor		= BLOOD_COLOR_RED;
 	pev->health		= gSkillData.zombieHealth;
 	pev->view_ofs		= VEC_VIEW;// position of the eyes relative to monster's origin.
 	m_flFieldOfView		= 0.5;// indicates the width of this monster's forward view cone ( as a dotproduct result )
