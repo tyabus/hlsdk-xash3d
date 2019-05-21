@@ -455,8 +455,8 @@ int CAR2::GetItemInfo(ItemInfo *p)
 		}
 		else
 		{
-			p->pszAmmo2 = "NULL";
-			p->iMaxAmmo2 = NULL;
+			p->pszAmmo2 = NULL;
+			p->iMaxAmmo2 = -1;
 		}
 	}
 	else
@@ -599,7 +599,6 @@ void CAR2::SecondaryAttack(void)
 {
 	if ( !cvar_ar2_allow_balls.value )
 	{
-		PlayEmptySound();
 		return;
 	}
 

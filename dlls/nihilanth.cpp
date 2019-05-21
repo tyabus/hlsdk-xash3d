@@ -1272,7 +1272,7 @@ void CNihilanth::TraceAttack( entvars_t *pevAttacker, float flDamage, Vector vec
 	{
 		Vector vecBlood = ( ptr->vecEndPos - pev->origin ).Normalize();
 
-		UTIL_BloodStream( ptr->vecEndPos, vecBlood, BloodColor(), flDamage + ( 100 - 100 * ( pev->health / gSkillData.nihilanthHealth ) ) );
+		UTIL_BloodStream( ptr->vecEndPos, vecBlood, BloodColor(), flDamage * 2 + ( 100 - 100 * ( pev->health / gSkillData.nihilanthHealth ) ) );
 	}
 
 	// SpawnBlood( ptr->vecEndPos, BloodColor(), flDamage * 5.0 );// a little surface blood.
