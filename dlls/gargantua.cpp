@@ -30,7 +30,7 @@
 #include	"decals.h"
 #include	"explode.h"
 #include	"func_break.h"
-
+#include	"coop_util.h"
 //=========================================================
 // Gargantua Monster
 //=========================================================
@@ -218,7 +218,10 @@ public:
 
         float TouchGravGun( CBaseEntity *attacker, int stage )
         {
-                return FALSE;
+		if( !mp_coop.value )
+			return TRUE;
+		else
+			return FALSE;
         }
 
 	Schedule_t *GetScheduleOfType( int Type );

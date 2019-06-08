@@ -193,7 +193,10 @@ public:
 
         float TouchGravGun( CBaseEntity *attacker, int stage )
         {
-                return FALSE;
+		if( !mp_coop.value )
+                	return TRUE;
+		else
+			return FALSE;
         }
 
 	int GetNodeSequence( void )

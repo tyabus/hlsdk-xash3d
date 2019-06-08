@@ -26,6 +26,7 @@
 #include	"monsters.h"
 #include	"weapons.h"
 #include	"soundent.h"
+#include	"coop_util.h"
 
 #define ACT_T_IDLE		1010
 #define ACT_T_TAP		1020
@@ -74,7 +75,10 @@ public:
 
 	float TouchGravGun( CBaseEntity *attacker, int stage )
 	{
-		return FALSE;
+		if( !mp_coop.value )
+			return TRUE;
+		else
+			return FALSE;
 	}
 
 	int Classify( void );
