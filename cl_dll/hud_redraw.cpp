@@ -195,13 +195,13 @@ void CHud::UpdateDefaultHUDColor()
 
 	if (sscanf(m_pCvarColor->string, "%d %d %d", &r, &g, &b) == 3)
 	{
-		r = max(r, 0);
-		g = max(r, 0);
-		b = max(r, 0);
+		r = max( r, 0 );
+		g = max( g, 0 );
+		b = max( b, 0 );
 
-		r = min(r, 255);
-		g = min(r, 255);
-		b = min(r, 255);
+		r = min( r, 255 );
+		g = min( g, 255 );
+		b = min( b, 255 );
 
 		m_iDefaultHUDColor = (r << 16) | (g << 8) | b;
 	}
