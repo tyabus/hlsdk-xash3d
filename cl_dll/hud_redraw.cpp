@@ -111,6 +111,8 @@ int CHud::Redraw( float flTime, int intermission )
 	// if no redrawing is necessary
 	// return 0;
 
+	UpdateDefaultHUDColor();
+
 	if( m_pCvarDraw->value )
 	{
 		HUDLIST *pList = m_pHudList;
@@ -185,6 +187,28 @@ void ScaleColors( int &r, int &g, int &b, int a )
 	r = (int)( r * x );
 	g = (int)( g * x );
 	b = (int)( b * x );
+}
+
+void CHud::UpdateDefaultHUDColor()
+{
+	int r, g, b;
+
+	if (sscanf(m_pCvarColor->string, "%d %d %d", &r, &g, &b) == 3)
+	{
+		r = max(r, 0);
+		g = max(r, 0);
+		b = max(r, 0);
+
+		r = min(r, 255);
+		g = min(r, 255);
+		b = min(r, 255);
+
+		m_iDefaultHUDColor = (r << 16) | (g << 8) | b;
+	}
+	else
+	{
+		m_iDefaultHUDColor = RGB_YELLOWISH;
+	}
 }
 
 const unsigned char colors[8][3] =
