@@ -4,7 +4,7 @@
       package="in.celest.xash3d.gravgun"
       android:versionCode="1"
       android:versionName="1.0">
-    <uses-sdk android:minSdkVersion="3" android:targetSdkVersion="5"/>
+    <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="9"/>
     <!-- Set your application name here -->
     <application android:label="Half-Life Gravgun" android:debuggable="true" android:icon="@drawable/gravgun">
     <!-- Set your launcher title here -->
