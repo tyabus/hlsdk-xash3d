@@ -22,7 +22,7 @@
 #include	"player.h"
 #include	"weapons.h"
 #include	"gamerules.h"
- 
+#include	"coop_util.h"
 #include	"skill.h"
 #include	"game.h"
 #include	"items.h"
@@ -228,6 +228,9 @@ void CHalfLifeMultiplay::Think( void )
 
 		return;
 	}
+
+	if( !mp_coop.value )
+		m_Timer.Think();
 
 	float flTimeLimit = timelimit.value * 60;
 	float flFragLimit = fraglimit.value;

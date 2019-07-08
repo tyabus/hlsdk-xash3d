@@ -24,6 +24,7 @@
 #include	"gamerules.h"
 #include	"teamplay_gamerules.h"
 #include	"game.h"
+#include	"coop_util.h"
 
 static char team_names[MAX_TEAMS][MAX_TEAMNAME_LENGTH];
 static int team_scores[MAX_TEAMS];
@@ -90,6 +91,9 @@ void CHalfLifeTeamplay::Think( void )
 		CHalfLifeMultiplay::Think();
 		return;
 	}
+
+	if( !mp_coop.value )
+		m_Timer.Think();
 
 	float flTimeLimit = CVAR_GET_FLOAT( "mp_timelimit" ) * 60;
 	

@@ -152,6 +152,8 @@ LOCAL_SRC_FILES := agrunt.cpp airtank.cpp \
 	   m249.cpp \
 	   knife.cpp \
            big_cock.cpp \
+	   agglobal.cpp \
+	   agtimer.cpp \
            unpredictedweapon.cpp \
 	   ../pm_shared/pm_debug.c \
 	   ../pm_shared/pm_math.c \
