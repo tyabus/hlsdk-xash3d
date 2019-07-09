@@ -46,7 +46,7 @@ void CFlyingCrowbar::Spawn( )
 	pev->movetype = MOVETYPE_TOSS;
 	pev->solid = SOLID_BBOX;
 	pev->dmg = 100;
-	
+
 	// Use the world crowbar model.
 	SET_MODEL(ENT(pev), "models/w_crowbar.mdl");
 
@@ -55,13 +55,13 @@ void CFlyingCrowbar::Spawn( )
 	UTIL_SetOrigin( pev, pev->origin );
 	UTIL_SetSize(pev, Vector(-4, -4, -4), Vector(4, 4, 4));
 
-	// Store the owner for later use. We want the owner to be able 
+	// Store the owner for later use. We want the owner to be able
 	// to hit themselves with the crowbar. The pev->owner gets cleared
-	// later to avoid hitting the player as they throw the crowbar. 
+	// later to avoid hitting the player as they throw the crowbar.
 	if ( pev->owner )
 		m_hOwner = Instance( pev->owner );
 
-	// Set the think funtion. 
+	// Set the think funtion.
 	SetThink( &CFlyingCrowbar::BubbleThink );
 	pev->nextthink = gpGlobals->time + 0.25;
 
@@ -69,38 +69,37 @@ void CFlyingCrowbar::Spawn( )
 	SetTouch( &CFlyingCrowbar::SpinTouch );
 }
 
-
 void CFlyingCrowbar::Precache( )
 {
-	PRECACHE_MODEL ("models/w_crowbar.mdl");
-	PRECACHE_SOUND ("weapons/cbar_hitbod1.wav");
-	PRECACHE_SOUND ("weapons/cbar_hit1.wav");
-	PRECACHE_SOUND ("weapons/cbar_miss1.wav");
+	PRECACHE_MODEL( "models/w_crowbar.mdl" );
+	PRECACHE_SOUND( "weapons/cbar_hitbod1.wav" );
+	PRECACHE_SOUND( "weapons/cbar_hit1.wav" );
+	PRECACHE_SOUND( "weapons/cbar_miss1.wav" );
 }
 
 
 void CFlyingCrowbar::SpinTouch( CBaseEntity *pOther )
 {
-	if (ENT(pOther->pev) == pev->owner)
+	if ( ENT(pOther->pev) == pev->owner )
 		return;
 
-	if (pOther->pev->takedamage)
+	if ( pOther->pev->takedamage )
 	{
 		TraceResult tr = UTIL_GetGlobalTrace( );
 
 		ClearMultiDamage( );
-		   pOther->TraceAttack(pev, pev->dmg, pev->velocity.Normalize(), &tr, DMG_ALWAYSGIB ); 
-		if (m_hOwner != NULL)
+		   pOther->TraceAttack( pev, pev->dmg, pev->velocity.Normalize(), &tr, DMG_ALWAYSGIB );
+		if ( m_hOwner != NULL )
 			ApplyMultiDamage( pev, m_hOwner->pev );
 		else
 			ApplyMultiDamage( pev, pev );
 	}
 
 	// If we hit a player, make a nice squishy thunk sound. Otherwise
-	// make a clang noise and throw a bunch of sparks. 
+	// make a clang noise and throw a bunch of sparks.
 	if (pOther->IsPlayer())
 		EMIT_SOUND_DYN(ENT(pev), CHAN_WEAPON, "weapons/cbar_hitbod1.wav", 1.0, ATTN_NORM, 0, 100);
-	else 
+	else
 	{
 		EMIT_SOUND_DYN(ENT(pev), CHAN_WEAPON, "weapons/cbar_hit1.wav", 1.0, ATTN_NORM, 0, 100);
 		if (UTIL_PointContents(pev->origin) != CONTENTS_WATER)
@@ -111,20 +110,20 @@ void CFlyingCrowbar::SpinTouch( CBaseEntity *pOther )
 		}
 	}
 
-	// Don't draw the flying crowbar anymore. 
+	// Don't draw the flying crowbar anymore.
 	pev->effects |= EF_NODRAW;
 	pev->solid = SOLID_NOT;
 
 	// Spawn a crowbar weapon
 	CBasePlayerWeapon *pItem = (CBasePlayerWeapon *)Create( "weapon_crowbar", pev->origin , pev->angles, edict() );
 
-	// remove the weapon box after 4 mins.
-	pItem->pev->nextthink = gpGlobals->time + 240; 
+	// remove the weapon box after 3 mins.
+	pItem->pev->nextthink = gpGlobals->time + 180;
 	pItem->SetThink( &CBasePlayerWeapon::Kill );
 	pItem->pev->angles.x = 0;
 	pItem->pev->angles.z = 0;
 	pItem->pev->solid = SOLID_TRIGGER;
-	pItem->pev->spawnflags |= SF_NORESPAWN;// never respawn
+	pItem->pev->spawnflags |= SF_NORESPAWN; // never respawn
 
 	UTIL_SetSize( pItem->pev, Vector( 0,0,0 ), Vector( 0,0,0 ) );
 
@@ -136,9 +135,9 @@ void CFlyingCrowbar::SpinTouch( CBaseEntity *pOther )
 	UTIL_TraceLine(pev->origin, pev->origin + vecDir * 100, dont_ignore_monsters, ENT(pev), &tr);
 
 	// Throw the weapon box along the normal so it looks kinda
-	// like a ricochet. This would be better if I actually 
+	// like a ricochet. This would be better if I actually
 	// calcualted the reflection angle, but I'm lazy. :)
-	pItem->pev->velocity = tr.vecPlaneNormal * 300;
+	pItem->pev->velocity = tr.vecPlaneNormal * 250;
 
 	// Remove this flying_crowbar from the world.
 	UTIL_Remove( this );
@@ -150,14 +149,13 @@ void CFlyingCrowbar::BubbleThink( void )
 {
 	pev->owner = NULL;
 
-	// Only think every .25 seconds. 
+	// Only think every .25 seconds.
 	pev->nextthink = gpGlobals->time + 0.25;
 
-	// Make a whooshy sound. 
+	// Make a whooshy sound.
 	EMIT_SOUND_DYN(ENT(pev), CHAN_VOICE, "weapons/cbar_miss1.wav", 1, ATTN_NORM, 0, 120);
 
-	// If the crowbar enters water, make some bubbles. 
+	// If the crowbar enters water, make some bubbles.
 	if (pev->waterlevel)
 		UTIL_BubbleTrail( pev->origin - pev->velocity * 0.1, pev->origin, 1 );
 }
-
