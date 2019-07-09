@@ -55,7 +55,7 @@ void AgSay(CBasePlayer* pPlayer,const AgString& sText, float* pfFloodProtected, 
   {
     for (int i = 1; i <= gpGlobals->maxClients; i++)
     {
-      CBasePlayer* pPlayerLoop = UTIL_PlayerByIndex(i);
+      CBaseEntity* pPlayerLoop = UTIL_PlayerByIndex(i);
       if (pPlayerLoop)
         UTIL_HudMessage(pPlayerLoop,hText, sText);
     }
