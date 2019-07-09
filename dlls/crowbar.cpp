@@ -288,6 +288,7 @@ int CCrowbar::Swing( int fFirst )
 				}
 				m_pPlayer->m_iWeaponVolume = CROWBAR_BODYHIT_VOLUME;
 				if( !pEntity->IsAlive() )
+					m_flNextPrimaryAttack = GetNextAttackDelay( 0.25 );
 					return TRUE;
 				else
 					flVol = 0.1;
