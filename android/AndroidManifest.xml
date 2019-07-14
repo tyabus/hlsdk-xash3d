@@ -2,7 +2,7 @@
 <!-- Set your package name here -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="in.celest.xash3d.gravgun"
-      android:versionCode="2.1"
+      android:versionCode="3"
       android:versionName="2.1">
     <uses-sdk android:minSdkVersion="19" android:targetSdkVersion="19"/>
     <!-- Set your application name here -->

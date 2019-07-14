@@ -457,7 +457,9 @@ void GameDLLInit( void )
 	g_footsteps = CVAR_GET_POINTER( "mp_footsteps" );
 
 	GGM_RegisterCVars();
+	#ifndef __ANDROID__
 	COOP_RegisterCVars();
+	#endif
 	ENT_RegisterCVars();
 
 	CVAR_REGISTER( &displaysoundlist );
