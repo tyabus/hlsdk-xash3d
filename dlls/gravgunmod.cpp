@@ -11,6 +11,7 @@ cvar_t cvar_allow_gravgun = { "mp_allow_gravgun","2", FCVAR_SERVER };
 cvar_t cvar_allow_ar2 = { "mp_allow_ar2","0", FCVAR_SERVER };
 cvar_t cvar_allow_knife = { "mp_allow_knife","0", FCVAR_SERVER };
 cvar_t cvar_allow_m249 = { "mp_allow_m249","0", FCVAR_SERVER };
+cvar_t cvar_allow_displacer = { "mp_allow_displacer","0", FCVAR_SERVER };
 cvar_t cvar_allow_shockrifle = { "mp_allow_shockrifle","0", FCVAR_SERVER };
 cvar_t cvar_ar2_mp5 = { "mp_ar2_mp5","0", FCVAR_SERVER };
 cvar_t cvar_ar2_balls = { "mp_ar2_balls","0", FCVAR_SERVER };
@@ -3133,6 +3134,7 @@ void GGM_RegisterCVars( void )
 	CVAR_REGISTER( &ggm_arch );
 	CVAR_REGISTER( &ggm_platform );
 	CVAR_REGISTER( &cvar_allow_m249 );
+	CVAR_REGISTER( &cvar_allow_displacer );
 	CVAR_REGISTER( &cvar_allow_shockrifle );
 	CVAR_REGISTER( &cvar_allow_knife );
 	CVAR_REGISTER( &cvar_allow_ar2 );

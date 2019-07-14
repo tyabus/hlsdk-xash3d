@@ -150,6 +150,7 @@ LOCAL_SRC_FILES := agrunt.cpp airtank.cpp \
            ar2.cpp \
 	   lamp.cpp \
 	   m249.cpp \
+	   displacer.cpp \
 	   knife.cpp \
            big_cock.cpp \
 	   agglobal.cpp \

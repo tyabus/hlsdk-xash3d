@@ -4,6 +4,7 @@
 extern cvar_t cvar_allow_gravgun;
 extern cvar_t cvar_allow_ar2;
 extern cvar_t cvar_allow_knife;
+extern cvar_t cvar_allow_displacer;
 extern cvar_t cvar_allow_shockrifle;
 extern cvar_t cvar_allow_m249;
 extern cvar_t cvar_ar2_mp5;

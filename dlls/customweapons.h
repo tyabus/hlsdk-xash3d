@@ -5,3 +5,4 @@
 #define WEAPON_M249			21
 #define WEAPON_KNIFE			22
 #define WEAPON_SHOCKRIFLE		23
+#define WEAPON_DISPLACER		24
