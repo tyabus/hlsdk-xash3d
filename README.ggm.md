@@ -50,6 +50,8 @@ Use `dumpprops` command to dump all spawned props to `props.ent` file (need `sv_
 
 Cooperative mode still does not work correctly in half-life, you need to remove all blockers on `c3a1` map with entpatch
 
+Note: Cooperative mode will not work correctly on non-dedicated builds, cooperative mode is disabled for android builds
+
 ### Sample cooperative config:
 
 ```
