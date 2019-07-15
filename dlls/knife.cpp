@@ -49,8 +49,6 @@ void FindHullIntersection(const Vector &vecSrc, TraceResult &tr, float *mins, fl
 #define	KNIFE_BODYHIT_VOLUME 128
 #define	KNIFE_WALLHIT_VOLUME 512
 
-LINK_ENTITY_TO_CLASS(weapon_knife, CKnife);
-
 enum knife_e {
 	KNIFE_IDLE1 = 0,
 	KNIFE_DRAW,
@@ -67,6 +65,7 @@ enum knife_e {
 	KNIFE_STAB,
 };
 
+LINK_ENTITY_TO_CLASS( weapon_knife, CKnife )
 
 void CKnife::Spawn()
 {
@@ -118,7 +117,7 @@ int CKnife::GetItemInfo(ItemInfo *p)
 	p->iMaxAmmo2 = -1;
 	p->iMaxClip = WEAPON_NOCLIP;
 	p->iSlot = 0;
-	p->iPosition = 1;
+	p->iPosition = 2;
 	p->iId = WEAPON_KNIFE;
 	p->iWeight = 0;
 	return 1;

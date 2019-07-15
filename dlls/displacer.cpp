@@ -406,7 +406,9 @@ int CDisplacer::GetItemInfo(ItemInfo *p)
 int CDisplacer::AddToPlayer(CBasePlayer *pPlayer)
 {
 	if (!cvar_allow_displacer.value)
+	{
 		return FALSE;
+	}
 
 	if (CBasePlayerWeapon::AddToPlayer(pPlayer))
 	{
@@ -438,8 +440,10 @@ BOOL CDisplacer::PlayEmptySound(void)
 void CDisplacer::Spawn()
 {
 	if(!cvar_allow_displacer.value)
+	{
 		pev->flags = FL_KILLME;
 		return;
+	}
 
 	Precache();
 	m_iId = WEAPON_DISPLACER;
