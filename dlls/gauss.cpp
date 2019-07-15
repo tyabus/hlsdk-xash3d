@@ -290,7 +290,7 @@ void CGauss::SecondaryAttack()
 		// m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 0.1;
 		if( m_pPlayer->m_flStartCharge < gpGlobals->time - 10 )
 		{
-			// Player charged up too long. Zap him.
+			// Player charged up too long. Kill him.
 			EMIT_SOUND_DYN( ENT( m_pPlayer->pev ), CHAN_WEAPON, "weapons/electro4.wav", 1.0, ATTN_NORM, 0, 80 + RANDOM_LONG( 0, 0x3f ) );
 			EMIT_SOUND_DYN( ENT( m_pPlayer->pev ), CHAN_ITEM, "weapons/electro6.wav", 1.0, ATTN_NORM, 0, 75 + RANDOM_LONG( 0, 0x3f ) );
 
@@ -298,12 +298,12 @@ void CGauss::SecondaryAttack()
 			m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 1.0;
 			m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 1.0;
 #ifndef CLIENT_DLL
-			m_pPlayer->TakeDamage( VARS( eoNullEntity ), VARS( eoNullEntity ), 50, DMG_SHOCK );
-			UTIL_ScreenFade( m_pPlayer, Vector( 255, 128, 0 ), 2, 0.5, 128, FFADE_IN );
+			m_pPlayer->TakeDamage( VARS( eoNullEntity ), VARS( eoNullEntity ), 300, DMG_ALWAYSGIB );
+			UTIL_ScreenFade( m_pPlayer, Vector( 255, 128, 0 ), 3.5, 0.65, 128, FFADE_IN );
 #endif
 			SendWeaponAnim( GAUSS_IDLE );
 
-			// Player may have been killed and this weapon dropped, don't execute any more code after this!
+			// Player has killed and this weapon dropped, don't execute any more code after this!
 			return;
 		}
 	}
