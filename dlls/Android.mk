@@ -137,6 +137,7 @@ LOCAL_SRC_FILES := agrunt.cpp airtank.cpp \
 	   skeleton.cpp \
 	   xtree.cpp \
 	   diablo.cpp \
+	   creeper.cpp \
 	   houndeye_dead.cpp \
 	   h_player.cpp \
 	   construction.cpp \
