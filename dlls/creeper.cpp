@@ -19,6 +19,7 @@
 
 class CCreeper : public CBaseMonster
 {
+
 public:
 	void Spawn( void );
 	void Precache( void );
@@ -61,21 +62,21 @@ void CCreeper::SetYawSpeed( void )
 {
 	int ys;
 
-	ys = 180;
+	ys = 200;
 
 	pev->yaw_speed = ys;
 }
 
 int CCreeper::TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
 {
-	// Take 65% damage from bullets
+	// Take 50% damage from bullets
 	if ( bitsDamageType == DMG_BULLET )
 	{
 		Vector vecDir = pev->origin - (pevInflictor->absmin + pevInflictor->absmax) * 0.5;
 		vecDir = vecDir.Normalize();
 		float flForce = DamageForce( flDamage );
 		pev->velocity = pev->velocity + vecDir * flForce;
-		flDamage *= 0.65;
+		flDamage *= 0.5;
 	}
 
 	// HACK HACK -- until we fix this.
@@ -126,7 +127,7 @@ void CCreeper::Spawn()
 
 	pev->solid			= SOLID_SLIDEBOX;
 	pev->movetype			= MOVETYPE_STEP;
-	m_bloodColor			= DONT_BLEED;
+	m_bloodColor			= BLOOD_COLOR_YELLOW;
 	pev->health			= 50;
 	pev->view_ofs			= VEC_VIEW; // position of the eyes relative to monster's origin.
 	m_flFieldOfView			= 0.6; // indicates the width of this monster's forward view cone ( as a dotproduct result )
