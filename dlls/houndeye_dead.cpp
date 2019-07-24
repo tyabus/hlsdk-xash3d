@@ -28,36 +28,41 @@
 class CDeadHoundeye : public CBaseMonster
 {
 public:
-	void Spawn(void);
-	int	Classify(void) { return	CLASS_ALIEN_MONSTER; }
+	void Spawn( void );
+	void Precache();
 
-	void KeyValue(KeyValueData *pkvd);
+	int Classify( void ) { return	CLASS_ALIEN_MONSTER; }
 
-	int	m_iPose;// which sequence to display	-- temporary, don't need to save
+	void KeyValue( KeyValueData *pkvd );
+
+	int m_iPose;  // which sequence to display -- temporary, don't need to save
 	static const char *m_szPoses[1];
 };
 
 const char *CDeadHoundeye::m_szPoses[] = { "dead" };
 
-void CDeadHoundeye::KeyValue(KeyValueData *pkvd)
+void CDeadHoundeye::KeyValue( KeyValueData *pkvd )
 {
-	if (FStrEq(pkvd->szKeyName, "pose"))
+	if ( FStrEq ( pkvd->szKeyName, "pose" ) )
 	{
 		m_iPose = atoi(pkvd->szValue);
 		pkvd->fHandled = TRUE;
 	}
 	else
-		CBaseMonster::KeyValue(pkvd);
+		CBaseMonster::KeyValue( pkvd );
 }
 
-LINK_ENTITY_TO_CLASS(monster_houndeye_dead, CDeadHoundeye);
+LINK_ENTITY_TO_CLASS( monster_houndeye_dead, CDeadHoundeye );
 
-//=========================================================
-// ********** DeadHoundeye SPAWN **********
-//=========================================================
-void CDeadHoundeye::Spawn(void)
+void CDeadHoundeye::Precache()
 {
 	PRECACHE_MODEL("models/houndeye_dead.mdl");
+}
+
+void CDeadHoundeye::Spawn( void )
+{
+	Precache();
+
 	SET_MODEL(ENT(pev), "models/houndeye_dead.mdl"); // opposing force model
 
 	pev->effects = 0;
