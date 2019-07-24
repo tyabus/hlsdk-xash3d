@@ -4,7 +4,6 @@
 #include "player.h"
 #include "coop_util.h"
 #include "gravgunmod.h"
-
 bool g_fPause;
 
 // offset for all maps relative to current map
