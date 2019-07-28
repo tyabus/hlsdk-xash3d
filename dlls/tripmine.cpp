@@ -22,7 +22,6 @@
 #include "player.h"
 #include "effects.h"
 #include "gamerules.h"
-#include "coop_util.h"
 
 #define	TRIPMINE_PRIMARY_VOLUME		450
 
@@ -220,15 +219,7 @@ void CTripmineGrenade::PowerupThink( void )
 	if( gpGlobals->time > m_flPowerUp )
 	{
 		// make solid
-		if( !mp_coop.value || !mp_coop_tripmineskip.value )
-		{
-			pev->solid = SOLID_BBOX;
-		}
-		if( mp_coop.value || mp_coop_tripmineskip.value )
-		{
-			pev->renderfx = kRenderFxGlowShell;
-			pev->rendercolor.x = 255;
-		}
+		pev->solid = SOLID_BBOX;
 		UTIL_SetOrigin( pev, pev->origin );
 
 		MakeBeam();

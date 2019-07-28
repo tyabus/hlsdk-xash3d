@@ -77,7 +77,6 @@ cvar_t mp_coop_reconnect_hack = { "mp_coop_reconnect_hack", "0", FCVAR_SERVER };
 cvar_t mp_coop_noangry = { "mp_coop_noangry", "0", FCVAR_SERVER };
 cvar_t mp_coop_checkpoints = { "mp_coop_checkpoints", "1", FCVAR_SERVER };
 cvar_t mp_coop_strongcheckpoints = { "mp_coop_strongcheckpoints", "0", FCVAR_SERVER };
-cvar_t mp_coop_tripmineskip = { "mp_coop_tripmineskip", "0", FCVAR_SERVER };
 cvar_t mp_semclip = { "mp_semclip", "0", FCVAR_SERVER };
 cvar_t mp_coop_pause = { "mp_coop_pause", "1", FCVAR_SERVER };
 
@@ -1172,7 +1171,6 @@ void COOP_RegisterCVars()
 	CVAR_REGISTER( &mp_coop );
 	CVAR_REGISTER( &mp_coop_nofriendlyfire );
 	CVAR_REGISTER( &mp_coop_pause );
-	CVAR_REGISTER( &mp_coop_tripmineskip );
 
 	CVAR_REGISTER( &mp_semclip );
 	CVAR_REGISTER( &mp_coop_reconnect_hack );
