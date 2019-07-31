@@ -108,7 +108,7 @@ const char *CZombie::pPainSounds[] =
 };
 
 //=========================================================
-// Classify - indicates this monster's place in the 
+// Classify - indicates this monster's place in the
 // relationship table.
 //=========================================================
 int CZombie::Classify( void )
@@ -125,24 +125,19 @@ void CZombie::SetYawSpeed( void )
 	int ys;
 
 	ys = 120;
-#if 0
-	switch ( m_Activity )
-	{
-	}
-#endif
 	pev->yaw_speed = ys;
 }
 
 int CZombie::TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
 {
-	// Take 30% damage from bullets
+	// Take 40% damage from bullets
 	if( bitsDamageType == DMG_BULLET )
 	{
 		Vector vecDir = pev->origin - (pevInflictor->absmin + pevInflictor->absmax) * 0.5;
 		vecDir = vecDir.Normalize();
 		float flForce = DamageForce( flDamage );
 		pev->velocity = pev->velocity + vecDir * flForce;
-		flDamage *= 0.3;
+		flDamage *= 0.4;
 	}
 
 	// HACK HACK -- until we fix this.
@@ -268,8 +263,10 @@ void CZombie::TraceAttack( entvars_t *pevAttacker, float flDamage, Vector vecDir
 {
    if( ptr->iHitgroup )
    {
-	if ( ptr->iHitgroup == HITGROUP_HEAD )
+	if( ptr->iHitgroup == HITGROUP_HEAD )
 	  m_bloodColor = BLOOD_COLOR_YELLOW;
+	if( IsAlive() && flDamage >= 2 )
+	  flDamage = flDamage / 2;
 	else
 	  m_bloodColor = BLOOD_COLOR_RED;
    }
@@ -337,11 +334,6 @@ int CZombie::IgnoreConditions( void )
 
 	if( ( m_Activity == ACT_MELEE_ATTACK1 ) || ( m_Activity == ACT_MELEE_ATTACK1 ) )
 	{
-#if 0
-		if( pev->health < 20 )
-			iIgnore |= ( bits_COND_LIGHT_DAMAGE| bits_COND_HEAVY_DAMAGE );
-		else
-#endif
 		if( m_flNextFlinch >= gpGlobals->time )
 			iIgnore |= ( bits_COND_LIGHT_DAMAGE | bits_COND_HEAVY_DAMAGE );
 	}

@@ -780,6 +780,7 @@ class CDeadBarney : public CBaseMonster
 {
 public:
 	void Spawn( void );
+	void TraceAttack( entvars_t *pevAttacker, float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType);
 	int Classify( void ) { return CLASS_PLAYER_ALLY; }
 
 	void KeyValue( KeyValueData *pkvd );
@@ -825,4 +826,23 @@ void CDeadBarney::Spawn()
 	pev->health = 8;//gSkillData.barneyHealth;
 
 	MonsterInitDead();
+}
+
+void CDeadBarney::TraceAttack( entvars_t *pevAttacker, float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType )
+{
+	switch( ptr->iHitgroup )
+	{
+	case 10:
+		if( bitsDamageType & ( DMG_BULLET | DMG_SLASH | DMG_CLUB ) )
+		{
+			flDamage -= 20;
+			if( flDamage <= 0 )
+			{
+				UTIL_Ricochet( ptr->vecEndPos, 1.0 );
+				flDamage = 0.01;
+			}
+		}
+	}
+
+	CBaseMonster::TraceAttack( pevAttacker, flDamage, vecDir, ptr, bitsDamageType );
 }

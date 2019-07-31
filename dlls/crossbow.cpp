@@ -22,6 +22,7 @@
 #include "nodes.h"
 #include "player.h"
 #include "gamerules.h"
+#include "coop_util.h"
 
 #ifndef CLIENT_DLL
 #define BOLT_AIR_VELOCITY	2000
@@ -355,7 +356,7 @@ void CCrossbow::PrimaryAttack( void )
 #ifdef CLIENT_DLL
 	if( m_fInZoom && bIsMultiplayer() )
 #else
-	if( m_fInZoom && g_pGameRules->IsMultiplayer() )
+	if( m_fInZoom && g_pGameRules->IsMultiplayer() && !mp_coop.value )
 #endif
 	{
 		FireSniperBolt();

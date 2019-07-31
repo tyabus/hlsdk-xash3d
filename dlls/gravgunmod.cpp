@@ -3101,10 +3101,8 @@ call on ggm_version serverside command
 */
 void GGM_Version_f( void )
 {
-	ALERT(at_console, "Build date: %s\n", __DATE__);
-	#ifndef __ANDROID__
-	ALERT(at_console, "Compiled with: %s version %s\n", CXX, CXX_VER);
-	#endif
+	ALERT(at_console, "Build date: %s %s\n", __DATE__, __TIME__);
+	ALERT(at_console, "Compiled with: %s version %s\n", CXX, __VERSION__);
 	ALERT(at_console, "Build architecture: %s\n", CVAR_GET_STRING("ggm_arch") );
 	ALERT(at_console, "Build commit: %s\n", CVAR_GET_STRING("ggm_commit") );
 	ALERT(at_console, "Build platform: %s\n", CVAR_GET_STRING("ggm_platform") );
