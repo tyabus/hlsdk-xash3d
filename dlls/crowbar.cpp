@@ -22,6 +22,7 @@
 #include "player.h"
 #include "gamerules.h"
 #include "BMOD_flyingcrowbar.h"
+#include "coop_util.h"
 
 #define	CROWBAR_BODYHIT_VOLUME 128
 #define	CROWBAR_WALLHIT_VOLUME 512
@@ -258,7 +259,7 @@ int CCrowbar::Swing( int fFirst )
 #ifdef CLIENT_WEAPONS
 			if( ( m_flNextPrimaryAttack + 1 == UTIL_WeaponTimeBase() ) || g_pGameRules->IsMultiplayer() )
 #else
-			if( ( m_flNextPrimaryAttack + 1 < UTIL_WeaponTimeBase() ) || g_pGameRules->IsMultiplayer() )
+			if( ( m_flNextPrimaryAttack + 1 < UTIL_WeaponTimeBase() ) || g_pGameRules->IsMultiplayer() && !mp_coop.value )
 #endif
 			{
 				// first swing does full damage

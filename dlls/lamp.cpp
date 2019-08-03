@@ -36,7 +36,7 @@ void CLamp::Spawn( void )
 	pev->takedamage = DAMAGE_NO;
 	pev->movetype = MOVETYPE_TOSS;
 
-	UTIL_SetSize( pev, Vector( -16, -16, 0), Vector( 16, 16, 16 ) );
+	UTIL_SetSize( pev, Vector( -16, -16, 0 ), Vector( 16, 16, 16 ) );
 	UTIL_SetOrigin( pev, pev->origin );
 
 	DROP_TO_FLOOR( edict() );
@@ -46,16 +46,17 @@ void CLamp::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType
 {
 	if ( !pActivator )
 		return; // make sure we have a activator
-	if ( pActivator->IsPlayer() )
-		return; // no players
 
-	if ( pev->effects == NULL )
+	if ( pActivator->IsPlayer() )
+		return; // activator is not player
+
+	if ( pev->effects != EF_LIGHT )
 	{
 		pev->effects = EF_LIGHT;
 		EMIT_SOUND_DYN( ENT( pev ), CHAN_WEAPON, "items/flashlight1.wav", 1.0, ATTN_NORM, 0, PITCH_NORM );
 		return;
 	}
-	if ( pev->effects == EF_LIGHT )
+	else
 	{
 		pev->effects = NULL;
 		EMIT_SOUND_DYN( ENT( pev ), CHAN_WEAPON, "items/flashlight1.wav", 1.0, ATTN_NORM, 0, PITCH_NORM );
