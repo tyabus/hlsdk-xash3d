@@ -107,8 +107,6 @@ void CItem::Spawn( void )
 	m_SpawnAngles = pev->angles;
 }
 
-extern int gEvilImpulse101;
-
 void CItem::ItemTouch( CBaseEntity *pOther )
 {
 	pev->velocity = ( pev->velocity + pOther->pev->velocity) / 2;
@@ -156,10 +154,6 @@ void CItem::ItemTouch( CBaseEntity *pOther )
 		{
 			UTIL_Remove( this );
 		}
-	}
-	else if( gEvilImpulse101 )
-	{
-		UTIL_Remove( this );
 	}
 	else
 	{

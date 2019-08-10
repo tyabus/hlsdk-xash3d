@@ -179,10 +179,9 @@ inline BOOL FStringNull(int iString)			{ return iString == iStringNull; }
 #define	VIEW_FIELD_ULTRA_NARROW	(float)0.9 // +-25 degrees, more narrow check used to set up ranged attacks
 
 // All monsters need this data
-#define		DONT_BLEED			-1
+#define		DONT_BLEED		-1
 #define		BLOOD_COLOR_RED		(BYTE)247
 #define		BLOOD_COLOR_YELLOW	(BYTE)195
-#define		BLOOD_COLOR_GREEN	BLOOD_COLOR_YELLOW
 
 typedef enum 
 {

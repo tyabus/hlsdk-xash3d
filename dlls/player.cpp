@@ -42,7 +42,6 @@
 extern DLL_GLOBAL ULONG g_ulModelIndexPlayer;
 extern DLL_GLOBAL BOOL g_fGameOver;
 extern DLL_GLOBAL BOOL g_fDrawLines;
-int gEvilImpulse101;
 extern DLL_GLOBAL int g_iSkillLevel, gDisplayTitle;
 
 extern "C" int g_bhopcap;
@@ -3566,53 +3565,23 @@ void CBasePlayer::ImpulseCommands()
 //=========================================================
 void CBasePlayer::CheatImpulseCommands( int iImpulse )
 {
-#if !defined( HLDEMO_BUILD )
-	if( g_flWeaponCheat == 0.0 )
-	{
-		return;
-	}
-
 	CBaseEntity *pEntity;
 	TraceResult tr;
 
 	switch( iImpulse )
 	{
 	case 101:
-		gEvilImpulse101 = TRUE;
-		GiveNamedItem( "item_suit" );
-		GiveNamedItem( "item_battery" );
-		GiveNamedItem( "weapon_crowbar" );
-		GiveNamedItem( "weapon_9mmhandgun" );
-		GiveNamedItem( "ammo_9mmclip" );
-		GiveNamedItem( "weapon_shotgun" );
-		GiveNamedItem( "ammo_buckshot" );
-		GiveNamedItem( "weapon_9mmAR" );
-		GiveNamedItem( "ammo_9mmAR" );
-		GiveNamedItem( "ammo_ARgrenades" );
-		GiveNamedItem( "weapon_handgrenade" );
-		GiveNamedItem( "weapon_tripmine" );
-#ifndef OEM_BUILD
-		GiveNamedItem( "weapon_357" );
-		GiveNamedItem( "ammo_357" );
-		GiveNamedItem( "weapon_crossbow" );
-		GiveNamedItem( "ammo_crossbow" );
-		GiveNamedItem( "weapon_egon" );
-		GiveNamedItem( "weapon_gauss" );
-		GiveNamedItem( "ammo_gaussclip" );
-		GiveNamedItem( "weapon_rpg" );
-		GiveNamedItem( "ammo_rpgclip" );
-		GiveNamedItem( "weapon_satchel" );
-		GiveNamedItem( "weapon_snark" );
-		GiveNamedItem( "weapon_hornetgun" );
-#endif
-		gEvilImpulse101 = FALSE;
+		RemoveAllItems( TRUE );
 		break;
 	case 102:
+		if( !g_flWeaponCheat )
+			break;
+
 		// Gibbage!!!
 		CGib::SpawnRandomGibs( pev, 1, 1 );
 		break;
 	case 103:
-		// What the hell are you doing?
+		// Report AI state from monster under players crosshair
 		pEntity = FindEntityForward( this );
 		if( pEntity )
 		{
@@ -3626,6 +3595,9 @@ void CBasePlayer::CheatImpulseCommands( int iImpulse )
 		gGlobalState.DumpGlobals();
 		break;
 	case 105:// player makes no sound for monsters to hear.
+		if( !g_flWeaponCheat )
+			break;
+
 		if( m_fNoPlayerSound )
 		{
 			ALERT( at_console, "Player is audible\n" );
@@ -3646,11 +3618,11 @@ void CBasePlayer::CheatImpulseCommands( int iImpulse )
 
 			if( !FStringNull( pEntity->pev->targetname ) )
 			{
-				ALERT( at_console, " - Targetname: %s\n", STRING( pEntity->pev->targetname ) );
+				ALERT( at_console, "Targetname: %s\n", STRING( pEntity->pev->targetname ) );
 			}
 			else
 			{
-				ALERT( at_console, " - TargetName: No Targetname\n" );
+				ALERT( at_console, "Targetname: No Targetname\n" );
 			}
 
 			ALERT( at_console, "Model: %s\n", STRING( pEntity->pev->model ) );
@@ -3675,24 +3647,36 @@ void CBasePlayer::CheatImpulseCommands( int iImpulse )
 		}
 		break;
 	case 195:
+		if( !g_flWeaponCheat )
+			break;
+
 		// show shortest paths for entire level to nearest node
 		{
 			Create( "node_viewer_fly", pev->origin, pev->angles );
 		}
 		break;
 	case 196:
+		if( !g_flWeaponCheat )
+			break;
+
 		// show shortest paths for entire level to nearest node
 		{
 			Create( "node_viewer_large", pev->origin, pev->angles );
 		}
 		break;
 	case 197:
+		if( g_flWeaponCheat )
+			break;
+
 		// show shortest paths for entire level to nearest node
 		{
 			Create( "node_viewer_human", pev->origin, pev->angles );
 		}
 		break;
 	case 199:
+		if( !g_flWeaponCheat )
+			break;
+
 		// show nearest node and all connections
 		{
 			ALERT( at_console, "%d\n", WorldGraph.FindNearestNode( pev->origin, bits_NODE_GROUP_REALM ) );
@@ -3700,6 +3684,9 @@ void CBasePlayer::CheatImpulseCommands( int iImpulse )
 		}
 		break;
 	case 202:
+		if( !g_flWeaponCheat )
+			break;
+
 		// Random blood splatter
 		UTIL_MakeVectors( pev->v_angle );
 		UTIL_TraceLine( pev->origin + pev->view_ofs, pev->origin + pev->view_ofs + gpGlobals->v_forward * 128, ignore_monsters, ENT( pev ), &tr );
@@ -3712,6 +3699,9 @@ void CBasePlayer::CheatImpulseCommands( int iImpulse )
 		}
 		break;
 	case 203:
+		if( !g_flWeaponCheat )
+			break;
+
 		// remove creature.
 		pEntity = FindEntityForward( this );
 		if( pEntity )
@@ -3721,7 +3711,6 @@ void CBasePlayer::CheatImpulseCommands( int iImpulse )
 		}
 		break;
 	}
-#endif	// HLDEMO_BUILD
 }
 
 //
@@ -3751,11 +3740,6 @@ int CBasePlayer::AddPlayerItem( CBasePlayerItem *pItem )
 
 				pItem->Kill();
 			}
-			else if( gEvilImpulse101 )
-			{
-				// FIXME: remove anyway for deathmatch testing
-				pItem->Kill();
-			}
 			return FALSE;
 		}
 		pInsert = pInsert->m_pNext;
@@ -3776,11 +3760,6 @@ int CBasePlayer::AddPlayerItem( CBasePlayerItem *pItem )
 		}
 
 		return TRUE;
-	}
-	else if( gEvilImpulse101 )
-	{
-		// FIXME: remove anyway for deathmatch testing
-		pItem->Kill();
 	}
 	return FALSE;
 }

@@ -69,7 +69,7 @@ void CDeadHoundeye::Spawn( void )
 	pev->yaw_speed = 8;
 	pev->sequence = 0;
 	pev->body = 1;
-	m_bloodColor = BLOOD_COLOR_GREEN;
+	m_bloodColor = BLOOD_COLOR_YELLOW;
 
 	pev->sequence = LookupSequence(m_szPoses[m_iPose]);
 

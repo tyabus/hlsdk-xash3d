@@ -532,20 +532,20 @@ void ClientCommand( edict_t *pEntity )
 	}
 	else if ( FStrEq(pcmd, "fullupdate" ) )
 	{
-		GetClassPtr((CBasePlayer *)pev)->ForceClientDllUpdate(); 
+		GetClassPtr((CBasePlayer *)pev)->ForceClientDllUpdate();
 	}
 	else if ( FStrEq(pcmd, "give" ) )
 	{
-		if ( g_flWeaponCheat != 0.0)
+		if ( g_flWeaponCheat )
 		{
 			int iszItem = ALLOC_STRING( CMD_ARGV(1) );	// Make a copy of the classname
 
 			GetClassPtr((CBasePlayer *)pev)->GiveNamedItem( STRING(iszItem) );
 		}
 	}
-	else if ( FStrEq(pcmd, "fire") )
+	else if ( FStrEq(pcmd, "fire" ) )
 	{
-		if ( g_flWeaponCheat != 0.0)
+		if ( g_flWeaponCheat )
 		{
 			CBaseEntity *pPlayer = CBaseEntity::Instance(pEntity);
 			if (CMD_ARGC() > 1)
@@ -576,19 +576,8 @@ void ClientCommand( edict_t *pEntity )
 	}
 	else if ( FStrEq(pcmd, "drop" ) )
 	{
-		// player is dropping an item. 
+		// player is dropping an item
 		GetClassPtr((CBasePlayer *)pev)->DropPlayerItem((char *)CMD_ARGV(1));
-	}
-	else if ( FStrEq(pcmd, "fov" ) )
-	{
-		if ( g_flWeaponCheat && CMD_ARGC() > 1)
-		{
-			GetClassPtr((CBasePlayer *)pev)->m_iFOV = atoi( CMD_ARGV(1) );
-		}
-		else
-		{
-			CLIENT_PRINTF( pEntity, print_console, UTIL_VarArgs( "\"fov\" is \"%d\"\n", (int)GetClassPtr((CBasePlayer *)pev)->m_iFOV ) );
-		}
 	}
 	else if ( FStrEq(pcmd, "use" ) )
 	{

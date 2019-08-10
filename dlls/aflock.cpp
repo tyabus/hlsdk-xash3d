@@ -330,7 +330,7 @@ void CFlockingFlyer::SpawnCommonCode()
 	pev->classname = MAKE_STRING( "monster_flyer" );
 	pev->solid = SOLID_SLIDEBOX;
 	pev->movetype = MOVETYPE_FLY;
-	m_bloodColor = BLOOD_COLOR_GREEN;
+	m_bloodColor = BLOOD_COLOR_YELLOW;
 	pev->takedamage	= DAMAGE_YES;
 	pev->health = 30;
 

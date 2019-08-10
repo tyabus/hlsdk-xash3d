@@ -70,12 +70,12 @@ LOCAL_SRC_FILES := agrunt.cpp airtank.cpp \
            h_ai.cpp \
            h_battery.cpp \
            h_cycler.cpp \
-           h_cine.cpp \
            h_export.cpp \
            handgrenade.cpp \
            hassassin.cpp \
            headcrab.cpp \
            healthkit.cpp \
+	   healthkitmega.cpp \
            hgrunt.cpp \
            hornet.cpp \
            hornetgun.cpp \
@@ -121,7 +121,6 @@ LOCAL_SRC_FILES := agrunt.cpp airtank.cpp \
            talkmonster.cpp \
            teamplay_gamerules.cpp \
            tentacle.cpp \
-           tempmonster.cpp \
            triggers.cpp \
            tripmine.cpp \
            turret.cpp \

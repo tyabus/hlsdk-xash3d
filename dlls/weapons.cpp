@@ -32,7 +32,6 @@
 #include "gamerules.h"
 
 extern CGraph WorldGraph;
-extern int gEvilImpulse101;
 
 #define NOT_USED 255
 
@@ -662,10 +661,6 @@ void CBasePlayerItem::DefaultTouch( CBaseEntity *pOther )
 	// can I have this?
 	if( !g_pGameRules->CanHavePlayerItem( pPlayer, this ) )
 	{
-		if( gEvilImpulse101 )
-		{
-			UTIL_Remove( this );
-		}
 		return;
 	}
 
@@ -1243,13 +1238,6 @@ void CBasePlayerAmmo::DefaultTouch( CBaseEntity *pOther )
 			SetThink( &CBaseEntity::SUB_Remove );
 			pev->nextthink = gpGlobals->time + .1;
 		}
-	}
-	else if( gEvilImpulse101 )
-	{
-		// evil impulse 101 hack, kill always
-		SetTouch( NULL );
-		SetThink( &CBaseEntity::SUB_Remove );
-		pev->nextthink = gpGlobals->time + .1;
 	}
 	else
 	{

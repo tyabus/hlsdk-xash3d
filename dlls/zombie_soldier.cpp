@@ -102,7 +102,7 @@ void CZGrunt::Spawn()
 
 	pev->solid = SOLID_SLIDEBOX;
 	pev->movetype = MOVETYPE_STEP;
-	m_bloodColor = BLOOD_COLOR_GREEN;
+	m_bloodColor = BLOOD_COLOR_YELLOW;
 	pev->health = 150;
 	pev->view_ofs = VEC_VIEW;// position of the eyes relative to monster's origin.
 	m_flFieldOfView = 0.5;// indicates the width of this monster's forward view cone ( as a dotproduct result )
@@ -265,7 +265,7 @@ void CDeadZGrunt::Spawn(void)
 	pev->yaw_speed = 8;
 	pev->sequence = 0;
 	pev->body = 1;
-	m_bloodColor = BLOOD_COLOR_GREEN;
+	m_bloodColor = BLOOD_COLOR_YELLOW;
 
 	pev->sequence = LookupSequence(m_szPoses[m_iPose]);
 
