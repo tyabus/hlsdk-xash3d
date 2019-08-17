@@ -309,7 +309,7 @@ TYPEDESCRIPTION	gEntvarsDescription[] =
 
 #define ENTVARS_COUNT		( sizeof(gEntvarsDescription) / sizeof(gEntvarsDescription[0]) )
 
-#ifdef	DEBUG
+#ifdef	_DEBUG
 edict_t *DBG_EntOfVars( const entvars_t *pev )
 {
 	if( pev->pContainingEntity != NULL )
@@ -335,7 +335,7 @@ void DBG_AssertFunction( BOOL fExpr, const char* szExpr, const char* szFile, int
 
 	ALERT( at_console, szOut );
 }
-#endif	// DEBUG
+#endif	// _DEBUG
 
 BOOL UTIL_GetNextBestWeapon( CBasePlayer *pPlayer, CBasePlayerItem *pCurrentWeapon )
 {

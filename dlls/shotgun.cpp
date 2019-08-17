@@ -21,6 +21,7 @@
 #include "nodes.h"
 #include "player.h"
 #include "gamerules.h"
+#include "coop_util.h"
 
 // special deathmatch shotgun spreads
 #define VECTOR_CONE_DM_SHOTGUN	Vector( 0.08716, 0.04362, 0.00 )// 10 degrees by 5 degrees
@@ -155,7 +156,7 @@ void CShotgun::PrimaryAttack()
 #ifdef CLIENT_DLL
 	if( bIsMultiplayer() )
 #else
-	if( g_pGameRules->IsMultiplayer() )
+	if( g_pGameRules->IsMultiplayer() && !mp_coop.value )
 #endif
 	{
 		vecDir = m_pPlayer->FireBulletsPlayer( 4, vecSrc, vecAiming, VECTOR_CONE_DM_SHOTGUN, 2048, BULLET_PLAYER_BUCKSHOT, 0, 0, m_pPlayer->pev, m_pPlayer->random_seed );
@@ -225,7 +226,7 @@ void CShotgun::SecondaryAttack( void )
 #ifdef CLIENT_DLL
 	if( bIsMultiplayer() )
 #else
-	if( g_pGameRules->IsMultiplayer() )
+	if( g_pGameRules->IsMultiplayer() && !mp_coop.value )
 #endif
 	{
 		// tuned for deathmatch

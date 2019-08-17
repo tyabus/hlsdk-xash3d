@@ -12,7 +12,7 @@
 
 // For every module and executable we store a debugging level and flags
 // for the types of output that are desired. Constants for the types are
-// defined in WXDEBUG.H and more can be added.
+// defined in WX_DEBUG.H and more can be added.
 // The keys are stored in the registry under the
 // HKEY_LOCAL_MACHINE\SOFTWARE\Debug\<Module Name>\Type and
 // HKEY_LOCAL_MACHINE\SOFTWARE\Debug\<Module Name>\Level key values
@@ -41,10 +41,10 @@ void WINAPI DbgInitKeyLevels(HKEY hKey, DWORD *pdwTypes, DWORD *pdwLevel);
 
 
 
-const INT iDEBUGINFO = 512;                 // Used to format strings
+const INT i_DEBUGINFO = 512;                 // Used to format strings
 
 HINSTANCE m_hInst;                          // Module instance handle
-TCHAR m_ModuleName[iDEBUGINFO];             // Cut down module name
+TCHAR m_ModuleName[i_DEBUGINFO];             // Cut down module name
 //CRITICAL_SECTION m_CSDebug;                 // Controls access to list
 BOOL m_bInit = FALSE;                       // Have we been initialised
 HANDLE m_hOutput = INVALID_HANDLE_VALUE;    // Optional output written here
@@ -99,10 +99,10 @@ void WINAPI DbgTerminate()
 // Initialise the module file name
 void WINAPI DbgInitModuleName()
 {
-    TCHAR FullName[iDEBUGINFO];     // Load the full path and module name
+    TCHAR FullName[i_DEBUGINFO];     // Load the full path and module name
     TCHAR *pName;                   // Searches from the end for a backslash
 
-    GetModuleFileName(m_hInst,FullName,iDEBUGINFO);
+    GetModuleFileName(m_hInst,FullName,i_DEBUGINFO);
     pName = _tcsrchr(FullName,'\\');
     if (pName == NULL)
     {
@@ -121,7 +121,7 @@ void WINAPI DbgInitModuleName()
 void WINAPI DbgInitModuleSettings()
 {
     LONG lReturn;               // Create key return value
-    TCHAR szInfo[iDEBUGINFO];   // Constructs key names
+    TCHAR szInfo[i_DEBUGINFO];   // Constructs key names
     HKEY hModuleKey;            // Module key handle
 
     // Construct the base key name
@@ -157,7 +157,7 @@ void WINAPI DbgInitModuleSettings()
 void WINAPI DbgInitGlobalSettings()
 {
     LONG lReturn;               // Create key return value
-    TCHAR szInfo[iDEBUGINFO];   // Constructs key names
+    TCHAR szInfo[i_DEBUGINFO];   // Constructs key names
     HKEY hGlobalKey;            // Global override key
     DWORD dwTypes = 0;
     DWORD dwLevel = 0;

@@ -20,11 +20,6 @@
 // Global header file for extension DLLs
 //
 
-// Allow "DEBUG" in addition to default "_DEBUG"
-#ifdef _DEBUG
-#define DEBUG 1
-#endif
-
 // Silence certain warnings
 #ifdef _MSC_VER
 #pragma warning(disable : 4244)		// int or float down-conversion

@@ -34,7 +34,6 @@
 #define SF_CORNER_TELEPORT		0x002
 #define SF_CORNER_FIREONCE		0x004
 
-//#define PATH_SPARKLE_DEBUG		1	// This makes a particle effect around path_track entities for debugging
 class CPathTrack : public CPointEntity
 {
 public:
@@ -61,7 +60,7 @@ public:
 	virtual int Restore( CRestore &restore );
 
 	static TYPEDESCRIPTION m_SaveData[];
-#if PATH_SPARKLE_DEBUG
+#ifdef _DEBUG
 	void EXPORT Sparkle( void );
 #endif
 	float m_length;

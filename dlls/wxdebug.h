@@ -1,5 +1,5 @@
-#ifndef __WXDEBUG__
-#define __WXDEBUG__
+#ifndef __WX_DEBUG__
+#define __WX_DEBUG__
 
 // This library provides fairly straight forward debugging functionality, this
 // is split into two main sections. The first is assertion handling, there are
@@ -132,6 +132,6 @@ void WINAPI DbgOutString(LPCTSTR psz);
     #define REMIND(str) __FILE__ "(" REMINDQQUOTE(__LINE__) ") :  " str
 #endif
 
-#endif // __WXDEBUG__
+#endif // __WX_DEBUG__
 
 

@@ -3106,6 +3106,9 @@ void GGM_Version_f( void )
 	ALERT(at_console, "Build architecture: %s\n", CVAR_GET_STRING("ggm_arch") );
 	ALERT(at_console, "Build commit: %s\n", CVAR_GET_STRING("ggm_commit") );
 	ALERT(at_console, "Build platform: %s\n", CVAR_GET_STRING("ggm_platform") );
+	#ifdef _DEBUG
+	ALERT(at_console, "Debug build\n");
+	#endif
 }
 
 int GGM_ConnectionlessPacket( const struct netadr_s *net_from, const char *args, char *response_buffer, int *response_buffer_size )

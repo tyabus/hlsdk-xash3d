@@ -39,13 +39,9 @@ enum crowbar_e
 	CROWBAR_ATTACK2MISS,
 	CROWBAR_ATTACK2HIT,
 	CROWBAR_ATTACK3MISS,
-#ifndef CROWBAR_IDLE_ANIM	
-	CROWBAR_ATTACK3HIT
-#else
 	CROWBAR_ATTACK3HIT,
 	CROWBAR_IDLE2,
 	CROWBAR_IDLE3
-#endif
 };
 
 void CCrowbar::Spawn()
@@ -216,9 +212,7 @@ int CCrowbar::Swing( int fFirst )
 		{
 			// miss
 			m_flNextPrimaryAttack = GetNextAttackDelay( 0.5 );
-#ifdef CROWBAR_IDLE_ANIM
 			m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat( m_pPlayer->random_seed, 10, 15 );
-#endif
 			// player "shoot" animation
 			m_pPlayer->SetAnimation( PLAYER_ATTACK1 );
 		}
@@ -307,7 +301,11 @@ int CCrowbar::Swing( int fFirst )
 		{
 			float fvolbar = TEXTURETYPE_PlaySound( &tr, vecSrc, vecSrc + ( vecEnd - vecSrc ) * 2, BULLET_PLAYER_CROWBAR );
 
+#ifdef CLIENT_WEAPONS
 			if( g_pGameRules->IsMultiplayer() )
+#else
+			if( g_pGameRules->IsMultiplayer() && !mp_coop.value )
+#endif
 			{
 				// override the volume here, cause we don't play texture sounds in multiplayer, 
 				// and fvolbar is going to be 0 from the above call.
@@ -340,9 +338,7 @@ int CCrowbar::Swing( int fFirst )
 #endif
 		m_flNextPrimaryAttack = GetNextAttackDelay( 0.25 );
 	}
-#ifdef CROWBAR_IDLE_ANIM
 	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat( m_pPlayer->random_seed, 10, 15 );
-#endif
 	return fDidHit;
 }
 
@@ -402,7 +398,6 @@ void CCrowbar::SecondaryAttack()
 }
 // BMOD End - Flying Crowbar
 
-#ifdef CROWBAR_IDLE_ANIM
 void CCrowbar::WeaponIdle( void )
 {
 	if( m_flTimeWeaponIdle < UTIL_WeaponTimeBase() )
@@ -430,4 +425,3 @@ void CCrowbar::WeaponIdle( void )
 		SendWeaponAnim( iAnim );
 	}
 }
-#endif

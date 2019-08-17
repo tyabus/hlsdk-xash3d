@@ -75,7 +75,7 @@ void CHud::Think( void )
 	if( m_iFOV == 0 )
 	{
 		// only let players adjust up in fov,  and only if they are not overriden by something else
-		m_iFOV = max( default_fov->value, 90 );  
+		m_iFOV = Q_max( default_fov->value, 90 );  
 	}
 }
 
@@ -195,13 +195,13 @@ void CHud::UpdateDefaultHUDColor()
 
 	if (sscanf(m_pCvarColor->string, "%d %d %d", &r, &g, &b) == 3)
 	{
-		r = max( r, 0 );
-		g = max( g, 0 );
-		b = max( b, 0 );
+		r = Q_max( r, 0 );
+		g = Q_max( g, 0 );
+		b = Q_max( b, 0 );
 
-		r = min( r, 255 );
-		g = min( g, 255 );
-		b = min( b, 255 );
+		r = Q_min( r, 255 );
+		g = Q_min( g, 255 );
+		b = Q_min( b, 255 );
 
 		m_iDefaultHUDColor = (r << 16) | (g << 8) | b;
 	}

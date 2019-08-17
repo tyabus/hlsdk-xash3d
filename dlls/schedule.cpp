@@ -181,7 +181,7 @@ BOOL CBaseMonster::FScheduleValid( void )
 
 	if( HasConditions( m_pSchedule->iInterruptMask | bits_COND_SCHEDULE_DONE | bits_COND_TASK_FAILED ) )
 	{
-#ifdef DEBUG
+#ifdef _DEBUG
 		if( HasConditions( bits_COND_TASK_FAILED ) && m_failSchedule == SCHED_NONE )
 		{
 			// fail! Send a visual indicator.
@@ -191,7 +191,7 @@ BOOL CBaseMonster::FScheduleValid( void )
 			tmp.z = pev->absmax.z + 16;
 			UTIL_Sparks( tmp );
 		}
-#endif // DEBUG
+#endif // _DEBUG
 		// some condition has interrupted the schedule, or the schedule is done
 		return FALSE;
 	}

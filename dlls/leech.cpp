@@ -55,9 +55,7 @@
 #define LEECH_SIZEX		10
 #define LEECH_FRAMETIME		0.1
 
-#define DEBUG_BEAMS		0
-
-#if DEBUG_BEAMS
+#ifdef _DEBUG
 #include "effects.h"
 #endif
 
@@ -127,7 +125,7 @@ private:
 	float m_stateTime;
 	float m_attackSoundTime;
 
-#if DEBUG_BEAMS
+#ifdef _DEBUG
 	CBeam *m_pb;
 	CBeam *m_pt;
 #endif
@@ -499,7 +497,7 @@ void CLeech::UpdateMotion( void )
 	}
 	float flInterval = StudioFrameAdvance();
 	DispatchAnimEvents( flInterval );
-#if DEBUG_BEAMS
+#ifdef _DEBUG
 	if( !m_pb )
 		m_pb = CBeam::BeamCreate( "sprites/laserbeam.spr", 5 );
 	if( !m_pt )

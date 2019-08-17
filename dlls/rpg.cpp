@@ -22,6 +22,7 @@
 #include "nodes.h"
 #include "player.h"
 #include "gamerules.h"
+#include "coop_util.h"
 
 enum rpg_e
 {
@@ -335,10 +336,10 @@ void CRpg::Spawn()
 #ifdef CLIENT_DLL
 	if( bIsMultiplayer() )
 #else
-	if( g_pGameRules->IsMultiplayer() )
+	if( g_pGameRules->IsMultiplayer() && !mp_coop.value )
 #endif
 	{
-		// more default ammo in multiplay. 
+		// more default ammo in multiplay.
 		m_iDefaultAmmo = RPG_DEFAULT_GIVE * 2;
 	}
 	else
@@ -574,7 +575,7 @@ class CRpgAmmo : public CBasePlayerAmmo
 #ifdef CLIENT_DLL
 	if( bIsMultiplayer() )
 #else
-	if( g_pGameRules->IsMultiplayer() )
+	if( g_pGameRules->IsMultiplayer() && !mp_coop.value )
 #endif
 		{
 			// hand out more ammo per rocket in multiplayer.

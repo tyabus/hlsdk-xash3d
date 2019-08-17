@@ -21,6 +21,7 @@
 #include "monsters.h"
 #include "player.h"
 #include "gamerules.h"
+#include "coop_util.h"
 
 enum python_e
 {
@@ -100,7 +101,7 @@ BOOL CPython::Deploy()
 #ifdef CLIENT_DLL
 	if( bIsMultiplayer() )
 #else
-	if( g_pGameRules->IsMultiplayer() )
+	if( g_pGameRules->IsMultiplayer() && !mp_coop.value )
 #endif
 	{
 		// enable laser sight geometry.

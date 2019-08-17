@@ -22,6 +22,7 @@
 #include "player.h"
 #include "soundent.h"
 #include "gamerules.h"
+#include "coop_util.h"
 
 enum mp5_e
 {
@@ -160,7 +161,7 @@ void CMP5::PrimaryAttack()
 #ifdef CLIENT_DLL
 	if( !bIsMultiplayer() )
 #else
-	if( !g_pGameRules->IsMultiplayer() )
+	if( !g_pGameRules->IsMultiplayer() && !mp_coop.value )
 #endif
 	{
 		// optimized multiplayer. Widened to make it easier to hit a moving player

@@ -22,9 +22,9 @@
 #include	"monsters.h"
 #include	"schedule.h"
 
-#define	BARNACLE_BODY_HEIGHT	44 // how 'tall' the barnacle's model is.
+#define	BARNACLE_BODY_HEIGHT		44 // how 'tall' the barnacle's model is.
 #define BARNACLE_PULL_SPEED		8
-#define BARNACLE_KILL_VICTIM_DELAY	5 // how many seconds after pulling prey in to gib them. 
+#define BARNACLE_KILL_VICTIM_DELAY	7 // how many seconds after pulling prey in to gib them.
 
 //=========================================================
 // Monster's Anim Events Go Here
@@ -101,7 +101,7 @@ void CBarnacle::HandleAnimEvent( MonsterEvent_t *pEvent )
 	switch( pEvent->event )
 	{
 	case BARNACLE_AE_PUKEGIB:
-		CGib::SpawnRandomGibs( pev, 1, 1 );	
+		CGib::SpawnRandomGibs( pev, 2, 1 );
 		break;
 	default:
 		CBaseMonster::HandleAnimEvent( pEvent );
