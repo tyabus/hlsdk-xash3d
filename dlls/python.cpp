@@ -134,7 +134,7 @@ void CPython::SecondaryAttack( void )
 #ifdef CLIENT_DLL
 	if( !bIsMultiplayer() )
 #else
-	if( !g_pGameRules->IsMultiplayer() )
+	if( !g_pGameRules->IsMultiplayer() || mp_coop.value )
 #endif
 	{
 		return;
