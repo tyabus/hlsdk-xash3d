@@ -22,11 +22,10 @@
 #include "nodes.h"
 #include "player.h"
 #include "gamerules.h"
-#include "coop_util.h"
 
 #ifndef CLIENT_DLL
-#define BOLT_AIR_VELOCITY	2000
-#define BOLT_WATER_VELOCITY	1000
+#define BOLT_AIR_VELOCITY	2500
+#define BOLT_WATER_VELOCITY	1500
 
 extern BOOL gPhysicsInterfaceInitialized;
 
@@ -353,70 +352,7 @@ void CCrossbow::Holster( int skiplocal /* = 0 */ )
 
 void CCrossbow::PrimaryAttack( void )
 {
-#ifdef CLIENT_DLL
-	if( m_fInZoom && bIsMultiplayer() )
-#else
-	if( m_fInZoom && g_pGameRules->IsMultiplayer() && !mp_coop.value )
-#endif
-	{
-		FireSniperBolt();
-		return;
-	}
-
 	FireBolt();
-}
-
-// this function only gets called in multiplayer
-void CCrossbow::FireSniperBolt()
-{
-	m_flNextPrimaryAttack = GetNextAttackDelay( 0.75 );
-
-	if( m_iClip == 0 )
-	{
-		PlayEmptySound();
-		return;
-	}
-
-	TraceResult tr;
-
-	m_pPlayer->m_iWeaponVolume = QUIET_GUN_VOLUME;
-	m_iClip--;
-
-	int flags;
-#if defined( CLIENT_WEAPONS )
-	flags = FEV_NOTHOST;
-#else
-	flags = 0;
-#endif
-
-	PLAYBACK_EVENT_FULL( flags, m_pPlayer->edict(), m_usCrossbow2, 0.0, g_vecZero, g_vecZero, 0, 0, m_iClip, m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType], 0, 0 );
-
-	// player "shoot" animation
-	m_pPlayer->SetAnimation( PLAYER_ATTACK1 );
-
-	Vector anglesAim = m_pPlayer->pev->v_angle + m_pPlayer->pev->punchangle;
-	UTIL_MakeVectors( anglesAim );
-	Vector vecSrc = m_pPlayer->GetGunPosition() - gpGlobals->v_up * 2;
-	Vector vecDir = gpGlobals->v_forward;
-
-	UTIL_TraceLine( vecSrc, vecSrc + vecDir * 8192, dont_ignore_monsters, m_pPlayer->edict(), &tr );
-
-#ifndef CLIENT_DLL
-	if( tr.pHit->v.takedamage )
-	{
-		ClearMultiDamage();
-		CBaseEntity::Instance( tr.pHit )->TraceAttack( m_pPlayer->pev, 120, vecDir, &tr, DMG_BULLET | DMG_NEVERGIB ); 
-		ApplyMultiDamage( pev, m_pPlayer->pev );
-	}
-#if 0
-	CCrossbowBolt *pBolt = CCrossbowBolt::BoltCreate();
-	pBolt->pev->origin = tr.vecEndPos;
-	pBolt->pev->angles = -anglesAim;
-	pBolt->pev->owner = m_pPlayer->edict();
-	pBolt->pev->avelocity.z = 10;
-	pBolt->SetTouch( NULL );
-#endif
-#endif
 }
 
 void CCrossbow::FireBolt()

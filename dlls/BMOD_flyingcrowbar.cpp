@@ -38,6 +38,9 @@ LINK_ENTITY_TO_CLASS( flying_crowbar, CFlyingCrowbar );
 
 void CFlyingCrowbar::Spawn( )
 {
+	if( pev->owner == NULL )
+		UTIL_Remove( this );
+
 	Precache( );
 
 	// The flying crowbar is MOVETYPE_TOSS, and SOLID_BBOX.
@@ -106,19 +109,18 @@ void CFlyingCrowbar::SpinTouch( CBaseEntity *pOther )
 		{
 			UTIL_Sparks( pev->origin );
 			UTIL_Sparks( pev->origin );
-			UTIL_Sparks( pev->origin );
 		}
 	}
 
 	// Don't draw the flying crowbar anymore.
-	pev->effects |= EF_NODRAW;
+	pev->effects = EF_NODRAW;
 	pev->solid = SOLID_NOT;
 
 	// Spawn a crowbar weapon
 	CBasePlayerWeapon *pItem = (CBasePlayerWeapon *)Create( "weapon_crowbar", pev->origin , pev->angles, edict() );
 
-	// remove the weapon box after 3 mins.
-	pItem->pev->nextthink = gpGlobals->time + 180;
+	// remove the weapon box after 2 mins
+	pItem->pev->nextthink = gpGlobals->time + 120;
 	pItem->SetThink( &CBasePlayerWeapon::Kill );
 	pItem->pev->angles.x = 0;
 	pItem->pev->angles.z = 0;
@@ -141,8 +143,6 @@ void CFlyingCrowbar::SpinTouch( CBaseEntity *pOther )
 
 	// Remove this flying_crowbar from the world.
 	UTIL_Remove( this );
-	//SetThink( &CBaseEntity::SUB_Remove );
-	//pev->nextthink = gpGlobals->time;
 }
 
 void CFlyingCrowbar::BubbleThink( void )
