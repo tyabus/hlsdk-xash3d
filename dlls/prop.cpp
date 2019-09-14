@@ -274,7 +274,7 @@ void CProp::DamageSound( void )
 {
 	int pitch;
 	float fvol;
-	char *rgpsz[6];
+	const char *rgpsz[6];
 	int i = 0;
 	int material = m_Material;
 

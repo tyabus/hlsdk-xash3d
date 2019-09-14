@@ -5,9 +5,6 @@
 #include "cbase.h"
 #include "player.h"
 #include "agglobal.h"
-#include "gamerules.h"
-
-extern DLL_GLOBAL BOOL g_fGameOver;
 
 // TITLES FOR HALF-LIFE
 // Position command $position x y
@@ -22,16 +19,13 @@ extern DLL_GLOBAL BOOL g_fGameOver;
 // $fadein (message fade in time - per character in effect 2)
 // $fadeout (message fade out time)
 // $holdtime (stay on the screen for this long)
-void AgSay(CBasePlayer* pPlayer,const AgString& sText, float* pfFloodProtected, float fHoldTime, float x, float y, int iChannel)
+void AgSay(CBasePlayer* pPlayer, const AgString& sText, float* pfFloodProtected, float fHoldTime, float x, float y, int iChannel)
 {
-  if (g_fGameOver)
-    return;
 
-  hudtextparms_t     hText;
+  hudtextparms_t hText;
   memset(&hText, 0, sizeof(hText));
   hText.channel = iChannel;
-  // These X and Y coordinates are just above
-  //  the health meter.
+  // These X and Y coordinates are just above the health meter.
   hText.x = x;
   hText.y = y;
 
@@ -44,7 +38,7 @@ void AgSay(CBasePlayer* pPlayer,const AgString& sText, float* pfFloodProtected, 
   hText.holdTime = fHoldTime - 0.30;
 
   hText.fadeinTime = 0.000;
-  hText.fadeoutTime = 0.000;//fHoldTime/5;
+  hText.fadeoutTime = 0.000;
   hText.fxTime = 0.25;
 
   if (pPlayer)
