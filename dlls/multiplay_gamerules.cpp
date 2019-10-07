@@ -1425,7 +1425,7 @@ int ReloadMapCycleFile( const char *filename, mapcycle_t *cycle )
 			hasbuffer = 0;
 
 			pFileList = COM_Parse( pFileList );
-			if( strlen( com_token ) <= 0 )
+			if( com_token[0] == '\0' )
 				break;
 
 			strcpy( szMap, com_token );
@@ -1590,7 +1590,7 @@ void ExtractCommandString( char *s, char *szCommand )
 		*o = 0;
 
 		strcat( szCommand, pkey );
-		if( strlen( value ) > 0 )
+		if( value[0] != '\0' )
 		{
 			strcat( szCommand, " " );
 			strcat( szCommand, value );
@@ -1725,13 +1725,14 @@ void CHalfLifeMultiplay::ChangeLevel( void )
 	{
 		ALERT( at_console, "PLAYER COUNT:  min %i max %i current %i\n", minplayers, maxplayers, curplayers );
 	}
-	if( strlen( szRules ) > 0 )
+	if( szRules[0] != '\0' )
 	{
 		ALERT( at_console, "RULES:  %s\n", szRules );
 	}
 
 	CHANGE_LEVEL( szNextMap, NULL );
-	if( strlen( szCommands ) > 0 )
+
+	if( szCommands[0] != '\0' )
 	{
 		SERVER_COMMAND( szCommands );
 	}
