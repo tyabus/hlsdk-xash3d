@@ -54,9 +54,9 @@ void CHealthKitMega::Precache( void )
 
 void CHealthKitMega::Think( void )
 {
-	pev->rendercolor.x = random();
-	pev->rendercolor.y = random();
-	pev->rendercolor.z = random();
+	pev->rendercolor.x = rand() % 255;
+	pev->rendercolor.y = rand() % 255;
+	pev->rendercolor.z = rand() % 255;
 	pev->nextthink = gpGlobals->time + 0.20;
 }
 
