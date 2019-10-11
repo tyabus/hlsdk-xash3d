@@ -2893,6 +2893,18 @@ bool GGM_ClientCommand( CBasePlayer *pPlayer, const char *pCmd )
 		GGM_Register_f(pPlayer);
 		return true;
 	}
+	else if( FStrEq( pCmd, "ggm_version" ) )
+	{
+        	GGM_ChatPrintf( pPlayer, "Build date: %s %s\n", __DATE__, __TIME__);
+        	GGM_ChatPrintf( pPlayer, "Compiled with: %s version %s\n", CXX, __VERSION__);
+        	GGM_ChatPrintf( pPlayer, "Build architecture: %s\n", CVAR_GET_STRING("ggm_arch") );
+        	GGM_ChatPrintf( pPlayer, "Build commit: %s\n", CVAR_GET_STRING("ggm_commit") );
+        	GGM_ChatPrintf( pPlayer, "Build platform: %s\n", CVAR_GET_STRING("ggm_platform") );
+        	#ifdef _DEBUG
+        	GGM_ChatPrintf( pPlayer, "Debug build\n" );
+        	#endif
+		return true;
+	}
 	else if( FStrEq(pCmd, "reg_Name") )
 	{
 		GGM_RegName_f(pPlayer);
@@ -3099,7 +3111,7 @@ call on ggm_version serverside command
 =====================
 
 */
-void GGM_Version_f( void )
+void GGM_Version_f()
 {
 	ALERT(at_console, "Build date: %s %s\n", __DATE__, __TIME__);
 	ALERT(at_console, "Compiled with: %s version %s\n", CXX, __VERSION__);
