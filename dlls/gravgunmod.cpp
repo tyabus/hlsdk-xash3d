@@ -2893,7 +2893,7 @@ bool GGM_ClientCommand( CBasePlayer *pPlayer, const char *pCmd )
 		GGM_Register_f(pPlayer);
 		return true;
 	}
-	else if( FStrEq( pCmd, "ggm_version" ) )
+	else if( FStrEq( pCmd, "ggm_version_cl" ) ) // Prevent conflict if using ggm on non dedicated
 	{
         	GGM_ChatPrintf( pPlayer, "Build date: %s %s\n", __DATE__, __TIME__);
         	GGM_ChatPrintf( pPlayer, "Compiled with: %s version %s\n", CXX, __VERSION__);
