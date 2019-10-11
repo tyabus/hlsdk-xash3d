@@ -25,3 +25,4 @@ android/bin/*
 android/gen/*
 android/obj/*
 android/assets/extras.pak
+*.keystore
