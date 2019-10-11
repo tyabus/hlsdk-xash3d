@@ -15,7 +15,7 @@ ifeq ($(TARGET_ARCH_ABI),armeabi-v7a-hard)
 LOCAL_MODULE_FILENAME = libclient_hardfp
 endif
 
-LOCAL_CFLAGS += -Wno-write-strings -DLINUX -D_LINUX -Dstricmp=strcasecmp -Dstrnicmp=strncasecmp -DCLIENT_WEAPONS -DCLIENT_DLL -w
+LOCAL_CFLAGS += -Wno-write-strings -DLINUX -D_LINUX -Dstricmp=strcasecmp -Dstrnicmp=strncasecmp -DCLIENT_WEAPONS -DCLIENT_DLL=1 -w -D_snprintf=snprintf
 
 SRCS=../dlls/crossbow.cpp
 SRCS+=../dlls/crowbar.cpp
@@ -36,8 +36,8 @@ SRCS+=../dlls/shotgun.cpp
 SRCS+=../dlls/squeakgrenade.cpp
 SRCS+=../dlls/tripmine.cpp
 SRCS+=../dlls/glock.cpp
-#SRCS+=.game_shared/voice_banmgr.cpp
-#SRCS+=.game_shared/voice_status.cpp
+#SRCS+=../game_shared/voice_banmgr.cpp
+#SRCS+=../game_shared/voice_status.cpp
 SRCS+=ammo.cpp
 SRCS+=ammo_secondary.cpp
 SRCS+=ammohistory.cpp
@@ -92,7 +92,6 @@ LOCAL_C_INCLUDES := $(LOCAL_PATH)/. \
 		 $(LOCAL_PATH)/../dlls \
 		 $(LOCAL_PATH)/../pm_shared \
 		 $(LOCAL_PATH)/../utils/false_vgui/include
-LOCAL_CFLAGS += $(DEFINES)
 
 ifeq ($(GOLDSOURCE_SUPPORT),1)
 	DEFINES += -DGOLDSOURCE_SUPPORT
