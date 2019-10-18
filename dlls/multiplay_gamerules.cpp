@@ -1434,7 +1434,7 @@ int ReloadMapCycleFile( const char *filename, mapcycle_t *cycle )
 			if( COM_TokenWaiting( pFileList ) )
 			{
 				pFileList = COM_Parse( pFileList );
-				if( strlen( com_token ) > 0 )
+				if( com_token[0] != '\0' )
 				{
 					hasbuffer = 1;
 					strcpy( szBuffer, com_token );

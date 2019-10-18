@@ -185,7 +185,7 @@ void CAmbientGeneric::Spawn( void )
 
 	const char *szSoundFile = STRING( pev->message );
 
-	if( FStringNull( pev->message ) || strlen( szSoundFile ) < 1 )
+	if( FStringNull( pev->message ) || szSoundFile[0] == '\0' )
 	{
 		ALERT( at_error, "EMPTY AMBIENT AT: %f, %f, %f\n", pev->origin.x, pev->origin.y, pev->origin.z );
 		pev->nextthink = gpGlobals->time + 0.1;
