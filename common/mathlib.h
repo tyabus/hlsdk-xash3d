@@ -21,7 +21,7 @@
 typedef float vec_t;
 typedef vec_t vec2_t[2];
 
-#ifndef DID_VEC3_T_DEFINE
+#if !defined DID_VEC3_T_DEFINE
 #define DID_VEC3_T_DEFINE
 typedef vec_t vec3_t[3];
 #endif

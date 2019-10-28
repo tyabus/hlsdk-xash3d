@@ -15,11 +15,12 @@ ifeq ($(TARGET_ARCH_ABI),armeabi-v7a-hard)
 LOCAL_MODULE_FILENAME = libserver_hardfp
 endif
 
-LOCAL_CFLAGS := -DGGM_COMMIT=\"$(GGM_COMMIT)\" -DCXX=\"$(CXX)\" -D_LINUX -DCLIENT_WEAPONS -Dstricmp=strcasecmp -Dstrnicmp=strncasecmp -D_snprintf=snprintf \
-        -fno-exceptions -fvisibility=hidden -DNO_VOICEGAMEMGR -Wno-conversion-null -Wno-write-strings -fpermissive -std=gnu++98 -Wno-invalid-offsetof
+LOCAL_CFLAGS += -DGGM_COMMIT=\"$(GGM_COMMIT)\" -DCXX=\"$(CXX)\" -D_LINUX -DCLIENT_WEAPONS -Dstricmp=strcasecmp -Dstrnicmp=strncasecmp -D_snprintf=snprintf \
+	-fno-exceptions -fvisibility=hidden -DNO_VOICEGAMEMGR -Wno-conversion-null -Wno-write-strings -fpermissive -std=gnu++98 -Wno-invalid-offsetof
 
-LOCAL_C_INCLUDES := $(SDL_PATH)/include \
-		    $(LOCAL_PATH)/. \
+LOCAL_CPPFLAGS := $(LOCAL_CFLAGS)
+
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/. \
 		    $(LOCAL_PATH)/wpn_shared \
 		    $(LOCAL_PATH)/../common \
 		    $(LOCAL_PATH)/../engine/common \
@@ -29,7 +30,7 @@ LOCAL_C_INCLUDES := $(SDL_PATH)/include \
 		    $(LOCAL_PATH)/../game_shared
 
 LOCAL_SRC_FILES := agrunt.cpp \
-           airtank.cpp \
+	   airtank.cpp \
            aflock.cpp \
            animating.cpp \
            animation.cpp \

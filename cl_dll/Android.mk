@@ -6,7 +6,6 @@ LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
 
 LOCAL_MODULE := client
-
 APP_PLATFORM := android-8
 
 include $(XASH3D_CONFIG)
@@ -15,9 +14,11 @@ ifeq ($(TARGET_ARCH_ABI),armeabi-v7a-hard)
 LOCAL_MODULE_FILENAME = libclient_hardfp
 endif
 
-LOCAL_CFLAGS += -Wno-write-strings -DLINUX -D_LINUX -Dstricmp=strcasecmp -Dstrnicmp=strncasecmp -DCLIENT_WEAPONS -DCLIENT_DLL=1 -w -D_snprintf=snprintf
+LOCAL_CFLAGS += -DCLIENT_DLL=1
 
-SRCS=../dlls/crossbow.cpp
+SRCS=
+SRCS_C=
+SRCS+=../dlls/crossbow.cpp
 SRCS+=../dlls/crowbar.cpp
 SRCS+=../dlls/egon.cpp
 SRCS+=ev_hldm.cpp
@@ -68,7 +69,7 @@ SRCS+=menu.cpp
 SRCS+=message.cpp
 SRCS+=overview.cpp
 SRCS+=parsemsg.cpp
-SRCS_C=../pm_shared/pm_debug.c
+SRCS_C+=../pm_shared/pm_debug.c
 SRCS_C+=../pm_shared/pm_math.c
 SRCS_C+=../pm_shared/pm_shared.c
 SRCS+=saytext.cpp
@@ -84,6 +85,8 @@ SRCS+=view.cpp
 SRCS+=input_xash3d.cpp
 SRCS+=scoreboard.cpp
 SRCS+=MOTD.cpp
+INCLUDES =  -I../common -I. -I../game_shared -I../pm_shared -I../engine -I../dlls -I../utils/false_vgui/include
+DEFINES = -Wno-write-strings -DLINUX -D_LINUX -Dstricmp=strcasecmp -Dstrnicmp=strncasecmp -DCLIENT_WEAPONS -DCLIENT_DLL -w -D_snprintf=snprintf
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/. \
 		 $(LOCAL_PATH)/../common \
@@ -92,13 +95,7 @@ LOCAL_C_INCLUDES := $(LOCAL_PATH)/. \
 		 $(LOCAL_PATH)/../dlls \
 		 $(LOCAL_PATH)/../pm_shared \
 		 $(LOCAL_PATH)/../utils/false_vgui/include
-
-ifeq ($(GOLDSOURCE_SUPPORT),1)
-	DEFINES += -DGOLDSOURCE_SUPPORT
-	ifeq ($(shell uname -s),Linux)
-		LOCAL_LDLIBS += -ldl
-	endif
-endif
+LOCAL_CFLAGS += $(DEFINES) $(INCLUDES)
 
 LOCAL_SRC_FILES := $(SRCS) $(SRCS_C)
 
