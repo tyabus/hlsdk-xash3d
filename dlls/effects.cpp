@@ -294,20 +294,6 @@ void CBeam::RelinkBeam( void )
 	UTIL_SetOrigin( pev, pev->origin );
 }
 
-#if 0
-void CBeam::SetObjectCollisionBox( void )
-{
-	const Vector &startPos = GetStartPos(), &endPos = GetEndPos();
-
-	pev->absmin.x = min( startPos.x, endPos.x );
-	pev->absmin.y = min( startPos.y, endPos.y );
-	pev->absmin.z = min( startPos.z, endPos.z );
-	pev->absmax.x = max( startPos.x, endPos.x );
-	pev->absmax.y = max( startPos.y, endPos.y );
-	pev->absmax.z = max( startPos.z, endPos.z );
-}
-#endif
-
 void CBeam::TriggerTouch( CBaseEntity *pOther )
 {
 	if( pOther->pev->flags & ( FL_CLIENT | FL_MONSTER ) )
@@ -1594,25 +1580,10 @@ void CTestEffect::TestThink( void )
 		pbeam->SetColor( 255, 180, 100 );
 		pbeam->SetWidth( 100 );
 		pbeam->SetScrollRate( 12 );
-		
+
 		m_flBeamTime[m_iBeam] = gpGlobals->time;
 		m_pBeam[m_iBeam] = pbeam;
 		m_iBeam++;
-#if 0
-		Vector vecMid = ( vecSrc + tr.vecEndPos ) * 0.5;
-		MESSAGE_BEGIN( MSG_BROADCAST, SVC_TEMPENTITY );
-			WRITE_BYTE( TE_DLIGHT );
-			WRITE_COORD( vecMid.x );	// X
-			WRITE_COORD( vecMid.y );	// Y
-			WRITE_COORD( vecMid.z );	// Z
-			WRITE_BYTE( 20 );		// radius * 0.1
-			WRITE_BYTE( 255 );		// r
-			WRITE_BYTE( 180 );		// g
-			WRITE_BYTE( 100 );		// b
-			WRITE_BYTE( 20 );		// time * 10
-			WRITE_BYTE( 0 );		// decay * 0.1
-		MESSAGE_END( );
-#endif
 	}
 
 	if( t < 3.0 )

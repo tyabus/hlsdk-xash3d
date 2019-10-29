@@ -913,12 +913,15 @@ void ClientPrecache( void )
 {
 	// setup precaches always needed
 	PRECACHE_SOUND("player/sprayer.wav");			// spray paint sound for PreAlpha
-	
+
 	// PRECACHE_SOUND("player/pl_jumpland2.wav");		// UNDONE: play 2x step sound
-	
-	PRECACHE_SOUND("player/pl_fallpain2.wav");		
-	PRECACHE_SOUND("player/pl_fallpain3.wav");		
-	
+
+	PRECACHE_SOUND("player/pl_fallpain2.wav");
+	PRECACHE_SOUND("player/pl_fallpain3.wav");
+
+	if( mp_q1stuff.value )
+		PRECACHE_SOUND("player/h2odeath.wav");	// drown
+
 	PRECACHE_SOUND("player/pl_step1.wav");		// walk on concrete
 	PRECACHE_SOUND("player/pl_step2.wav");
 	PRECACHE_SOUND("player/pl_step3.wav");

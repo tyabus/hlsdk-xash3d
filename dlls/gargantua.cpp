@@ -379,12 +379,6 @@ const char *CGargantua::pBreatheSounds[] =
 //=========================================================
 // AI Schedules Specific to this monster
 //=========================================================
-#if 0
-enum
-{
-	SCHED_ = LAST_COMMON_SCHEDULE + 1
-};
-#endif
 
 enum
 {

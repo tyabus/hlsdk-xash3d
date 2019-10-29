@@ -1616,7 +1616,7 @@ float CalcFov( float fov_x, float width, float height )
 	float x;
 
 	if( fov_x < 1 || fov_x > 179 )
-		fov_x = 90;	// error, set to 90
+		fov_x = 100;	// error, set to 100
 
 	x = width / tan( fov_x / 360 * M_PI );
 

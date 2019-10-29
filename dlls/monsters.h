@@ -76,7 +76,6 @@ extern DLL_GLOBAL CONSTANT float g_flMeleeRange;
 extern DLL_GLOBAL CONSTANT float g_flMediumRange;
 extern DLL_GLOBAL CONSTANT float g_flLongRange;
 extern void EjectBrass(const Vector &vecOrigin, const Vector &vecVelocity, float rotation, int model, int soundtype );
-extern void ExplodeModel( const Vector &vecOrigin, float speed, int model, int count );
 
 BOOL FBoxVisible( entvars_t *pevLooker, entvars_t *pevTarget );
 BOOL FBoxVisible( entvars_t *pevLooker, entvars_t *pevTarget, Vector &vecTargetOrigin, float flSize = 0.0 );

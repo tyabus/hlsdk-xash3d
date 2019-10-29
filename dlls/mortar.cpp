@@ -280,8 +280,6 @@ void CMortar::MortarExplode( void )
 
 	// ForceSound( SNDRADIUS_MP5, bits_SOUND_COMBAT );
 
-	// ExplodeModel( pev->origin, 400, g_sModelIndexShrapnel, 30 );
-
 	RadiusDamage( pev, VARS( pev->owner ), pev->dmg, CLASS_NONE, DMG_BLAST );
 
 	/*

@@ -1003,14 +1003,12 @@ void CHudSpectator::DrawOverviewLayer()
 		yTiles = 6;
 	}
 
-	screenaspect = 4.0f / 3.0f;	
+	screenaspect = 4.0f / 3.0f;
 
 	xs = m_OverviewData.origin[0];
 	ys = m_OverviewData.origin[1];
-	z  = ( 90.0f - v_angles[0] ) / 90.0f;		
-	z *= m_OverviewData.layersHeights[0]; // gOverviewData.z_min - 32;	
-
-	// i = r_overviewTexture + ( layer * OVERVIEW_X_TILES * OVERVIEW_Y_TILES );
+	z  = ( 90.0f - v_angles[0] ) / 90.0f;
+	z *= m_OverviewData.layersHeights[0]; // gOverviewData.z_min - 32;
 
 	gEngfuncs.pTriAPI->RenderMode( kRenderTransTexture );
 	gEngfuncs.pTriAPI->CullFace( TRI_NONE );

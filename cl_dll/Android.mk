@@ -6,7 +6,6 @@ LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
 
 LOCAL_MODULE := client
-APP_PLATFORM := android-8
 
 include $(XASH3D_CONFIG)
 
@@ -14,79 +13,75 @@ ifeq ($(TARGET_ARCH_ABI),armeabi-v7a-hard)
 LOCAL_MODULE_FILENAME = libclient_hardfp
 endif
 
-LOCAL_CFLAGS += -DCLIENT_DLL=1
+LOCAL_CFLAGS += -DCLIENT_DLL -Wno-write-strings -DLINUX -D_LINUX -Dstricmp=strcasecmp -Dstrnicmp=strncasecmp -DCLIENT_WEAPONS -w
 
-SRCS=
-SRCS_C=
-SRCS+=../dlls/crossbow.cpp
-SRCS+=../dlls/crowbar.cpp
-SRCS+=../dlls/egon.cpp
-SRCS+=ev_hldm.cpp
-SRCS+=../dlls/gauss.cpp
-SRCS+=../dlls/handgrenade.cpp
-SRCS+=hl/hl_baseentity.cpp
-SRCS+=hl/hl_events.cpp
-SRCS+=hl/hl_objects.cpp
-SRCS+=hl/hl_weapons.cpp
-SRCS+=../dlls/hornetgun.cpp
-SRCS+=../dlls/mp5.cpp
-SRCS+=../dlls/python.cpp
-SRCS+=../dlls/rpg.cpp
-SRCS+=../dlls/satchel.cpp
-SRCS+=../dlls/shotgun.cpp
-SRCS+=../dlls/squeakgrenade.cpp
-SRCS+=../dlls/tripmine.cpp
-SRCS+=../dlls/glock.cpp
-#SRCS+=../game_shared/voice_banmgr.cpp
-#SRCS+=../game_shared/voice_status.cpp
-SRCS+=ammo.cpp
-SRCS+=ammo_secondary.cpp
-SRCS+=ammohistory.cpp
-SRCS+=battery.cpp
-SRCS+=cdll_int.cpp
-SRCS+=com_weapons.cpp
-SRCS+=death.cpp
-SRCS+=demo.cpp
-SRCS+=entity.cpp
-SRCS+=ev_common.cpp
-SRCS+=events.cpp
-SRCS+=flashlight.cpp
-SRCS+=GameStudioModelRenderer.cpp
-SRCS+=geiger.cpp
-SRCS+=health.cpp
-SRCS+=hud.cpp
-SRCS+=hud_msg.cpp
-SRCS+=hud_redraw.cpp
-#SRCS+=hud_servers.cpp
-SRCS+=hud_spectator.cpp
-SRCS+=hud_update.cpp
-SRCS+=in_camera.cpp
-SRCS+=input.cpp
-SRCS+=input_goldsource.cpp
-SRCS+=input_mouse.cpp
-#SRCS+=inputw32.cpp
-SRCS+=menu.cpp
-SRCS+=message.cpp
-SRCS+=overview.cpp
-SRCS+=parsemsg.cpp
-SRCS_C+=../pm_shared/pm_debug.c
-SRCS_C+=../pm_shared/pm_math.c
-SRCS_C+=../pm_shared/pm_shared.c
-SRCS+=saytext.cpp
-SRCS+=status_icons.cpp
-SRCS+=statusbar.cpp
-SRCS+=studio_util.cpp
-SRCS+=StudioModelRenderer.cpp
-SRCS+=text_message.cpp
-SRCS+=train.cpp
-SRCS+=tri.cpp
-SRCS+=util.cpp
-SRCS+=view.cpp
-SRCS+=input_xash3d.cpp
-SRCS+=scoreboard.cpp
-SRCS+=MOTD.cpp
-INCLUDES =  -I../common -I. -I../game_shared -I../pm_shared -I../engine -I../dlls -I../utils/false_vgui/include
-DEFINES = -Wno-write-strings -DLINUX -D_LINUX -Dstricmp=strcasecmp -Dstrnicmp=strncasecmp -DCLIENT_WEAPONS -DCLIENT_DLL -w -D_snprintf=snprintf
+LOCAL_SRC_FILES := ../dlls/crossbow.cpp
+LOCAL_SRC_FILES += ../dlls/crowbar.cpp
+LOCAL_SRC_FILES += ../dlls/egon.cpp
+LOCAL_SRC_FILES += ev_hldm.cpp
+LOCAL_SRC_FILES += ../dlls/gauss.cpp
+LOCAL_SRC_FILES += ../dlls/handgrenade.cpp
+LOCAL_SRC_FILES += hl/hl_baseentity.cpp
+LOCAL_SRC_FILES += hl/hl_events.cpp
+LOCAL_SRC_FILES += hl/hl_objects.cpp
+LOCAL_SRC_FILES += hl/hl_weapons.cpp
+LOCAL_SRC_FILES += ../dlls/hornetgun.cpp
+LOCAL_SRC_FILES += ../dlls/mp5.cpp
+LOCAL_SRC_FILES += ../dlls/python.cpp
+LOCAL_SRC_FILES += ../dlls/rpg.cpp
+LOCAL_SRC_FILES += ../dlls/satchel.cpp
+LOCAL_SRC_FILES += ../dlls/shotgun.cpp
+LOCAL_SRC_FILES += ../dlls/squeakgrenade.cpp
+LOCAL_SRC_FILES += ../dlls/tripmine.cpp
+LOCAL_SRC_FILES += ../dlls/glock.cpp
+#LOCAL_SRC_FILES += ../game_shared/voice_banmgr.cpp
+#LOCAL_SRC_FILES += ../game_shared/voice_status.cpp
+LOCAL_SRC_FILES += ammo.cpp
+LOCAL_SRC_FILES += ammo_secondary.cpp
+LOCAL_SRC_FILES += ammohistory.cpp
+LOCAL_SRC_FILES += battery.cpp
+LOCAL_SRC_FILES += cdll_int.cpp
+LOCAL_SRC_FILES += com_weapons.cpp
+LOCAL_SRC_FILES += death.cpp
+LOCAL_SRC_FILES += demo.cpp
+LOCAL_SRC_FILES += entity.cpp
+LOCAL_SRC_FILES += ev_common.cpp
+LOCAL_SRC_FILES += events.cpp
+LOCAL_SRC_FILES += flashlight.cpp
+LOCAL_SRC_FILES += GameStudioModelRenderer.cpp
+LOCAL_SRC_FILES += geiger.cpp
+LOCAL_SRC_FILES += health.cpp
+LOCAL_SRC_FILES += hud.cpp
+LOCAL_SRC_FILES += hud_msg.cpp
+LOCAL_SRC_FILES += hud_redraw.cpp
+#LOCAL_SRC_FILES += hud_servers.cpp
+LOCAL_SRC_FILES += hud_spectator.cpp
+LOCAL_SRC_FILES += hud_update.cpp
+LOCAL_SRC_FILES += in_camera.cpp
+LOCAL_SRC_FILES += input.cpp
+LOCAL_SRC_FILES += input_goldsource.cpp
+LOCAL_SRC_FILES += input_mouse.cpp
+#LOCAL_SRC_FILES += inputw32.cpp
+LOCAL_SRC_FILES += menu.cpp
+LOCAL_SRC_FILES += message.cpp
+LOCAL_SRC_FILES += overview.cpp
+LOCAL_SRC_FILES += parsemsg.cpp
+LOCAL_SRC_FILES += ../pm_shared/pm_debug.c
+LOCAL_SRC_FILES += ../pm_shared/pm_math.c
+LOCAL_SRC_FILES += ../pm_shared/pm_shared.c
+LOCAL_SRC_FILES += saytext.cpp
+LOCAL_SRC_FILES += status_icons.cpp
+LOCAL_SRC_FILES += statusbar.cpp
+LOCAL_SRC_FILES += studio_util.cpp
+LOCAL_SRC_FILES += StudioModelRenderer.cpp
+LOCAL_SRC_FILES += text_message.cpp
+LOCAL_SRC_FILES += train.cpp
+LOCAL_SRC_FILES += tri.cpp
+LOCAL_SRC_FILES += util.cpp
+LOCAL_SRC_FILES += view.cpp
+LOCAL_SRC_FILES += input_xash3d.cpp
+LOCAL_SRC_FILES += scoreboard.cpp
+LOCAL_SRC_FILES += MOTD.cpp
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/. \
 		 $(LOCAL_PATH)/../common \
@@ -95,8 +90,5 @@ LOCAL_C_INCLUDES := $(LOCAL_PATH)/. \
 		 $(LOCAL_PATH)/../dlls \
 		 $(LOCAL_PATH)/../pm_shared \
 		 $(LOCAL_PATH)/../utils/false_vgui/include
-LOCAL_CFLAGS += $(DEFINES) $(INCLUDES)
-
-LOCAL_SRC_FILES := $(SRCS) $(SRCS_C)
 
 include $(BUILD_SHARED_LIBRARY)

@@ -30,7 +30,7 @@ cvar_t mp_skipdefaults = { "mp_skipdefaults", "0", FCVAR_SERVER };
 cvar_t mp_spectator = { "mp_spectator", "0", FCVAR_SERVER };
 cvar_t mp_unduck = { "mp_unduck", "0", FCVAR_SERVER };
 cvar_t mp_megahornet = { "mp_megahornet", "0", FCVAR_SERVER };
-cvar_t mp_q1grenade = { "mp_q1grenade", "1", FCVAR_SERVER };
+cvar_t mp_q1stuff = { "mp_q1stuff", "1", FCVAR_SERVER };
 
 cvar_t ggm_arch = { "ggm_arch", "", FCVAR_SERVER | FCVAR_UNLOGGED };
 cvar_t ggm_platform = { "ggm_platform", "", FCVAR_SERVER | FCVAR_UNLOGGED };
@@ -3165,7 +3165,7 @@ void GGM_RegisterCVars( void )
 	CVAR_REGISTER( &cvar_agibcount );
 	CVAR_REGISTER( &mp_gravgun_players );
 	CVAR_REGISTER( &mp_megahornet );
-	CVAR_REGISTER( &mp_q1grenade );
+	CVAR_REGISTER( &mp_q1stuff );
 	CVAR_REGISTER( &mp_fixhornetbug );
 	CVAR_REGISTER( &mp_fixsavetime );
 	CVAR_REGISTER( &mp_checkentities );

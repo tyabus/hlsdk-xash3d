@@ -350,7 +350,7 @@ void CGrenade::Spawn( void )
 
 	pev->solid = SOLID_BBOX;
 
-	if ( mp_q1grenade.value)
+	if ( mp_q1stuff.value )
 	{
 		switch( RANDOM_LONG( 0, 1 ) )
 	{

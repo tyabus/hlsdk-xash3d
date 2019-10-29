@@ -205,23 +205,6 @@ void EjectBrass( const Vector &vecOrigin, const Vector &vecVelocity, float rotat
 	MESSAGE_END();
 }
 
-#if 0
-// UNDONE: This is no longer used?
-void ExplodeModel( const Vector &vecOrigin, float speed, int model, int count )
-{
-	MESSAGE_BEGIN( MSG_PVS, SVC_TEMPENTITY, vecOrigin );
-		WRITE_BYTE( TE_EXPLODEMODEL );
-		WRITE_COORD( vecOrigin.x );
-		WRITE_COORD( vecOrigin.y );
-		WRITE_COORD( vecOrigin.z );
-		WRITE_COORD( speed );
-		WRITE_SHORT( model );
-		WRITE_SHORT( count );
-		WRITE_BYTE( 15 );// 1.5 seconds
-	MESSAGE_END();
-}
-#endif
-
 int giAmmoIndex = 0;
 
 // Precaches the ammo and queues the ammo info for sending to clients

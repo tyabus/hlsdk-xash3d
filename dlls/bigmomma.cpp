@@ -391,15 +391,7 @@ const char *CBigMomma::pFootSounds[] =
 
 void CBigMomma::KeyValue( KeyValueData *pkvd )
 {
-#if 0
-	if( FStrEq( pkvd->szKeyName, "volume" ) )
-	{
-		m_volume = atof( pkvd->szValue );
-		pkvd->fHandled = TRUE;
-	}
-	else
-#endif
-		CBaseMonster::KeyValue( pkvd );
+	CBaseMonster::KeyValue( pkvd );
 }
 
 //=========================================================

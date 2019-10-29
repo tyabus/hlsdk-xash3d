@@ -408,14 +408,6 @@ BOOL CPoisCrab :: CheckRangeAttack1 ( float flDot, float flDist )
 BOOL CPoisCrab :: CheckRangeAttack2 ( float flDot, float flDist )
 {
 	return FALSE;
-	// BUGBUG: Why is this code here?  There is no ACT_RANGE_ATTACK2 animation.  I've disabled it for now.
-#if 0
-	if ( FBitSet( pev->flags, FL_ONGROUND ) && flDist > 64 && flDist <= 256 && flDot >= 0.5 )
-	{
-		return TRUE;
-	}
-	return FALSE;
-#endif
 }
 
 int CPoisCrab :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )

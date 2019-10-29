@@ -15,7 +15,7 @@ extern cvar_t cvar_allow_bigcock;
 extern cvar_t cvar_allow_gateofbabylon;
 extern cvar_t cvar_wresptime;
 extern cvar_t cvar_iresptime;
-extern cvar_t mp_q1grenade;
+extern cvar_t mp_q1stuff;
 extern cvar_t mp_gravgun_players;
 extern cvar_t mp_skipdefaults;
 extern cvar_t mp_unduck;

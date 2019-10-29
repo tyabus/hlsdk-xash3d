@@ -123,12 +123,6 @@ void CDiablo::SetYawSpeed(void)
 
 	ys = 240; // 120
 
-#if 0
-	switch (m_Activity)
-	{
-	}
-#endif
-
 	pev->yaw_speed = ys;
 }
 
@@ -323,13 +317,8 @@ int CDiablo::IgnoreConditions(void)
 
 	if ((m_Activity == ACT_MELEE_ATTACK1) || (m_Activity == ACT_MELEE_ATTACK1))
 	{
-#if 0
-		if (pev->health < 20)
+		if (m_flNextFlinch >= gpGlobals->time)
 			iIgnore |= (bits_COND_LIGHT_DAMAGE | bits_COND_HEAVY_DAMAGE);
-		else
-#endif			
-			if (m_flNextFlinch >= gpGlobals->time)
-				iIgnore |= (bits_COND_LIGHT_DAMAGE | bits_COND_HEAVY_DAMAGE);
 	}
 
 	if ((m_Activity == ACT_SMALL_FLINCH) || (m_Activity == ACT_BIG_FLINCH))

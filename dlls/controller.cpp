@@ -169,11 +169,6 @@ void CController::SetYawSpeed( void )
 	int ys;
 
 	ys = 120;
-#if 0
-	switch ( m_Activity )
-	{
-	}
-#endif
 	pev->yaw_speed = ys;
 }
 
@@ -893,21 +888,6 @@ void CController::Move( float flInterval )
 	if( m_flMoveWaitFinished > gpGlobals->time )
 		return;
 
-// Debug, test movement code
-#if 0
-//	if( CVAR_GET_FLOAT( "stopmove" ) != 0 )
-	{
-		if( m_movementGoal == MOVEGOAL_ENEMY )
-			RouteSimplify( m_hEnemy );
-		else
-			RouteSimplify( m_hTargetEnt );
-		FRefreshRoute();
-		return;
-	}
-#else
-// Debug, draw the route
-//	DrawRoute( pev, m_Route, m_iRouteIndex, 0, 0, 255 );
-#endif
 	// if the monster is moving directly towards an entity (enemy for instance), we'll set this pointer
 	// to that entity for the CheckLocalMove and Triangulate functions.
 	pTargetEnt = NULL;

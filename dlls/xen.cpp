@@ -543,14 +543,4 @@ void CXenSpore::Think( void )
 {
 	StudioFrameAdvance();
 	pev->nextthink = gpGlobals->time + 0.1;
-#if 0
-	DispatchAnimEvents( flInterval );
-
-	switch( GetActivity() )
-	{
-	default:
-	case ACT_IDLE:
-		break;
-	}
-#endif
 }
