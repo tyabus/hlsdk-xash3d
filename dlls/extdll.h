@@ -94,21 +94,4 @@ typedef float vec_t;				// needed before including progdefs.h
 #ifndef Q_max
 #define Q_max(a,b)  (((a) > (b)) ? (a) : (b))
 #endif
-
-// Make NULL null pointer, not null integer
-#if 0
-#ifdef __cplusplus
-struct my_nullptr_t
-{
-  template <typename T>
-  inline operator T*() { return static_cast<T*>(0); }
-};
-static my_nullptr_t my_nullptr;
-#ifdef NULL
-#undef NULL
-#endif
-#define NULL my_nullptr
-#endif
-#endif
-
 #endif //EXTDLL_H

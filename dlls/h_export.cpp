@@ -63,12 +63,7 @@ int ShouldCollide( edict_t *pentTouched, edict_t *pentOther )
 
 void OnFreeEntPrivateData(edict_s *pEdict)
 {
-#if 0
-	if(pEdict && pEdict->pvPrivateData)
-	{
-		((CBaseEntity*)pEdict->pvPrivateData)->~CBaseEntity();
-	}
-#endif
+	// stub
 }
 
 void GameShutdown(void)

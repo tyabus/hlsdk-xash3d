@@ -59,7 +59,6 @@ public:
 
 private:
 
-	void AddSpawners( void );
 	int m_iSpawnerCount;
 };
 
@@ -582,8 +581,6 @@ int CGateOfBabylon::AddToPlayer( CBasePlayer *pPlayer )
 
 		m_iSpawnerCount = 0;
 
-		//AddSpawners();
-
 		return TRUE;
 	}
 	return FALSE;
@@ -690,33 +687,6 @@ void CGateOfBabylon::SecondaryAttack()
 
 	pev->nextthink = UTIL_MyWeaponTimeBase() + 1;
 	m_flNextSecondaryAttack = UTIL_MyWeaponTimeBase() + 1;
-}
-
-void CGateOfBabylon::AddSpawners( void )
-{
-#if 0
-	CBaseEntity *pEnt = NULL;
-	CGateOfBabylonSpawner *pSpawner;
-	int iSpawnerCount = 0;
-
-	while( ( pEnt = UTIL_FindEntityInSphere( pEnt, m_pPlayer->pev->origin, 100 ) ) )
-	{
-		if( !FClassnameIs( pEnt->pev, "gateofbabylon_spawner" ) )
-			continue;
-
-		pSpawner = static_cast<CGateOfBabylonSpawner*>( pEnt );
-
-		UTIL_Remove( m_pSpawners[iSpawnerCount] );
-
-		m_pSpawners[iSpawnerCount] = pSpawner;
-		pSpawner->m_iNumber = iSpawnerCount;
-		pSpawner->m_pGates = this;
-		pSpawner->SetThink( &CGateOfBabylonSpawner::FollowPlayerThink );
-		iSpawnerCount++;
-	}
-
-	m_iSpawnerCount = iSpawnerCount;
-#endif
 }
 
 void CGateOfBabylon::Reload( void )

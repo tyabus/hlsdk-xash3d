@@ -1150,21 +1150,9 @@ void CHGrunt::PainSound( void )
 {
 	if( gpGlobals->time > m_flNextPainTime )
 	{
-#if 0
-		if( RANDOM_LONG( 0, 99 ) < 5 )
-		{
-			// pain sentences are rare
-			if( FOkToSpeak() )
-			{
-				SENTENCEG_PlayRndSz( ENT( pev ), "HG_PAIN", HGRUNT_SENTENCE_VOLUME, ATTN_NORM, 0, PITCH_NORM );
-				JustSpoke();
-				return;
-			}
-		}
-#endif
 		switch( RANDOM_LONG( 0, 6 ) )
 		{
-		case 0:	
+		case 0:
 			EMIT_SOUND( ENT( pev ), CHAN_VOICE, "hgrunt/gr_pain3.wav", 1, ATTN_NORM );	
 			break;
 		case 1:

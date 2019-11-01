@@ -242,23 +242,6 @@ public:
 	{
 		return NodeLink( iNode, iLink ).m_iDestNode;
 	}
-
-#if 0
-	inline CNode &SourceNode( int iNode, int iLink )
-	{
-		return Node( NodeLink( iNode, iLink ).m_iSrcNode );
-	}
-
-	inline CNode &DestNode( int iNode, int iLink )
-	{
-		return Node( NodeLink( iNode, iLink ).m_iDestNode );
-	}
-
-	inline	CNode *PNodeLink ( int iNode, int iLink ) 
-	{
-		return &DestNode( iNode, iLink );
-	}
-#endif
 };
 
 //=========================================================

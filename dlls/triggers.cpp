@@ -968,35 +968,6 @@ void CBaseTrigger::HurtTouch( CBaseEntity *pOther )
 
 	fldmg = pev->dmg * 0.5;	// 0.5 seconds worth of damage, pev->dmg is damage/second
 
-	// JAY: Cut this because it wasn't fully realized.  Damage is simpler now.
-#if 0
-	switch( m_bitsDamageInflict )
-	{
-	default:
-		break;
-	case DMG_POISON:
-		fldmg = POISON_DAMAGE / 4;
-		break;
-	case DMG_NERVEGAS:
-		fldmg = NERVEGAS_DAMAGE / 4;
-		break;
-	case DMG_RADIATION:
-		fldmg = RADIATION_DAMAGE / 4;
-		break;
-	case DMG_PARALYZE: // UNDONE: cut this? should slow movement to 50%
-		fldmg = PARALYZE_DAMAGE / 4;
-		break;
-	case DMG_ACID:
-		fldmg = ACID_DAMAGE / 4;
-		break;
-	case DMG_SLOWBURN:
-		fldmg = SLOWBURN_DAMAGE / 4;
-		break;
-	case DMG_SLOWFREEZE:
-		fldmg = SLOWFREEZE_DAMAGE / 4;
-		break;
-	}
-#endif
 	if( fldmg < 0 )
 		pOther->TakeHealth( -fldmg, m_bitsDamageInflict );
 	else
@@ -1115,15 +1086,6 @@ void CBaseTrigger::MultiTouch( CBaseEntity *pOther )
 		 ( ( pev->spawnflags & SF_TRIGGER_PUSHABLES ) && FClassnameIs( pevToucher,"func_pushable" ) ) )
 	{
 
-#if 0
-		// if the trigger has an angles field, check player's facing direction
-		if( pev->movedir != g_vecZero )
-		{
-			UTIL_MakeVectors( pevToucher->angles );
-			if( DotProduct( gpGlobals->v_forward, pev->movedir ) < 0 )
-				return;         // not facing the right way
-		}
-#endif
 		ActivateMultiTrigger( pOther );
 	}
 }
