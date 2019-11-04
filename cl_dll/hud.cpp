@@ -188,8 +188,8 @@ void CHud::Init( void )
 	m_iLogo = 0;
 	m_iFOV = 0;
 
-	CVAR_CREATE( "zoom_sensitivity_ratio", "1.2", 0 );
-	default_fov = CVAR_CREATE( "default_fov", "100", 0 );
+	CVAR_CREATE( "zoom_sensitivity_ratio", "1.2", FCVAR_ARCHIVE );
+	default_fov = CVAR_CREATE( "default_fov", "100", FCVAR_ARCHIVE );
 	m_pCvarStealMouse = CVAR_CREATE( "hud_capturemouse", "1", FCVAR_ARCHIVE );
 	m_pCvarDraw = CVAR_CREATE( "hud_draw", "1", FCVAR_ARCHIVE );
 	m_pCvarColor = CVAR_CREATE( "hud_color", "", FCVAR_ARCHIVE );
