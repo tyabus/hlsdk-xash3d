@@ -156,7 +156,6 @@ void CAR2Ball::Spawn()
 	SET_MODEL(ENT(pev), "models/ar2grenade.mdl");
 	pev->dmg = 60;
 	m_fRegisteredSound = FALSE;
-	//UTIL_SetSize(pev, Vector(-8, -8, -8), Vector(8, 8, 8));
 	UTIL_SetSize( pev, Vector( -4, -4, -4 ), Vector( 4, 4, 4 ) );
 	UTIL_SetOrigin(pev, pev->origin);
 	pev->avelocity.x = RANDOM_LONG(-1000, 1000);
@@ -297,7 +296,7 @@ void CAR2Ball::Explode( TraceResult *pTrace, int bitsDamageType )
 {
 	float		flRndSound;// sound randomizer
 
-	pev->model = iStringNull;//invisible
+	pev->model = iStringNull;// invisible
 	pev->solid = SOLID_NOT;// intangible
 
 	pev->takedamage = DAMAGE_NO;
@@ -332,7 +331,7 @@ void CAR2Ball::Explode( TraceResult *pTrace, int bitsDamageType )
 		WRITE_BYTE( 255 );
 
 		WRITE_BYTE( 255 ); //brightness
-		WRITE_BYTE( 0 );		// speed
+		WRITE_BYTE( 0 );   // speed
 	MESSAGE_END();
 
 	MESSAGE_BEGIN( MSG_PAS, SVC_TEMPENTITY, pev->origin );
@@ -371,10 +370,6 @@ void CAR2Ball::Explode( TraceResult *pTrace, int bitsDamageType )
 	RadiusDamage ( pev->origin, pev, pevOwner, 30, 200, CLASS_NONE, bitsDamageType );
 	RadiusDamage ( pev->origin, pev, pevOwner, 200, 30, CLASS_NONE, bitsDamageType );
 
-
-	//flRndSound = RANDOM_FLOAT( 0 , 1 );
-
-
 	EMIT_SOUND(ENT(pev), CHAN_VOICE, "ar2/ar2explosion.wav", 1, ATTN_NORM);
 
 	pev->effects |= EF_NODRAW;
@@ -382,13 +377,6 @@ void CAR2Ball::Explode( TraceResult *pTrace, int bitsDamageType )
 	SetTouch( NULL );
 	pev->velocity = g_vecZero;
 	pev->nextthink = gpGlobals->time + 0.3;
-/*
-	if (iContents != CONTENTS_WATER)
-	{
-		int sparkCount = RANDOM_LONG(0,3);
-		for ( int i = 0; i < sparkCount; i++ )
-			Create( "spark_shower", pev->origin, pTrace->vecPlaneNormal, NULL );
-	}*/
 }
 
 int CAR2::SecondaryAmmoIndex(void)
@@ -503,17 +491,14 @@ BOOL CAR2::Deploy()
 	Cleaner();
 	return DefaultDeploy("models/v_ar2.mdl", "models/p_ar2.mdl", AR2_DEPLOY, "MP5");
 }
-void CAR2::Holster(int skiplocal /* = 0 */)
+void CAR2::Holster(int skiplocal)
 {
 	Cleaner();
 	MyAnim(AR2_DEPLOY);
 }
 void CAR2::MyAnim(int iAnim)
 {
-
 	m_pPlayer->pev->weaponanim = iAnim;
-
-
 
 	MESSAGE_BEGIN(MSG_ONE, SVC_WEAPONANIM, NULL, m_pPlayer->pev);
 	WRITE_BYTE(iAnim); // sequence number
@@ -567,7 +552,6 @@ void CAR2::PrimaryAttack()
 		m_pBeam1->pev->owner = m_pPlayer->edict();
 		m_pBeam1->SetEndAttachment(1);
 		m_pBeam1->SetStartPos( gpGlobals->trace_endpos );
-		//meam1->SetEndPos(this->pev->origin + pev->view_ofs +gpGlobals->v_up*20+gpGlobals->v_right*5+gpGlobals->v_forward*30);
 		m_pBeam1->SetWidth(15);
 		m_pBeam1->SetBrightness(255);
 
@@ -580,7 +564,7 @@ void CAR2::PrimaryAttack()
 		// HEV suit - indicate out of ammo condition
 		m_pPlayer->SetSuitUpdate("!HEV_AMO0", FALSE, 0);
 	SetThink(&CAR2::Cleaner);
-	
+
 	m_flNextPrimaryAttack = gpGlobals->time + 0.1;
 
 	m_flTimeWeaponIdle = gpGlobals->time  + UTIL_SharedRandomFloat(m_pPlayer->random_seed, 10, 15);
@@ -690,8 +674,6 @@ void CAR2::WeaponIdle(void)
 	m_flTimeWeaponIdle = gpGlobals->time+UTIL_SharedRandomFloat(m_pPlayer->random_seed, 10, 15); // how long till we do this again.
 
 }
-
-
 
 class CAR2Ammo : public CBasePlayerAmmo
 {

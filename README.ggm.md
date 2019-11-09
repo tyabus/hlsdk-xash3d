@@ -20,6 +20,7 @@ Extended Half-Life mod
 
 Gravity Gun may drag props, weapons, ammos, items, monsters and pushables
 `mp_gravgun_players` option allows dragging players
+`mp_gravgun_beams` option enables beams
 
 prop is special entity for pseudo-physical objects (alternative to prop_physics from Source)
 While it still use hull for collision, it may change rotation angle and size for fake shape.

@@ -26,6 +26,7 @@ cvar_t cvar_gibtime = { "mp_gibtime","250", FCVAR_SERVER };
 cvar_t cvar_hgibcount = { "mp_hgibcount","12", FCVAR_SERVER };
 cvar_t cvar_agibcount = { "mp_agibcount","8", FCVAR_SERVER };
 cvar_t mp_gravgun_players = { "mp_gravgun_players", "0", FCVAR_SERVER };
+cvar_t mp_gravgun_beams = { "mp_gravgun_beams", "0", FCVAR_SERVER };
 cvar_t mp_skipdefaults = { "mp_skipdefaults", "0", FCVAR_SERVER };
 cvar_t mp_spectator = { "mp_spectator", "0", FCVAR_SERVER };
 cvar_t mp_unduck = { "mp_unduck", "0", FCVAR_SERVER };
@@ -2893,7 +2894,7 @@ bool GGM_ClientCommand( CBasePlayer *pPlayer, const char *pCmd )
 		GGM_Register_f(pPlayer);
 		return true;
 	}
-	else if( FStrEq( pCmd, "ggm_version_cl" ) ) // Prevent conflict if using ggm on non dedicated
+	else if( FStrEq( pCmd, "ggm_version" ) )
 	{
         	GGM_ChatPrintf( pPlayer, "Build date: %s %s\n", __DATE__, __TIME__);
         	GGM_ChatPrintf( pPlayer, "Compiled with: %s version %s\n", CXX, __VERSION__);
@@ -3164,6 +3165,7 @@ void GGM_RegisterCVars( void )
 	CVAR_REGISTER( &cvar_hgibcount );
 	CVAR_REGISTER( &cvar_agibcount );
 	CVAR_REGISTER( &mp_gravgun_players );
+	CVAR_REGISTER( &mp_gravgun_beams );
 	CVAR_REGISTER( &mp_megahornet );
 	CVAR_REGISTER( &mp_q1stuff );
 	CVAR_REGISTER( &mp_fixhornetbug );
@@ -3198,7 +3200,8 @@ void GGM_RegisterCVars( void )
 	g_engfuncs.pfnAddServerCommand( "ggm_votecommand", GGM_VoteCommand_f );
 	g_engfuncs.pfnAddServerCommand( "ggm_pause", GGM_Pause_f );
 	g_engfuncs.pfnAddServerCommand( "ggm_saytext", GGM_SayText_f );
-	g_engfuncs.pfnAddServerCommand( "ggm_version", GGM_Version_f );
+	if( IS_DEDICATED_SERVER )
+		g_engfuncs.pfnAddServerCommand( "ggm_version", GGM_Version_f );
 
 	g_engfuncs.pfnCvar_DirectSet( &ggm_platform, UTIL_VarArgs( "%s", GGM_PLATFORM ) );
 	g_engfuncs.pfnCvar_DirectSet( &ggm_arch, UTIL_VarArgs( "%s", GGM_ARCH ) );

@@ -3,8 +3,6 @@ Created by Solexid
 *
 ****/
 
-
-
 #include "extdll.h"
 #include "util.h"
 #include "cbase.h"
@@ -18,6 +16,7 @@ Created by Solexid
 #include "gamerules.h"
 #include "customweapons.h"
 #include "unpredictedweapon.h"
+#include "gravgunmod.h"
 
 #define	GRAV_BEAM_SPRITE_PRIMARY_VOLUME		30
 #define GRAV_BEAM_SPRITE		"sprites/xbeam3.spr"
@@ -90,7 +89,7 @@ public:
 
 private:
 	float				m_shootTime;
-	GRAV_FIREMODE		m_fireMode;
+	GRAV_FIREMODE			m_fireMode;
 	float				m_shakeTime;
 	BOOL				m_deployed;
 	float				m_fPushSpeed;
@@ -120,7 +119,6 @@ Vector CGravGun::PredictTarget(float length)
 {
 	Vector predicted = m_pPlayer->pev->origin;
 	float cmdtime = gpGlobals->time - m_flLastCmd;
-	//ALERT( at_notice, "PredictTarget %f\n", cmdtime );
 
 	// button-based prediction
 	if( m_pPlayer->pev->button & IN_FORWARD )
@@ -151,9 +149,9 @@ void CGravGun::Precache(void)
 
 	PRECACHE_MODEL("models/w_9mmclip.mdl");
 	PRECACHE_SOUND("items/9mmclip1.wav");
-	
+
 	PRECACHE_SOUND(GRAV_SOUND_OFF);
-	PRECACHE_SOUND(GRAV_SOUND_RUN); 
+	PRECACHE_SOUND(GRAV_SOUND_RUN);
 	PRECACHE_SOUND(GRAV_SOUND_FAILRUN);
 	PRECACHE_SOUND(GRAV_SOUND_STARTUP);
 
@@ -168,9 +166,7 @@ void CGravGun::Precache(void)
 	PRECACHE_SOUND("weapons/357_cock1.wav");
 	PRECACHE_GENERIC("sprites/weapon_gravgun.txt");
 	PRECACHE_GENERIC("sprites/grav.spr");
-
 }
-
 
 BOOL CGravGun::Deploy(void)
 {
@@ -195,11 +191,8 @@ int CGravGun::AddToPlayer(CBasePlayer *pPlayer)
 	return FALSE;
 }
 
-
-
-void CGravGun::Holster(int skiplocal /* = 0 */)
+void CGravGun::Holster(int skiplocal)
 {
-	
 	SetThink(NULL);
 	if (m_hAimentEntity) { m_hAimentEntity->pev->velocity = Vector(0, 0, 0); }
 	m_hAimentEntity = NULL;
@@ -214,7 +207,7 @@ void CGravGun::Holster(int skiplocal /* = 0 */)
 int CGravGun::GetItemInfo(ItemInfo *p)
 {
 	p->pszName = STRING(pev->classname);
-p->pszAmmo1 = NULL;
+	p->pszAmmo1 = NULL;
 	p->iMaxAmmo1 = -1;
 	p->pszAmmo2 = NULL;
 	p->iMaxAmmo2 = -1;
@@ -230,11 +223,8 @@ p->pszAmmo1 = NULL;
 
 BOOL CGravGun::HasAmmo(void)
 {
-	
 	return TRUE;
 }
-
-
 
 void CGravGun::Attack(void)
 {
@@ -256,7 +246,7 @@ void CGravGun::Attack(void)
 		m_pPlayer->m_iWeaponVolume = 20;
 		m_flTimeWeaponIdle = gpGlobals->time + 0.04;
 		pev->fuser1 = gpGlobals->time + 0.1;
-		
+
 		m_iStage = 0;
 		m_fireState = FIRE_CHARGE;
 	}
@@ -273,9 +263,7 @@ void CGravGun::Attack(void)
 			pev->fuser1 = 1000;
 			SetThink(NULL);
 		}
-		
 
-		//CBaseEntity* crosent = TraceForward(m_pPlayer, 1000);
 		CBaseEntity* crossent = m_hAimentEntity;
 		if( m_hAimentEntity )
 			m_hAimentEntity->m_fireState = 0;
@@ -297,9 +285,6 @@ void CGravGun::Attack(void)
 
 			EMIT_SOUND_DYN(ENT(pev), CHAN_VOICE, GRAV_SOUND_STARTUP, 0.1, ATTN_NORM, 0, 70 + RANDOM_LONG(0, 34));
 
-			//if (crosent->pev->flags& FL_ONGROUND) { pev->velocity = pev->velocity * 0.95; };
-
-			//crossent->TouchGravGun(m_pPlayer,3);
 			Vector pusher = vecAiming;
 			pusher.x = pusher.x * m_fPushSpeed;
 			pusher.y = pusher.y * m_fPushSpeed;
@@ -318,21 +303,18 @@ void CGravGun::Attack(void)
 		}
 
 	}
-	
 	m_flNextGravgunAttack = gpGlobals->time + 0.5;
 	pev->nextthink = gpGlobals->time + 0.2;
 	SetThink( &CGravGun::DestroyEffect );
-	
 	break;
 	}
 
 }
+
 void CGravGun::GravAnim(int iAnim, int skiplocal, int body)
 {
 
 	m_pPlayer->pev->weaponanim = iAnim;
-
-
 
 	MESSAGE_BEGIN(MSG_ONE, SVC_WEAPONANIM, NULL, m_pPlayer->pev);
 	WRITE_BYTE(iAnim); // sequence number
@@ -342,11 +324,8 @@ void CGravGun::GravAnim(int iAnim, int skiplocal, int body)
 
 void CGravGun::Attack2(void)
 {
-	//if (temp) { temp = NULL; }
-	//if(temp) return;
 	UTIL_MakeVectors(m_pPlayer->pev->v_angle + m_pPlayer->pev->punchangle);
 	Vector vecAiming = gpGlobals->v_forward;
-	//Vector vecAiming = UTIL_GetAimVector(m_pPlayer->edict(), 1000);
 	Vector vecSrc = m_pPlayer->GetGunPosition();
 
 	switch (m_fireState)
@@ -366,7 +345,6 @@ void CGravGun::Attack2(void)
 		{
 			float dist = Fire(vecSrc, vecAiming) + 30;
 			m_flNextGravgunAttack = gpGlobals->time + 0.1;
-			//ALERT( at_console, "dist: %f\n", dist );
 			m_pPlayer->m_iWeaponVolume = 100;
 
 			if (pev->fuser1 <= gpGlobals->time)
@@ -374,7 +352,6 @@ void CGravGun::Attack2(void)
 
 				pev->fuser1 = 1000;
 			}
-			//CBaseEntity* crossent = TraceForward(m_pPlayer,500);
 			CBaseEntity* crossent = GetCrossEnt(vecSrc, gpGlobals->v_forward, dist );
 			if( !crossent || !(m_fPushSpeed = crossent->TouchGravGun(m_pPlayer,0)) )
 			{
@@ -387,7 +364,8 @@ void CGravGun::Attack2(void)
 					crossent = NULL;
 				}
 			}
-			if ( crossent ){
+			if ( crossent )
+			{
 				if(m_fireMode != FIRE_NARROW)
 					DestroyEffect();
 				m_fireMode = FIRE_NARROW;
@@ -417,6 +395,7 @@ void CGravGun::Attack2(void)
 	}
 
 }
+
 CBaseEntity *CGravGun::GetCrossEnt( Vector gunpos, Vector aim, float radius )
 {
 	edict_t		*pEdict = g_engfuncs.pfnPEntityOfEntIndex( 1 );
@@ -429,9 +408,6 @@ CBaseEntity *CGravGun::GetCrossEnt( Vector gunpos, Vector aim, float radius )
 		return NULL;
 
 	edict_t *player = m_pPlayer->edict();
-
-	// uncomment this for profiling
-	// int tracecount = 0;
 
 	for ( int i = 1; i < gpGlobals->maxEntities; i++, pEdict++ )
 	{
@@ -453,13 +429,11 @@ CBaseEntity *CGravGun::GetCrossEnt( Vector gunpos, Vector aim, float radius )
 		if( pEdict == player )
 			continue;
 
-		//ALERT( at_console, "len: %f\n", vecLOS.Length() );
 		vecLOS = UTIL_ClampVectorToBox(vecLOS, pEdict->v.size * 0.5);
 
 		flDot = DotProduct(vecLOS, aim);
 		if (flDot <= flMaxDot)
 			continue;
-		//tracecount++;
 		TraceResult tr;
 		UTIL_TraceLine(gunpos, origin, missile, player, &tr);
 		if( ( tr.vecEndPos - gunpos ).Length() + 30 < (origin - gunpos).Length())
@@ -467,8 +441,6 @@ CBaseEntity *CGravGun::GetCrossEnt( Vector gunpos, Vector aim, float radius )
 		pClosest = pEdict;
 		flMaxDot = flDot;
 	}
-
-	//ALERT( at_console, "tracecount: %d\n", tracecount );
 
 	return CBaseEntity::Instance(pClosest);
 
@@ -484,7 +456,7 @@ CBaseEntity*  CGravGun::TraceForward(CBaseEntity *pMe,float radius)
 	return NULL;
 }
 
-//Used for prop grab and 
+// Used for prop grab
 void CGravGun::GrabThink()
 {
 	if (( m_iGrabFailures < 50 )&& m_hAimentEntity )
@@ -502,7 +474,8 @@ void CGravGun::GrabThink()
 			Pull(m_hAimentEntity);
 			pev->nextthink = gpGlobals->time + 0.001;
 	}
-	else{
+	else
+	{
 		EMIT_SOUND_DYN(ENT(pev), CHAN_WEAPON, GRAV_SOUND_OFF, 1, ATTN_NORM, 0, 70 + RANDOM_LONG(0, 34));
 		m_iGrabFailures = 0;
 		SetThink( NULL );
@@ -541,11 +514,7 @@ void CGravGun::Pull(CBaseEntity* ent)
 		Vector diff = target - origin;
 
 		target.z += 60;
-		
 
-		//ALERT(at_console, "%s 1 %d : %f\n", STRING(ent->pev->classname), m_iStage, ((target - VecBModelOrigin(ent->pev)).Length()));
-
-	
 		if( !m_iStage )
 		{
 			ent->pev->velocity = diff.Normalize()*(55000.0* 1.0/diff.Length());
@@ -568,28 +537,23 @@ void CGravGun::Pull(CBaseEntity* ent)
 			if(ent->pev->velocity.Length() > 900 )
 				ent->pev->velocity = diff.Normalize() * 900;
 			ent->pev->velocity.z += 15;
-			//ALERT( at_notice, "vel %f\n", ent->pev->velocity.Length() );
 		}
-		//ent->pev->velocity = ent->pev->velocity + m_pPlayer->pev->velocity;
-			/////
-#ifdef BEAMS
-		CBeam* m_pBeam1 = CBeam::BeamCreate(GRAV_BEAM_SPRITE, 40);
-		m_pBeam1->SetFlags(BEAM_FSHADEOUT);
-		m_pBeam1->pev->spawnflags |= SF_BEAM_TEMPORARY;	// Flag these to be destroyed on save/restore or level transition
-		m_pBeam1->pev->flags |= FL_SKIPLOCALHOST;
-		m_pBeam1->pev->owner = m_pPlayer->edict();
-		m_pBeam1->SetStartPos(target);
-		m_pBeam1->SetEndPos(VecBModelOrigin(ent->pev));
-		m_pBeam1->SetWidth(40 - (1 * 20));
-		m_pBeam1->SetBrightness(130);
-#endif // BEAMS
 
-		
-		/////
-		//ALERT(at_console, "%s 2: %f\n", STRING(ent->pev->classname), m_iStage, ent->pev->velocity.Length());
+		if( mp_gravgun_beams.value )
+		{
+			CBeam* m_pBeam1 = CBeam::BeamCreate(GRAV_BEAM_SPRITE, 40);
+			m_pBeam1->SetFlags(BEAM_FSHADEOUT);
+			m_pBeam1->pev->spawnflags |= SF_BEAM_TEMPORARY;	// Flag these to be destroyed on save/restore or level transition
+			m_pBeam1->pev->flags |= FL_SKIPLOCALHOST;
+			m_pBeam1->pev->owner = m_pPlayer->edict();
+			m_pBeam1->SetStartPos(target);
+			m_pBeam1->SetEndPos(VecBModelOrigin(ent->pev));
+			m_pBeam1->SetWidth(40 - (1 * 20));
+			m_pBeam1->SetBrightness(130);
+		}
 	}
 	else if( ent->TouchGravGun(m_pPlayer, 2) )
-	{	
+	{
 		ent->pev->velocity = (target - origin)* 80;
 		ent->m_fireState = ENTINDEX( m_pPlayer->edict() );
 		if(ent->pev->velocity.Length()>900)
@@ -612,24 +576,16 @@ void CGravGun::Pull(CBaseEntity* ent)
 	}
 }
 
-
-
-
-
 void CGravGun::PrimaryAttack(void)
 {
 	m_flLastCmd = gpGlobals->time;
 	if (m_flNextGravgunAttack < gpGlobals->time)
 	{
-	
-	
-	SetThink(NULL);
-	Attack();
-
+		SetThink(NULL);
+		Attack();
 	}
 
 }
-
 
 void CGravGun::SecondaryAttack(void)
 {
@@ -642,11 +598,9 @@ void CGravGun::SecondaryAttack(void)
 			{
 				return;
 			}
-			//m_fireMode = FIRE_WIDE;
 			EndAttack();
 			SetThink(NULL);
 			m_flNextGravgunAttack = gpGlobals->time + 0.6;
-			//m_flTimeWeaponIdle = gpGlobals->time + 0.1;
 
 			m_iStage = 0;
 			if( m_hAimentEntity )
@@ -657,12 +611,14 @@ void CGravGun::SecondaryAttack(void)
 				m_hAimentEntity = NULL;
 			}
 		}
-		else {
+		else
+		{
 			Attack2();
 		}
 
 	}
 }
+
 float CGravGun::Fire(const Vector &vecOrigSrc, const Vector &vecDir)
 {
 	Vector vecDest = vecOrigSrc + vecDir * 2048;
@@ -683,7 +639,6 @@ float CGravGun::Fire(const Vector &vecOrigSrc, const Vector &vecDir)
 
 void CGravGun::UpdateEffect(const Vector &startPoint, const Vector &endPoint, float timeBlend)
 {
-#ifndef CLIENT_DLL
 	if (!m_pBeam)
 	{
 		CreateEffect();
@@ -702,33 +657,18 @@ void CGravGun::UpdateEffect(const Vector &startPoint, const Vector &endPoint, fl
 	lel[1] = 30;
 	lel[2] = 30;
 
-	//Vector& ar= m_pPlayer->pev-> origin+ m_pPlayer->pev->view_ofs;
-	//Vector& al = pev->angles;
-
-	
-//	UTIL_SetOrigin(m_pSprite->pev, ar);
-//	m_pSprite->pev->frame += 8 * gpGlobals->frametime;
-	//if (m_pSprite->pev->frame > m_pSprite->Frames())
-	//	m_pSprite->pev->frame = 0;
-
 	m_pNoise->SetStartPos(endPoint);
-
-#endif
-
 }
 
 void CGravGun::CreateEffect(void)
 {
-
-#ifndef CLIENT_DLL
 	DestroyEffect();
-	
+
 	m_pBeam = CBeam::BeamCreate(GRAV_BEAM_SPRITE, 40);
 	m_pBeam->PointEntInit(pev->origin, m_pPlayer->entindex());
 	m_pBeam->SetFlags(BEAM_FSINE);
 	m_pBeam->SetEndAttachment(1);
 	m_pBeam->pev->spawnflags |= SF_BEAM_TEMPORARY;	// Flag these to be destroyed on save/restore or level transition
-	//m_pBeam->pev->flags |= FL_SKIPLOCALHOST;
 	m_pBeam->pev->owner = m_pPlayer->edict();
 
 	m_pNoise = CBeam::BeamCreate(GRAV_BEAM_SPRITE, 55);
@@ -737,16 +677,7 @@ void CGravGun::CreateEffect(void)
 	m_pNoise->SetBrightness(100);
 	m_pNoise->SetEndAttachment(1);
 	m_pNoise->pev->spawnflags |= SF_BEAM_TEMPORARY;
-	//m_pNoise->pev->flags |= FL_SKIPLOCALHOST;
 	m_pNoise->pev->owner = m_pPlayer->edict();
-
-	/*m_pSprite = CSprite::SpriteCreate(GRAV_FLARE_SPRITE, m_pPlayer->GetGunPosition(), TRUE);
-	m_pSprite->pev->scale = 1.0;
-
-	m_pSprite->SetTransparency(kRenderGlow, 255, 140, 0, 255, kRenderFxPulseFast);
-	m_pSprite->pev->spawnflags |= SF_SPRITE_TEMPORARY;
-	m_pSprite->pev->flags |= FL_SKIPLOCALHOST;
-	m_pSprite->pev->owner = m_pPlayer->edict();*/
 
 	if (m_fireMode == FIRE_WIDE)
 	{
@@ -763,15 +694,11 @@ void CGravGun::CreateEffect(void)
 		m_pNoise->SetNoise(2);
 		EMIT_SOUND_DYN(ENT(m_pBeam->pev), CHAN_VOICE, "gravgun/hold.wav", 0.2, ATTN_NORM, 0, 70 + RANDOM_LONG(0, 34));
 	}
-#endif
-
 }
 
 
 void CGravGun::DestroyEffect(void)
 {
-
-#ifndef CLIENT_DLL
 	if (m_pBeam)
 	{
 		if( m_fireMode == FIRE_NARROW )
@@ -792,11 +719,7 @@ void CGravGun::DestroyEffect(void)
 			UTIL_Remove(m_pSprite);
 		m_pSprite = NULL;
 	}
-#endif
-
 }
-
-
 
 void CGravGun::WeaponIdle(void)
 {
@@ -813,14 +736,11 @@ void CGravGun::WeaponIdle(void)
 	m_deployed = TRUE;
 }
 
-
-
 void CGravGun::EndAttack(void)
 {
 	bool bMakeNoise = false;
-   // if (m_AimentEntity&&m_AimentEntity->pev->velocity.Length() > 100&& (m_AimentEntity->pev->origin-m_pPlayer->pev->origin).Length()<100) { m_AimentEntity->pev->velocity = m_AimentEntity->pev->velocity / 10; }
-	//ALERT( at_console, "EndAttack()\n");
-	if (m_fireState != FIRE_OFF) //Checking the button just in case!.
+
+	if (m_fireState != FIRE_OFF) // Checking the button just in case
 		bMakeNoise = true;
 	m_flNextGravgunAttack = gpGlobals->time + 0.1;
 	m_flTimeWeaponIdle = gpGlobals->time + 0.2;
@@ -831,7 +751,3 @@ void CGravGun::EndAttack(void)
 	if( m_pfnThink == &CGravGun::PullThink )
 		SetThink( NULL );
 }
-
-
-
-

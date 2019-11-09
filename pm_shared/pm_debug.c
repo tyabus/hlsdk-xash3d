@@ -60,7 +60,8 @@ void PM_ShowClipBox( void )
 	// Draw entity in center of view
 	// Also draws the normal to the clip plane that intersects our movement ray.  Leaves a particle
 	//  trail at the intersection point.
-	PM_ViewEntity();
+	if( !IS_DEDICATED_SERVER )
+		PM_ViewEntity();
 
 	VectorCopy( pmove->origin, org );
 
@@ -263,9 +264,6 @@ void PM_DrawBBox(vec3_t mins, vec3_t maxs, vec3_t origin, int pcolor, float life
 	}
 }
 
-
-#ifndef DEDICATED
-
 /*
 ================
 PM_ViewEntity
@@ -306,12 +304,10 @@ void PM_ViewEntity( void )
 	{
 		pcolor = 111;
 	}
-	
+
 	// Draw the hull or bbox.
 	if (trace.ent > 0)
 	{
 		PM_DrawPhysEntBBox(trace.ent, pcolor, 0.3f);
 	}
 }
-
-#endif
