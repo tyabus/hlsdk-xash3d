@@ -327,7 +327,7 @@ int CCrowbar::Swing( int fFirst )
 			// delay the decal a bit
 			m_trHit = tr;
 
-			UTIL_Sparks(tr.vecEndPos);
+			UTIL_Sparks( tr.vecEndPos );
 			UTIL_ScreenShake( tr.vecEndPos, 15.0, 20.0, 1, 50 );
 		}
 

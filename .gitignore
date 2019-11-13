@@ -20,7 +20,6 @@ cmake_install.cmake
 *.sln
 # Android stuff
 android/libs/*
-android/jni/hlsdk
 android/bin/*
 android/gen/*
 android/obj/*

@@ -40,7 +40,7 @@ public class LauncherActivity extends Activity {
         cmdArgs.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 		Button startButton = new Button(this);
 		// Set launch button title here
-		startButton.setText("Launch with gravgun!");
+		startButton.setText("Launch gravgun!");
 		LayoutParams buttonParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		buttonParams.gravity = 5;
 		startButton.setLayoutParams(buttonParams);

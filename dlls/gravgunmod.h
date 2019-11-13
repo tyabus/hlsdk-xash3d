@@ -21,6 +21,7 @@ extern cvar_t mp_gravgun_beams;
 extern cvar_t mp_skipdefaults;
 extern cvar_t mp_unduck;
 extern cvar_t mp_megahornet;
+extern cvar_t mp_anticheat;
 
 extern cvar_t ggm_arch;
 extern cvar_t ggm_platform;
@@ -84,9 +85,6 @@ extern cvar_t mp_maxdecals;
 #define GGM_PLATFORM	"WIN32-MinGW"
 #elif defined(__ANDROID__)
 #define GGM_PLATFORM	"Android"
-#elif defined(__APPLE__) && ( defined(__arm__) || defined(__aarch64__) )
-#define GGM_PLATFORM	"gay"
-#error "Gay devices are no longer supported!"
 #elif defined(__APPLE__)
 #define GGM_PLATFORM	"gay"
 #error "Gay devices are no longer supported!"
@@ -118,6 +116,7 @@ edict_t *GGM_PlayerByID( const char *id );
 void GGM_Say( edict_t *pEntity );
 bool GGM_ClientCommand( CBasePlayer *player, const char *pCmd );
 void GGM_InitialMenus( CBasePlayer *pPlayer );
+void GGM_KickCheater( CBasePlayer *player, char *CheatType );
 void GGM_CvarValue2( const edict_t *pEnt, int requestID, const char *cvarName, const char *value );
 
 enum PlayerState

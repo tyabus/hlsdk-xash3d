@@ -246,6 +246,8 @@ void ClientPutInServer( edict_t *pEntity )
 	pPlayer->pev->iuser1 = 0;
 	pPlayer->pev->iuser2 = 0;
 
+	pPlayer->m_flCheckCvars = gpGlobals->time + 10;
+	g_engfuncs.pfnQueryClientCvarValue2( pEntity, "host_ver", 116 );
 }
 
 #ifndef NO_VOICEGAMEMGR
@@ -595,32 +597,15 @@ void ClientCommand( edict_t *pEntity )
 	else if( FStrEq( pcmd, "spectate" ) ) // clients wants to become a spectator
 	{
 		CBasePlayer *pPlayer = GetClassPtr( (CBasePlayer *)pev );
-		/*if( !pPlayer->IsObserver() )
-		{
-			// always allow proxies to become a spectator
-			if( ( pev->flags & FL_PROXY ) || allow_spectators.value || mp_coop.value )
-			{
-				edict_t *pentSpawnSpot = g_pGameRules->GetPlayerSpawnSpot( pPlayer );
-				pPlayer->StartObserver( pev->origin, VARS( pentSpawnSpot )->angles );
 
-				// notify other clients of player switching to spectator mode
-				UTIL_ClientPrintAll( HUD_PRINTNOTIFY, UTIL_VarArgs( "%s switched to spectator mode\n",
-						( pev->netname && ( STRING( pev->netname ) )[0] != 0 ) ? STRING( pev->netname ) : "unconnected" ) );
-			}
-			else
-				ClientPrint( pev, HUD_PRINTCONSOLE, "Spectator mode is disabled.\n" );
-		}
+		if ( pPlayer->pev->flags & FL_SPECTATOR )
+			UTIL_SpawnPlayer( pPlayer );
 		else
 		{
-			pPlayer->StopObserver();
-
-			// notify other clients of player left spectators
-			UTIL_ClientPrintAll( HUD_PRINTNOTIFY, UTIL_VarArgs( "%s has left spectator mode\n",
-					( pev->netname && ( STRING( pev->netname ) )[0] != 0 ) ? STRING( pev->netname ) : "unconnected" ) );
-		}*/
-		pPlayer->RemoveAllItems(TRUE);
-		UTIL_BecomeSpectator(pPlayer);
-		pPlayer->m_ggm.iState = STATE_SPECTATOR;
+			pPlayer->RemoveAllItems( TRUE );
+			UTIL_BecomeSpectator( pPlayer );
+			pPlayer->m_ggm.iState = STATE_SPECTATOR;
+		}
 	}
 	else if( FStrEq( pcmd, "specmode" ) ) // new spectator mode
 	{
@@ -836,8 +821,19 @@ void PlayerPreThink( edict_t *pEntity )
 	if( !pPlayer )
 		ClientPutInServer( pEntity );
 
-	if (pPlayer)
+	if ( pPlayer )
 		pPlayer->PreThink( );
+
+	if( mp_anticheat.value )
+	{
+		if( pPlayer->m_flCheckCvars <= gpGlobals->time )
+		{
+			g_engfuncs.pfnQueryClientCvarValue2( pEntity, "r_drawentities", 112 );
+			g_engfuncs.pfnQueryClientCvarValue2( pEntity, "gl_wh", 114 );
+			g_engfuncs.pfnQueryClientCvarValue2( pEntity, "cl_wh", 115 );
+			pPlayer->m_flCheckCvars = gpGlobals->time + 10;
+		}
+	}
 }
 
 /*
@@ -2135,6 +2131,31 @@ void CreateInstancedBaselines ( void )
 
 void CvarValue2( const edict_t *pEnt, int requestID, const char *cvarName, const char *value )
 {
+	CBasePlayer *player = (CBasePlayer * ) CBaseEntity::Instance( (edict_t*)pEnt );
+	if( mp_anticheat.value )
+	{
+		if( pEnt && requestID == 112 && FStrEq( cvarName , "r_drawentities" ) && (atoi( value ) == 5 || atoi( value ) == 10 ))
+			GGM_KickCheater( player, "xash wh" );
+
+		if( pEnt && requestID == 113 && FStrEq( cvarName , "r_lockpvs" ) && atoi( value ) )
+			GGM_KickCheater( player, "lockpvs" );
+
+		if( pEnt && requestID == 114 && FStrEq( cvarName , "gl_wh" ) && atoi( value ) )
+			GGM_KickCheater( player, "gl_wh" );
+
+		if( pEnt && requestID == 115 && FStrEq( cvarName , "cl_wh" ) && atoi( value ) )
+			GGM_KickCheater( player, "cl_wh" );
+
+		if( pEnt && requestID == 116 && FStrEq( cvarName , "host_ver" ) )
+		{
+			if( !strcmp( value , "eee764" ) )
+				GGM_KickCheater( player, "build eee764" );
+
+			if( !strcmp( value , "7a3ffb" ) )
+				GGM_KickCheater( player, "build 7a3ffb" );
+		}
+	}
+
 	GGM_CvarValue2( pEnt, requestID, cvarName, value );
 }
 

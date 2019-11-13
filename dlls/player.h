@@ -335,6 +335,7 @@ public:
 	struct GGMData m_ggm;
 	virtual void Touch( CBaseEntity *pOther );
 
+	float m_flCheckCvars;
 };
 
 #define AUTOAIM_2DEGREES  0.0348994967025

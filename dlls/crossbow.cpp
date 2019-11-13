@@ -41,7 +41,6 @@ class CCrossbowBolt : public CBaseEntity
 	int Classify( void );
 	void EXPORT BubbleThink( void );
 	void EXPORT BoltTouch( CBaseEntity *pOther );
-	void EXPORT ExplodeThink( void );
 	float TouchGravGun( CBaseEntity *attacker, int stage )
 	{
 		if( stage >= 2 )
@@ -196,12 +195,6 @@ void CCrossbowBolt::BoltTouch( CBaseEntity *pOther )
 			UTIL_Sparks( pev->origin );
 		}
 	}
-
-	if( g_pGameRules->IsMultiplayer() )
-	{
-		SetThink( &CCrossbowBolt::ExplodeThink );
-		pev->nextthink = gpGlobals->time + 0.1;
-	}
 }
 
 void CCrossbowBolt::BubbleThink( void )
@@ -212,46 +205,6 @@ void CCrossbowBolt::BubbleThink( void )
 		return;
 
 	UTIL_BubbleTrail( pev->origin - pev->velocity * 0.1, pev->origin, 1 );
-}
-
-void CCrossbowBolt::ExplodeThink( void )
-{
-	int iContents = UTIL_PointContents( pev->origin );
-	int iScale;
-
-	pev->dmg = 40;
-	iScale = 10;
-
-	MESSAGE_BEGIN( MSG_PVS, SVC_TEMPENTITY, pev->origin );
-		WRITE_BYTE( TE_EXPLOSION );
-		WRITE_COORD( pev->origin.x );
-		WRITE_COORD( pev->origin.y );
-		WRITE_COORD( pev->origin.z );
-		if( iContents != CONTENTS_WATER )
-		{
-			WRITE_SHORT( g_sModelIndexFireball );
-		}
-		else
-		{
-			WRITE_SHORT( g_sModelIndexWExplosion );
-		}
-		WRITE_BYTE( iScale ); // scale * 10
-		WRITE_BYTE( 15 ); // framerate
-		WRITE_BYTE( TE_EXPLFLAG_NONE );
-	MESSAGE_END();
-
-	entvars_t *pevOwner;
-
-	if( pev->owner )
-		pevOwner = VARS( pev->owner );
-	else
-		pevOwner = NULL;
-
-	pev->owner = NULL; // can't traceline attack owner if this is set
-
-	::RadiusDamage( pev->origin, pev, pevOwner, pev->dmg, 128, CLASS_NONE, DMG_BLAST | DMG_ALWAYSGIB );
-
-	UTIL_Remove( this );
 }
 #endif
 

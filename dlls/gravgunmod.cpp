@@ -31,6 +31,7 @@ cvar_t mp_skipdefaults = { "mp_skipdefaults", "0", FCVAR_SERVER };
 cvar_t mp_spectator = { "mp_spectator", "0", FCVAR_SERVER };
 cvar_t mp_unduck = { "mp_unduck", "0", FCVAR_SERVER };
 cvar_t mp_megahornet = { "mp_megahornet", "0", FCVAR_SERVER };
+cvar_t mp_anticheat = { "mp_anticheat", "1", FCVAR_SERVER };
 cvar_t mp_q1stuff = { "mp_q1stuff", "1", FCVAR_SERVER };
 
 cvar_t ggm_arch = { "ggm_arch", "", FCVAR_SERVER | FCVAR_UNLOGGED };
@@ -2978,6 +2979,22 @@ bool GGM_ClientCommand( CBasePlayer *pPlayer, const char *pCmd )
 
 /*
 =====================
+GGM_KickCheater
+
+Handle cheater kick
+=====================
+*/
+void GGM_KickCheater( CBasePlayer *player, char *CheatType )
+{
+	FILE *flch;
+	flch = fopen("cheaters.txt", "a");
+	fprintf( flch , "name: %s id: %s %s\n", GGM_PlayerName(player), GETPLAYERAUTHID(player->edict()), CheatType);
+	SERVER_COMMAND(UTIL_VarArgs("kick #%i cheater\n", GETPLAYERUSERID(player->edict()) ));
+	fclose( flch );
+}
+
+/*
+=====================
 GGM_CvarValue2
 
 Handle touch_enable cvar request
@@ -3167,6 +3184,7 @@ void GGM_RegisterCVars( void )
 	CVAR_REGISTER( &mp_gravgun_players );
 	CVAR_REGISTER( &mp_gravgun_beams );
 	CVAR_REGISTER( &mp_megahornet );
+	CVAR_REGISTER( &mp_anticheat );
 	CVAR_REGISTER( &mp_q1stuff );
 	CVAR_REGISTER( &mp_fixhornetbug );
 	CVAR_REGISTER( &mp_fixsavetime );
