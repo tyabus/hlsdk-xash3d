@@ -717,15 +717,8 @@ void CApache::Flight( void )
 			if( pitch == 100 )
 				pitch = 101;
 
-			float flVol = ( m_flForce / 100.0 ) + .1;
-			if( flVol > 1.0 ) 
-				flVol = 1.0;
-
 			EMIT_SOUND_DYN( ENT( pev ), CHAN_STATIC, "apache/ap_rotor2.wav", 1.0, 0.3, SND_CHANGE_PITCH | SND_CHANGE_VOL, pitch );
 		}
-		// EMIT_SOUND_DYN( ENT( pev ), CHAN_STATIC, "apache/ap_whine1.wav", flVol, 0.2, SND_CHANGE_PITCH | SND_CHANGE_VOL, pitch );
-	
-		// ALERT( at_console, "%.0f %.2f\n", pitch, flVol );
 	}
 }
 

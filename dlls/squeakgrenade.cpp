@@ -274,11 +274,6 @@ void CSqueakGrenade::HuntThink( void )
 		CSoundEnt::InsertSound( bits_SOUND_COMBAT, pev->origin, 256, 0.25 );
 	}
 
-	// higher pitch as squeeker gets closer to detonation time
-	float flpitch = 155.0 - 60.0 * ( ( m_flDie - gpGlobals->time ) / SQUEEK_DETONATE_DELAY );
-	if( flpitch < 100 )
-		flpitch = 100;
-
 	if( m_hEnemy != 0 )
 	{
 		if( FVisible( m_hEnemy ) )

@@ -623,13 +623,7 @@ IMPLEMENT_CUSTOM_SCHEDULES( CISlave, CSquadMonster )
 Schedule_t *CISlave::GetSchedule( void )
 {
 	ClearBeams();
-/*
-	if( pev->spawnflags )
-	{
-		pev->spawnflags = 0;
-		return GetScheduleOfType( SCHED_RELOAD );
-	}
-*/
+
 	if( HasConditions( bits_COND_HEAR_SOUND ) )
 	{
 		CSound *pSound;
@@ -637,10 +631,13 @@ Schedule_t *CISlave::GetSchedule( void )
 
 		ASSERT( pSound != NULL );
 
-		if( pSound && ( pSound->m_iType & bits_SOUND_DANGER ) )
-			return GetScheduleOfType( SCHED_TAKE_COVER_FROM_BEST_SOUND );
-		if( pSound->m_iType & bits_SOUND_COMBAT )
-			m_afMemory |= bits_MEMORY_PROVOKED;
+		if( pSound )
+		{
+			if( pSound && ( pSound->m_iType & bits_SOUND_DANGER ) )
+				return GetScheduleOfType( SCHED_TAKE_COVER_FROM_BEST_SOUND );
+			if( pSound->m_iType & bits_SOUND_COMBAT )
+				m_afMemory |= bits_MEMORY_PROVOKED;
+		}
 	}
 
 	switch( m_MonsterState )

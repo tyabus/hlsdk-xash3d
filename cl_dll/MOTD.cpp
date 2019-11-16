@@ -86,7 +86,6 @@ int CHudMOTD::Draw( float fTime )
 		ypos_r = ROW_RANGE_MIN;
 		height = ROW_RANGE_MAX;
 	}
-	int ymax = ypos + height;
 	if( xmax > ScreenWidth - 30 ) xmax = ScreenWidth - 30;
 	gHUD.DrawDarkRectangle( xpos - 5, ypos_r - 5, xmax - xpos + 10, height + 10 );
 	while( *ch )
@@ -147,7 +146,6 @@ int CHudMOTD::MsgFunc_MOTD( const char *pszName, int iSize, void *pbuf )
 				if( length > m_iMaxLength )
 				{
 					m_iMaxLength = length;
-					length = 0;
 				}
 			}
 			length++;

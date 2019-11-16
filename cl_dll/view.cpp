@@ -484,11 +484,7 @@ void V_CalcNormalRefdef( struct ref_params_s *pparams )
 				}
 			}
 		}
-		else
-		{
-			waterEntity = 0;	// Don't need this in software
-		}
-	
+
 		VectorCopy( pparams->vieworg, point );
 
 		// Eyes are above water, make sure we're above the waves

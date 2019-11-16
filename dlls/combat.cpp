@@ -357,7 +357,6 @@ void CBaseMonster::GibMonster( void )
 Activity CBaseMonster::GetDeathActivity( void )
 {
 	Activity	deathActivity;
-	BOOL		fTriedDirection;
 	float		flDot;
 	TraceResult	tr;
 	Vector		vecSrc;
@@ -370,7 +369,6 @@ Activity CBaseMonster::GetDeathActivity( void )
 
 	vecSrc = Center();
 
-	fTriedDirection = FALSE;
 	deathActivity = ACT_DIESIMPLE;// in case we can't find any special deaths to do.
 
 	UTIL_MakeVectors( pev->angles );
@@ -387,7 +385,6 @@ Activity CBaseMonster::GetDeathActivity( void )
 		break;
 	case HITGROUP_GENERIC:
 		// try to pick a death based on attack direction
-		fTriedDirection = TRUE;
 		if( flDot > 0.3 )
 		{
 			deathActivity = ACT_DIEFORWARD;
@@ -399,7 +396,6 @@ Activity CBaseMonster::GetDeathActivity( void )
 		break;
 	default:
 		// try to pick a death based on attack direction
-		fTriedDirection = TRUE;
 
 		if( flDot > 0.3 )
 		{
@@ -415,23 +411,14 @@ Activity CBaseMonster::GetDeathActivity( void )
 	// can we perform the prescribed death?
 	if( LookupActivity( deathActivity ) == ACTIVITY_NOT_AVAILABLE )
 	{
-		// no! did we fail to perform a directional death? 
-		if( fTriedDirection )
+		// cannot perform the ideal region-specific death, so try a direction.
+		if( flDot > 0.3 )
 		{
-			// if yes, we're out of options. Go simple.
-			deathActivity = ACT_DIESIMPLE;
+			deathActivity = ACT_DIEFORWARD;
 		}
-		else
+		else if( flDot <= -0.3 )
 		{
-			// cannot perform the ideal region-specific death, so try a direction.
-			if( flDot > 0.3 )
-			{
-				deathActivity = ACT_DIEFORWARD;
-			}
-			else if( flDot <= -0.3 )
-			{
-				deathActivity = ACT_DIEBACKWARD;
-			}
+			deathActivity = ACT_DIEBACKWARD;
 		}
 	}
 

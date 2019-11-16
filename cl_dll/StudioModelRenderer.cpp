@@ -684,9 +684,6 @@ void CStudioModelRenderer::StudioFxTransform( cl_entity_t *ent, float transform[
 		else if( gEngfuncs.pfnRandomLong( 0, 49 ) == 0 )
 		{
 			float offset;
-			int axis = gEngfuncs.pfnRandomLong(0,1);
-			if( axis == 1 ) // Choose between x & z
-				axis = 2;
 			offset = gEngfuncs.pfnRandomFloat( -10, 10 );
 			transform[gEngfuncs.pfnRandomLong( 0, 2 )][3] += offset;
 		}

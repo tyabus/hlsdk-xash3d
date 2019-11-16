@@ -2279,7 +2279,6 @@ int CGraph::FLoadGraph( const char *szMapName )
 		if( length < 0 )
 			goto ShortFile;
 		memcpy( m_pHashLinks, pMemFile, sizeof(short) * m_nHashLinks );
-		pMemFile += sizeof(short) * m_nHashLinks;
 
 		// Set the graph present flag, clear the pointers set flag
 		//
@@ -3341,8 +3340,6 @@ void CNodeViewer::Spawn()
 		int start = 0;
 		int end;
 		do{
-			end = m_nVisited;
-			// ALERT( at_console, "%d :", m_nVisited );
 			for( end = m_nVisited; start < end; start++ )
 			{
 				FindNodeConnections( m_aFrom[start] );
