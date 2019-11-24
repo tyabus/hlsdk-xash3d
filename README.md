@@ -1,8 +1,25 @@
 # Half-Life SDK for Xash3D
 
-Half-Life SDK for Xash3D & GoldSource with some fixes.
+Half-Life SDK for Xash3D
 
 ## How to build
+
+### CMake as most universal way
+
+    mkdir build && cd build
+    cmake ../
+    make
+
+Crosscompiling using mingw:
+
+    mkdir build-mingw && cd build-mingw
+    TOOLCHAIN_PREFIX=i686-w64-mingw32 # check up the actual mingw prefix of your mingw installation
+    cmake ../ -DCMAKE_SYSTEM_NAME=Windows -DCMAKE_C_COMPILER="$TOOLCHAIN_PREFIX-gcc" -DCMAKE_CXX_COMPILER="$TOOLCHAIN_PREFIX-g++"
+
+You may enable or disable some build options by -Dkey=value. All available build options are defined in CMakeLists.txt at root directory.
+See below if you want to build the GoldSource compatible libraries.
+
+See below, if CMake is not suitable for you:
 
 ### Windows
 
@@ -26,20 +43,12 @@ There're dsp projects for Visual Studio 6 in `cl_dll` and `dlls` directories, bu
 
 TODO
 
-### Linux
+### Unix-like
 
-    (git clone https://github.com/FWGS/microndk.git)
-    (cd dlls && make -f ~/path/to/microndk.mk)
-    (cd cl_dll && make -f ~/path/to/microndk.mk)
+To use waf, you need to install python (2.7 minimum)
 
-### OS X
-
-Nothing here.
-
-### FreeBSD
-    (git clone https://github.com/FWGS/microndk.git)
-    (cd dlls && gmake CXX=clang++ CC=clang -f ~/path/to/microndk.mk)
-    (cd cl_dll && gmake CXX=clang++ CC=clang -f ~/path/to/microndk.mk)
+    (./waf configure -T release)
+    (./waf)
 
 ### Android
 
@@ -48,9 +57,13 @@ TODO: describe what it is.
 
 ### Building GoldSource-compatible libraries
 
-To enable building the goldsource compatible client library add GOLDSOURCE_SUPPORT flag when calling make:
+To enable building the goldsource compatible client library add GOLDSOURCE_SUPPORT flag when calling cmake:
 
-    make GOLDSOURCE_SUPPORT=1 -f /path/to/microndk.mk
+    cmake .. -DGOLDSOURCE_SUPPORT=ON
+
+or when using waf:
+
+     ./waf configure -T release --enable-goldsrc-support
 
 Unlike original client by Valve the resulting client library will not depend on vgui or SDL2 just like the one that's used in FWGS Xash3d.
 
@@ -62,9 +75,8 @@ If your Linux distribution does not provide compatible g++ version you have seve
 #### Method 1: Statically build with c++ library
 
 This one is the most simple but has a drawback.
-Add this line to LOCAL_CFLAGS -static-libstdc++ -static-libgcc in Android.mk
 
-    make -DGOLDSOURCE_SUPPORT=1 -f /path/to/microndk.mk
+    cmake ../ -DGOLDSOURCE_SUPPORT=ON -DCMAKE_C_FLAGS="-static-libstdc++ -static-libgcc"
 
 The drawback is that the compiled libraries will be larger in size.
 
@@ -76,14 +88,11 @@ Clone https://github.com/ValveSoftware/steam-runtime and follow instructions htt
 
     sudo ./setup_chroot.sh --i386
 
-Then use make as usual, but prepend the commands with `schroot --chroot steamrt_scout_i386 --`:
+Then use cmake and make as usual, but prepend the commands with `schroot --chroot steamrt_scout_i386 --`:
 
     mkdir build-in-steamrt && cd build-in-steamrt
-    schroot --chroot steamrt_scout_i386 -- cd dlls
-    schroot --chroot steamrt_scout_i386 -- make -f ~/path/to/microndk.mk
-    schroot --chroot steamrt_scout_i386 -- cd cl_dlls
-    schroot --chroot steamrt_scout_i386 -- make -f ~/path/to/microndk.mk
-
+    schroot --chroot steamrt_scout_i386 -- cmake ../ -DGOLDSOURCE_SUPPORT=ON
+    schroot --chroot steamrt_scout_i386 -- make
 
 #### Method 3: Create your own chroot with older distro that includes g++ 4.
 
@@ -92,7 +101,7 @@ Use the most suitable way for you to create an old distro 32-bit chroot. E.g. on
     sudo debootstrap --arch=i386 jessie /var/chroot/jessie-debian-i386 # On Ubuntu type trusty instead of jessie
     sudo chroot /var/chroot/jessie-debian-i386
 
-Inside chroot install make, g++ and libsdl2-dev. Then exit the chroot.
+Inside chroot install cmake, make, g++ and libsdl2-dev. Then exit the chroot.
 
 On the host system install schroot. Then create and adapt the following config in /etc/schroot/chroot.d/jessie.conf (you can choose a different name):
 
@@ -108,10 +117,11 @@ preserve-environment=true
 personality=linux32
 ```
 
-Insert your actual user name in place of `yourusername`. Then prepend any make call with `schroot -c jessie --`:
+Insert your actual user name in place of `yourusername`. Then prepend any make or cmake call with `schroot -c jessie --`:
 
     mkdir build-in-chroot && cd build-in-chroot
-    schroot --chroot jessie -- make -f ~/path/to/microndk.mk
+    schroot --chroot jessie -- cmake ../ -DGOLDSOURCE_SUPPORT=ON
+    schroot --chroot jessie -- make
 
 #### Method 4:  Install the needed g++ version yourself
 
@@ -123,5 +133,10 @@ Create a file with the following contents anywhere:
 
 ```sh
 #!/bin/sh
-schroot --chroot steamrt_scout_i386 -- make -f ~/path/to/microndk.mk "$@"
+schroot --chroot steamrt_scout_i386 -- cmake "$@"
 ```
+
+Make it executable.
+In Qt Creator go to `Tools` -> `Options` -> `Build & Run` -> `CMake`. Add a new cmake tool and specify the path of previously created file.
+Go to `Kits` tab, clone your default configuration and choose your CMake tool there.
+Choose the new kit when opening CMakeLists.txt.

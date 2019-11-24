@@ -5,7 +5,7 @@ Extended Half-Life mod
 
 ### Main features:
 
-* New weapons (GravGun, AR2, BIG_COCK, Gate of Babylon, M249, Knife, ShockRifle, Displacer)
+* New weapons (GravGun, AR2, Big Cock, Gate of Babylon, M249, Knife, ShockRifle, Displacer)
 * New monsters (Poisoncrab, Cleansuit Scientist, Dead Skeleton, Zombie Soldier, Zombie Barney, Dead Construction Workerer, Construction Workerer, Diablo, Dead Houndeye)
 * Pseudo-physics for weapons, ammo, items, props
 * Co-op mode
@@ -13,6 +13,7 @@ Extended Half-Life mod
 * Advanced menu, motd and help system
 * Server-side visibility limit
 * Easter eggs
+* Anticheat
 * error.mdl support (like in Source Engine)
 * Other tools
 
@@ -101,7 +102,7 @@ Useful if you do not want to use error.mdl
 
 ## Menu command system
 
-GravGumMod has advanced command processing
+GravGunMod has advanced command processing
 
 Command may be entered in console, in chat with `'/'` prefix and from menu
 
@@ -166,14 +167,15 @@ tweaks:
 mp_ar2_mp5 - make ar2 use mp5 ammo
 mp_ar2_bullets - default ar2 bullets count
 mp_ar2_balls - default ar2 balls count
-mp_ar2_allow_balls - allow ar2 balls ( can prevent crash on coop during transfer ar2grenade entity)
+mp_ar2_allow_balls - allow ar2 balls ( can prevent crash on coop during transfer ar2grenade entity )
 mp_wresptime - weapon respawn time
 mp_iresptime - item respawn time
 mp_hgibcount - human gibs count
 mp_agibcount - alien gibs count
 mp_gibtime - set gib stay time
 mp_fixhornetbug - enable workaround for hornetgun bug
-mp_megahornet - enable a new type of hornet
+mp_megahornet - enable/disable a new type of hornet
+mp_anticheat - enable/disable a simple anticheat
 mp_q1stuff - enable/disable q1 stuff
 mp_fixsavetime - cut down time when loading
 save (useful for very LOOOOONG game and sandbox
