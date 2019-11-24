@@ -3469,12 +3469,12 @@ void CBasePlayer::ImpulseCommands()
 			gmsgLogo = 0;
 		break;
 	case 100:
-        // temporary flashlight for level designers
+        	// temporary flashlight for level designers
 		if( FlashlightIsOn() )
 		{
 			FlashlightTurnOff();
 		}
-		else 
+		else
 		{
 			FlashlightTurnOn();
 		}
@@ -3511,6 +3511,9 @@ void CBasePlayer::ImpulseCommands()
 //=========================================================
 void CBasePlayer::CheatImpulseCommands( int iImpulse )
 {
+	if( !g_flWeaponCheat )
+		return;
+
 	CBaseEntity *pEntity;
 	TraceResult tr;
 
@@ -3520,9 +3523,6 @@ void CBasePlayer::CheatImpulseCommands( int iImpulse )
 		RemoveAllItems( TRUE );
 		break;
 	case 102:
-		if( !g_flWeaponCheat )
-			break;
-
 		// Gibbage!!!
 		CGib::SpawnRandomGibs( pev, 1, 1 );
 		break;
@@ -3540,10 +3540,8 @@ void CBasePlayer::CheatImpulseCommands( int iImpulse )
 		// Dump all of the global state varaibles (and global entity names)
 		gGlobalState.DumpGlobals();
 		break;
-	case 105:// player makes no sound for monsters to hear.
-		if( !g_flWeaponCheat )
-			break;
-
+	case 105:
+		// player makes no sound for monsters to hear.
 		if( m_fNoPlayerSound )
 		{
 			ALERT( at_console, "Player is audible\n" );
@@ -3578,8 +3576,6 @@ void CBasePlayer::CheatImpulseCommands( int iImpulse )
 		break;
 	case 107:
 		{
-			//TraceResult tr;
-
 			edict_t *pWorld = g_engfuncs.pfnPEntityOfEntIndex( 0 );
 
 			Vector start = pev->origin + pev->view_ofs;
@@ -3593,36 +3589,24 @@ void CBasePlayer::CheatImpulseCommands( int iImpulse )
 		}
 		break;
 	case 195:
-		if( !g_flWeaponCheat )
-			break;
-
 		// show shortest paths for entire level to nearest node
 		{
 			Create( "node_viewer_fly", pev->origin, pev->angles );
 		}
 		break;
 	case 196:
-		if( !g_flWeaponCheat )
-			break;
-
 		// show shortest paths for entire level to nearest node
 		{
 			Create( "node_viewer_large", pev->origin, pev->angles );
 		}
 		break;
 	case 197:
-		if( g_flWeaponCheat )
-			break;
-
 		// show shortest paths for entire level to nearest node
 		{
 			Create( "node_viewer_human", pev->origin, pev->angles );
 		}
 		break;
 	case 199:
-		if( !g_flWeaponCheat )
-			break;
-
 		// show nearest node and all connections
 		{
 			ALERT( at_console, "%d\n", WorldGraph.FindNearestNode( pev->origin, bits_NODE_GROUP_REALM ) );
@@ -3630,9 +3614,6 @@ void CBasePlayer::CheatImpulseCommands( int iImpulse )
 		}
 		break;
 	case 202:
-		if( !g_flWeaponCheat )
-			break;
-
 		// Random blood splatter
 		UTIL_MakeVectors( pev->v_angle );
 		UTIL_TraceLine( pev->origin + pev->view_ofs, pev->origin + pev->view_ofs + gpGlobals->v_forward * 128, ignore_monsters, ENT( pev ), &tr );
@@ -3645,9 +3626,6 @@ void CBasePlayer::CheatImpulseCommands( int iImpulse )
 		}
 		break;
 	case 203:
-		if( !g_flWeaponCheat )
-			break;
-
 		// remove creature.
 		pEntity = FindEntityForward( this );
 		if( pEntity )
