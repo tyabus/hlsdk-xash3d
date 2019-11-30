@@ -36,19 +36,19 @@
 
 LINK_ENTITY_TO_CLASS( flying_crowbar, CFlyingCrowbar );
 
-void CFlyingCrowbar::Spawn( )
+void CFlyingCrowbar::Spawn()
 {
-	if( pev->owner == NULL )
+	if( !pev->owner )
 		UTIL_Remove( this );
 
-	Precache( );
+	Precache();
 
 	// The flying crowbar is MOVETYPE_TOSS, and SOLID_BBOX.
 	// We want it to be affected by gravity, and hit objects
 	// within the game.
 	pev->movetype = MOVETYPE_TOSS;
 	pev->solid = SOLID_BBOX;
-	pev->dmg = 100;
+	pev->dmg = RANDOM_LONG( 80, 100 );
 
 	// Use the world crowbar model.
 	SET_MODEL(ENT(pev), "models/w_crowbar.mdl");
@@ -56,7 +56,7 @@ void CFlyingCrowbar::Spawn( )
 	// Set the origin and size for the HL engine collision
 	// tables.
 	UTIL_SetOrigin( pev, pev->origin );
-	UTIL_SetSize(pev, Vector(-4, -4, -4), Vector(4, 4, 4));
+	UTIL_SetSize( pev, Vector(-4, -4, -4), Vector(4, 4, 4) );
 
 	// Store the owner for later use. We want the owner to be able
 	// to hit themselves with the crowbar. The pev->owner gets cleared
@@ -65,21 +65,26 @@ void CFlyingCrowbar::Spawn( )
 		m_hOwner = Instance( pev->owner );
 
 	// Set the think funtion.
-	SetThink( &CFlyingCrowbar::BubbleThink );
+	SetThink( &CFlyingCrowbar::FlyThink );
 	pev->nextthink = gpGlobals->time + 0.25;
 
 	// Set the touch function.
 	SetTouch( &CFlyingCrowbar::SpinTouch );
 }
 
-void CFlyingCrowbar::Precache( )
+void CFlyingCrowbar::Precache()
 {
 	PRECACHE_MODEL( "models/w_crowbar.mdl" );
+
 	PRECACHE_SOUND( "weapons/cbar_hitbod1.wav" );
+	PRECACHE_SOUND( "weapons/cbar_hitbod2.wav" );
+	PRECACHE_SOUND( "weapons/cbar_hitbod3.wav" );
+
 	PRECACHE_SOUND( "weapons/cbar_hit1.wav" );
+	PRECACHE_SOUND( "weapons/cbar_hit2.wav" );
+
 	PRECACHE_SOUND( "weapons/cbar_miss1.wav" );
 }
-
 
 void CFlyingCrowbar::SpinTouch( CBaseEntity *pOther )
 {
@@ -90,7 +95,7 @@ void CFlyingCrowbar::SpinTouch( CBaseEntity *pOther )
 	{
 		TraceResult tr = UTIL_GetGlobalTrace( );
 
-		ClearMultiDamage( );
+		ClearMultiDamage();
 		   pOther->TraceAttack( pev, pev->dmg, pev->velocity.Normalize(), &tr, DMG_ALWAYSGIB );
 		if ( m_hOwner != NULL )
 			ApplyMultiDamage( pev, m_hOwner->pev );
@@ -100,11 +105,33 @@ void CFlyingCrowbar::SpinTouch( CBaseEntity *pOther )
 
 	// If we hit a player, make a nice squishy thunk sound. Otherwise
 	// make a clang noise and throw a bunch of sparks.
-	if (pOther->IsPlayer())
-		EMIT_SOUND_DYN(ENT(pev), CHAN_WEAPON, "weapons/cbar_hitbod1.wav", 1.0, ATTN_NORM, 0, 100);
+	if ( pOther->IsPlayer() )
+	{
+		switch( RANDOM_LONG( 0, 2 ) )
+		{
+			case 0:
+				EMIT_SOUND_DYN(ENT(pev), CHAN_WEAPON, "weapons/cbar_hitbod1.wav", 1.0, ATTN_NORM, 0, 100);
+				break;
+			case 1:
+				EMIT_SOUND_DYN(ENT(pev), CHAN_WEAPON, "weapons/cbar_hitbod2.wav", 1.0, ATTN_NORM, 0, 100);
+				break;
+			case 2:
+				EMIT_SOUND_DYN(ENT(pev), CHAN_WEAPON, "weapons/cbar_hitbod3.wav", 1.0, ATTN_NORM, 0, 100);
+				break;
+		}
+	}
 	else
 	{
-		EMIT_SOUND_DYN(ENT(pev), CHAN_WEAPON, "weapons/cbar_hit1.wav", 1.0, ATTN_NORM, 0, 100);
+		switch( RANDOM_LONG( 0, 1 ) )
+		{
+			case 0:
+				EMIT_SOUND_DYN(ENT(pev), CHAN_WEAPON, "weapons/cbar_hit1.wav", 1.0, ATTN_NORM, 0, 100);
+				break;
+			case 1:
+				EMIT_SOUND_DYN(ENT(pev), CHAN_WEAPON, "weapons/cbar_hit2.wav", 1.0, ATTN_NORM, 0, 100);
+				break;
+		}
+
 		if (UTIL_PointContents(pev->origin) != CONTENTS_WATER)
 		{
 			UTIL_Sparks( pev->origin );
@@ -119,7 +146,7 @@ void CFlyingCrowbar::SpinTouch( CBaseEntity *pOther )
 	// Spawn a crowbar weapon
 	CBasePlayerWeapon *pItem = (CBasePlayerWeapon *)Create( "weapon_crowbar", pev->origin , pev->angles, edict() );
 
-	// remove the weapon box after 2 mins
+	// remove the weaponbox after 2 mins
 	pItem->pev->nextthink = gpGlobals->time + 120;
 	pItem->SetThink( &CBasePlayerWeapon::Kill );
 	pItem->pev->angles.x = 0;
@@ -145,7 +172,7 @@ void CFlyingCrowbar::SpinTouch( CBaseEntity *pOther )
 	UTIL_Remove( this );
 }
 
-void CFlyingCrowbar::BubbleThink( void )
+void CFlyingCrowbar::FlyThink( void )
 {
 	pev->owner = NULL;
 

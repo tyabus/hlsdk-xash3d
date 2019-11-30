@@ -22,7 +22,7 @@
 
 #include "extdll.h"
 #include "util.h"
-
+#include "gravgunmod.h"
 #include "cbase.h"
 #include "player.h"
 #include "trains.h"
@@ -159,7 +159,6 @@ int gmsgHealth = 0;
 int gmsgDamage = 0;
 int gmsgBattery = 0;
 int gmsgTrain = 0;
-int gmsgLogo = 0;
 int gmsgWeaponList = 0;
 int gmsgAmmoX = 0;
 int gmsgHudText = 0;
@@ -3445,29 +3444,6 @@ void CBasePlayer::ImpulseCommands()
 	int iImpulse = (int)pev->impulse;
 	switch( iImpulse )
 	{
-	case 99:
-		int iOn;
-
-		if( !gmsgLogo )
-		{
-			iOn = 1;
-			gmsgLogo = REG_USER_MSG( "Logo", 1 );
-		} 
-		else 
-		{
-			iOn = 0;
-		}
-
-		ASSERT( gmsgLogo > 0 );
-
-		// send "health" update message
-		MESSAGE_BEGIN( MSG_ONE, gmsgLogo, NULL, pev );
-			WRITE_BYTE( iOn );
-		MESSAGE_END();
-
-		if(!iOn)
-			gmsgLogo = 0;
-		break;
 	case 100:
         	// temporary flashlight for level designers
 		if( FlashlightIsOn() )

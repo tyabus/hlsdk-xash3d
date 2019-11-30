@@ -32,12 +32,12 @@
 
 
 class CFlyingCrowbar : public CBaseEntity
-{	 
-public: 
+{
+public:
 
 	void Spawn( void );
 	void Precache( void );
-	void EXPORT BubbleThink( void );
+	void EXPORT FlyThink( void );
 	void EXPORT SpinTouch( CBaseEntity *pOther );
 	CBasePlayer	*m_pPlayer;
 
@@ -66,15 +66,13 @@ public:
 			ang = RANDOM_LONG(-500,-1000);
 			pev->avelocity.x = ang;
 			pev->dmg -= int(ang/10);
-			SetThink( &CFlyingCrowbar::BubbleThink );
+			SetThink( &CFlyingCrowbar::FlyThink );
 			pev->nextthink = gpGlobals->time + 0.25;
 		}
 		return -(ang/2);
 	}
 private:
- 	EHANDLE m_hOwner;		  // Original owner is stored here so we can
-									 // allow the crowbar to hit the user.
+ 	EHANDLE m_hOwner;	// Original owner is stored here so we can allow the crowbar to hit the original user.
 };
 
 #endif
-
