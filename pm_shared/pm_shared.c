@@ -2474,21 +2474,12 @@ PM_Jump
 void PM_Jump( void )
 {
 	int i;
-	qboolean tfc = false;
 
 	qboolean cansuperjump = false;
 
 	if( pmove->dead )
 	{
 		pmove->oldbuttons |= IN_JUMP;	// don't jump again until released
-		return;
-	}
-
-	tfc = atoi( pmove->PM_Info_ValueForKey( pmove->physinfo, "tfc" ) ) == 1 ? true : false;
-
-	// Spy that's feigning death cannot jump
-	if( tfc && ( pmove->deadflag == ( DEAD_DISCARDBODY + 1 ) ) )
-	{
 		return;
 	}
 
@@ -2560,14 +2551,7 @@ void PM_Jump( void )
 	if( g_bhopcap )
 		PM_PreventMegaBunnyJumping();
 
-	if( tfc )
-	{
-		pmove->PM_PlaySound( CHAN_BODY, "player/plyrjmp8.wav", 0.5, ATTN_NORM, 0, PITCH_NORM );
-	}
-	else
-	{
-		PM_PlayStepSound( PM_MapTextureTypeStepType( pmove->chtexturetype ), 1.0 );
-	}
+	PM_PlayStepSound( PM_MapTextureTypeStepType( pmove->chtexturetype ), 1.0 );
 
 	// See if user can super long jump?
 	cansuperjump = atoi( pmove->PM_Info_ValueForKey( pmove->physinfo, "slj" ) ) == 1 ? true : false;

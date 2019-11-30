@@ -22,7 +22,6 @@
 
 #include "extdll.h"
 #include "util.h"
-#include "gravgunmod.h"
 #include "cbase.h"
 #include "player.h"
 #include "trains.h"
