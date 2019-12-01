@@ -24,8 +24,8 @@
 #include "gamerules.h"
 
 #ifndef CLIENT_DLL
-#define BOLT_AIR_VELOCITY	2500
-#define BOLT_WATER_VELOCITY	1500
+#define BOLT_AIR_VELOCITY	2100
+#define BOLT_WATER_VELOCITY	1600
 
 extern BOOL gPhysicsInterfaceInitialized;
 
@@ -413,7 +413,7 @@ void CCrossbow::WeaponIdle( void )
 	m_pPlayer->GetAutoaimVector( AUTOAIM_2DEGREES );  // get the autoaim vector but ignore it;  used for autoaim crosshair in DM
 
 	ResetEmptySound();
-	
+
 	if( m_flTimeWeaponIdle < UTIL_WeaponTimeBase() )
 	{
 		float flRand = UTIL_SharedRandomFloat( m_pPlayer->random_seed, 0, 1 );
@@ -449,7 +449,7 @@ void CCrossbow::WeaponIdle( void )
 class CCrossbowAmmo : public CBasePlayerAmmo
 {
 	void Spawn( void )
-	{ 
+	{
 		Precache();
 		SET_MODEL( ENT( pev ), "models/w_crossbow_clip.mdl" );
 		CBasePlayerAmmo::Spawn();
@@ -460,7 +460,7 @@ class CCrossbowAmmo : public CBasePlayerAmmo
 		PRECACHE_SOUND( "items/9mmclip1.wav" );
 	}
 	BOOL AddAmmo( CBaseEntity *pOther )
-	{ 
+	{
 		if( pOther->GiveAmmo( AMMO_CROSSBOWCLIP_GIVE, "bolts", BOLT_MAX_CARRY ) != -1 )
 		{
 			EMIT_SOUND( ENT( pev ), CHAN_ITEM, "items/9mmclip1.wav", 1, ATTN_NORM );

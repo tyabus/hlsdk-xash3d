@@ -6,11 +6,11 @@
       android:versionName="3">
     <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="19"/>
     <!-- Set your application name here -->
-    <application android:label="Half-Life Gravgun" android:debuggable="true" android:theme="@android:style/Theme.Holo" android:icon="@drawable/gravgun">
+    <application android:label="Half-Life: Gravgun" android:debuggable="true" android:icon="@drawable/gravgun">
     <!-- Set your launcher title here -->
         <activity android:name="in.celest.xash3d.LauncherActivity"
-                  android:label="Half-Life Gravgun"
-			android:windowSoftInputMode="adjustResize">
+                  android:label="Half-Life: Gravgun"
+			android:windowSoftInputMode="StateHidden|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
