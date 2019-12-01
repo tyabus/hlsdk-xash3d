@@ -282,8 +282,9 @@ void CEgon::Fire( const Vector &vecOrigSrc, const Vector &vecDir )
 			ClearMultiDamage();
 			if( pEntity->pev->takedamage )
 			{
-				pEntity->TraceAttack( m_pPlayer->pev, gSkillData.plrDmgEgonNarrow, vecDir, &tr, DMG_ENERGYBEAM );
+				pEntity->TraceAttack( m_pPlayer->pev, gSkillData.plrDmgEgonNarrow/2, vecDir, &tr, DMG_ENERGYBEAM );
 			}
+
 			ApplyMultiDamage( m_pPlayer->pev, m_pPlayer->pev );
 
 			if( g_pGameRules->IsMultiplayer() )
@@ -322,18 +323,12 @@ void CEgon::Fire( const Vector &vecOrigSrc, const Vector &vecDir )
 			}
 			ApplyMultiDamage( m_pPlayer->pev, m_pPlayer->pev );
 
-			if( g_pGameRules->IsMultiplayer() )
-			{
-				// radius damage a little more potent in multiplayer.
-				::RadiusDamage( tr.vecEndPos, pev, m_pPlayer->pev, gSkillData.plrDmgEgonWide/4, 128, CLASS_NONE, DMG_ENERGYBEAM | DMG_BLAST | DMG_ALWAYSGIB );
-			}
-
 			if( !m_pPlayer->IsAlive() )
 				return;
 
 			if( g_pGameRules->IsMultiplayer() )
 			{
-				//multiplayer uses 5 ammo/second
+				// multiplayer uses 5 ammo/second
 				if( gpGlobals->time >= m_flAmmoUseTime )
 				{
 					UseAmmo( 1 );

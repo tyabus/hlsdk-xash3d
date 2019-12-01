@@ -57,13 +57,11 @@ public:
 
 	// FIXME: need a custom barnacle model with non-generic hitgroup
 	// otherwise we can apply to damage to tongue instead of body
-#ifdef BARNACLE_FIX_VISIBILITY
 	void SetObjectCollisionBox( void )
 	{
 		pev->absmin = pev->origin + Vector( -16, -16, -m_flCachedLength );
 		pev->absmax = pev->origin + Vector( 16, 16, 0 );
 	}
-#endif
 };
 
 LINK_ENTITY_TO_CLASS( monster_barnacle, CBarnacle )
@@ -160,14 +158,14 @@ void CBarnacle::BarnacleThink( void )
 	CBaseEntity *pTouchEnt;
 	CBaseMonster *pVictim;
 	float flLength;
-#ifdef BARNACLE_FIX_VISIBILITY
+
 	if( m_flCachedLength != ( m_flAltitude + m_flTongueAdj ) || ( pev->absmin.z != pev->origin.z + -m_flCachedLength ) )
 	{
 		// recalc collision box here to avoid barnacle disappears bug
 		m_flCachedLength = m_flAltitude + m_flTongueAdj;
 		UTIL_SetOrigin( pev, pev->origin );
 	}
-#endif
+
 	pev->nextthink = gpGlobals->time + 0.1;
 
 	if( m_hEnemy != 0 )

@@ -515,17 +515,9 @@ void CWorld::Precache( void )
 
 	PRECACHE_SOUND( "common/bodydrop3.wav" );// dead bodies hitting the ground (animation events)
 	PRECACHE_SOUND( "common/bodydrop4.wav" );
-	
-	g_Language = (int)CVAR_GET_FLOAT( "sv_language" );
-	if( g_Language == LANGUAGE_GERMAN )
-	{
-		PRECACHE_MODEL( "models/germangibs.mdl" );
-	}
-	else
-	{
-		PRECACHE_MODEL( "models/hgibs.mdl" );
-		PRECACHE_MODEL( "models/agibs.mdl" );
-	}
+
+	PRECACHE_MODEL( "models/hgibs.mdl" );
+	PRECACHE_MODEL( "models/agibs.mdl" );
 
 	PRECACHE_SOUND( "weapons/ric1.wav" );
 	PRECACHE_SOUND( "weapons/ric2.wav" );
@@ -747,29 +739,6 @@ typedef void (*LINK_ENTITY_FN)( entvars_t *pev );
 //
 int DispatchCreateEntity( edict_t *pent, const char *szName )
 {
-/*
-#ifdef CREATE_ENTITY_TEST
-	// quake armor entities. we just replaced it with item_battery...
-	if( !strcmp( szName, "item_armor1" ) || !strcmp( szName, "item_armor2" ) )
-	{
-		LINK_ENTITY_FN	SpawnEdict;
-
-		// ugly method to get acess with himself exports
-		SpawnEdict = (LINK_ENTITY_FN)GetProcAddress( GetModuleHandle( "hl" ), "item_battery" );
-
-		if( SpawnEdict != NULL )	// found the valid spawn
-		{
-			// BUGBUG: old classname hanging in memory
-			pent->v.classname = ALLOC_STRING( "item_battery" );
-
-			//ALERT( at_console, "DispatchCreateEntity: replace %s with %s\n", szName, STRING( pent->v.classname ) );
-
-			SpawnEdict( &pent->v );
-			return 0;	// handled
-		}
-	}
-#endif
-*/
 	return -1;
 }
 
@@ -799,40 +768,9 @@ int DispatchPhysicsEntity( edict_t *pEdict )
 
 	if( !pEntity )
 	{
-		//ALERT( at_console, "skip %s [%i] without private data\n", STRING( pEdict->v.classname ), ENTINDEX( pEdict ) ); 
 		return 0;	// not initialized
 	}
 #endif
-	// NOTE: at this point pEntity assume to be valid
-/*
-#ifdef CUSTOM_PHYSICS_TEST
-	// test alien controller without physics, thinking only
-	if( FClassnameIs( pEntity->pev, "monster_alien_controller" ) )
-	{
-		float thinktime;
-
-		thinktime = pEntity->pev->nextthink;
-		if( thinktime <= 0.0f || thinktime > PHYSICS_TIME() + gpGlobals->frametime )
-			return 1;
-
-		if( thinktime < PHYSICS_TIME() )
-			thinktime = PHYSICS_TIME();	// don't let things stay in the past.
-							// it is possible to start that way
-							// by a trigger with a local time.
-		pEntity->pev->nextthink = 0.0f;
-		gpGlobals->time = thinktime;
-
-		DispatchThink( pEdict );
-
-#ifdef GRAVITY_TEST
-		// stupid fake gravity test
-		pEntity->pev->origin.z -= 1;
-		LINK_ENTITY( pEdict, true );
-#endif
-		return 1;	// handled
-	}
-#endif
-*/
 	return 0;
 }
 

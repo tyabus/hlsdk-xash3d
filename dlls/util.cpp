@@ -1100,8 +1100,6 @@ void UTIL_BloodStream( const Vector &origin, const Vector &direction, int color,
 	if( !UTIL_ShouldShowBlood( color ) )
 		return;
 
-	if( g_Language == LANGUAGE_GERMAN && color == BLOOD_COLOR_RED )
-		color = 0;
 	if( mp_serverdistclip.value && mp_servercliptents.value )
 	{
 		// loop through all players
@@ -1150,7 +1148,7 @@ void UTIL_BloodStream( const Vector &origin, const Vector &direction, int color,
 			WRITE_BYTE( Q_min( amount, 255 ) );
 		MESSAGE_END();
 	}
-}				
+}
 
 void UTIL_BloodDrips( const Vector &origin, const Vector &direction, int color, int amount )
 {
@@ -1160,14 +1158,8 @@ void UTIL_BloodDrips( const Vector &origin, const Vector &direction, int color, 
 	if( color == DONT_BLEED || amount == 0 )
 		return;
 
-	if( g_Language == LANGUAGE_GERMAN && color == BLOOD_COLOR_RED )
-		color = 0;
-
-	if( g_pGameRules->IsMultiplayer() )
-	{
-		// scale up blood effect in multiplayer for better visibility
-		amount *= 2;
-	}
+	// scale up blood effect for better visibility
+	amount *= 1.6;
 
 	if( amount > 255 )
 		amount = 255;

@@ -594,14 +594,6 @@ void CProp::PropUse(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useT
 		pev->avelocity.x = pev->avelocity.x*1.5 + RANDOM_FLOAT(100, -100);
 		//pev->avelocity.z = pev->avelocity.z*0.5 + RANDOM_FLOAT ( 100, -100 );
 	}
-	if ((pActivator->pev->button & (IN_ATTACK2)))
-	{
-		//m_Horizontal = false;
-		//pev->angles.z = 0;
-	}
-	//	m_Horizontal = (fabs(UTIL_AngleDiff(pev->angles.z, 90)) < 20) || ( sin(pev->angles.x/180*M_PI) > 0.1);
-	//	CheckRotate();
-	//ALERT( at_console, "Prop use!\n");
 }
 
 void CProp::Force(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value)
@@ -688,14 +680,17 @@ void CProp::CheckRotate()
 		{
 			pev->angles.y += 90;
 
+			#ifdef _DEBUG
 			ALERT(at_console, "setH: %f %f %f\n", pev->angles.x, pev->angles.y, pev->angles.z);
+			#endif
 
 			UTIL_SetSize(pev, minsH, maxsH);
 		}
 		else if (m_shape == SHAPE_CYL_V)
 		{
-
+			#ifdef _DEBUG
 			ALERT(at_console, "setV: %f %f %f\n", pev->angles.x, pev->angles.y, pev->angles.z);
+			#endif
 
 			moveupcounter = 0;
 			UTIL_PropMoveUp(pev);
@@ -759,7 +754,6 @@ void CProp::BounceTouch(CBaseEntity *pOther)
 	m_flTouchTimer = gpGlobals->time;
 	if( !pOther->IsPlayer() )
 		m_iTouchCounter++;
-	//ALERT( at_console, "BounceTouch: %f %f %f\n", pev->angles.x, pev->angles.y, pev->angles.z );
 	// only do damage if we're moving fairly fast
 	DeployThink();
 
@@ -990,7 +984,7 @@ void CProp::AngleThink()
 			SetThink( &CProp::AngleThink);
 			pev->nextthink = gpGlobals->time + 0.1;
 		}
-		//ALERT( at_console, "AngleThink: %f %f %f\n", pev->angles.x, pev->angles.y, pev->angles.z );
+
 		pev->avelocity.y = pev->avelocity.z = 0;
 	}
 	else if (m_shape == SHAPE_CYL_V)
@@ -1095,7 +1089,10 @@ int CProp::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flD
 
 	pev->velocity = r * flDamage / -7;
 	pev->avelocity.x = pev->avelocity.x*0.5 + RANDOM_FLOAT(100, -100);
+
+	#ifdef _DEBUG
 	ALERT(at_console, "Takedmg: %s %s %f %f\n", STRING(pevInflictor->classname), STRING(pevAttacker->classname), flDamage, pev->health );
+	#endif
 
 	// now some func_breakable code
 
@@ -1133,7 +1130,10 @@ int CProp::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flD
 }
 void CProp::KeyValue( KeyValueData* pkvd )
 {
+	#ifdef _DEBUG
 	ALERT( at_console, "%s %s\n", pkvd->szKeyName, pkvd->szValue);
+	#endif
+
 	// UNDONE_WC: explicitly ignoring these fields, but they shouldn't be in the map file!
 	if (FStrEq(pkvd->szKeyName, "explosion"))
 	{
