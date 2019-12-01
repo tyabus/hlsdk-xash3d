@@ -10,7 +10,7 @@
     <!-- Set your launcher title here -->
         <activity android:name="in.celest.xash3d.LauncherActivity"
                   android:label="Half-Life: Gravgun"
-			android:windowSoftInputMode="StateHidden|adjustResize">
+			android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
