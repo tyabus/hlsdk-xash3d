@@ -1,4 +1,3 @@
-
 /***
 *
 *	Copyright (c) 1996-2002, Valve LLC. All rights reserved.
@@ -246,8 +245,11 @@ void ClientPutInServer( edict_t *pEntity )
 	pPlayer->pev->iuser1 = 0;
 	pPlayer->pev->iuser2 = 0;
 
-	pPlayer->m_flCheckCvars = gpGlobals->time + 10;
-	g_engfuncs.pfnQueryClientCvarValue2( pEntity, "host_ver", 116 );
+	if( g_pGameRules->IsMultiplayer() || mp_anticheat.value )
+	{
+		pPlayer->m_flCheckCvars = gpGlobals->time + 10;
+		g_engfuncs.pfnQueryClientCvarValue2( pEntity, "host_ver", 116 );
+	}
 }
 
 #ifndef NO_VOICEGAMEMGR
@@ -824,7 +826,7 @@ void PlayerPreThink( edict_t *pEntity )
 	if ( pPlayer )
 		pPlayer->PreThink( );
 
-	if( mp_anticheat.value )
+	if( mp_anticheat.value && g_pGameRules->IsMultiplayer() )
 	{
 		if( pPlayer->m_flCheckCvars <= gpGlobals->time )
 		{
