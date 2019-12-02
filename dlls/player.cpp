@@ -1427,7 +1427,7 @@ void CBasePlayer::StartObserver( Vector vecPosition, Vector vecViewAngle )
 
 void CBasePlayer::PlayerUse( void )
 {
-	if( m_ggm.iState != STATE_SPAWNED )
+	if( m_ggm.iState != STATE_SPAWNED && g_pGameRules->IsMultiplayer() )
 		return;
 
 	if( IsObserver() )
