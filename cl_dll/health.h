@@ -121,7 +121,6 @@ private:
 	DAMAGE_IMAGE m_dmg[NUM_DMG_TYPES];
 	int m_bitsDamage;
 	int DrawPain( float fTime );
-	int DrawDamage( float fTime );
 	void CalcDamageDirection( vec3_t vecFrom );
 	void UpdateTiles( float fTime, long bits );
 };

@@ -1,3 +1,4 @@
+
 /***
 *
 *	Copyright (c) 1996-2002, Valve LLC. All rights reserved.
@@ -229,8 +230,6 @@ int CHudHealth::Draw( float flTime )
 		UnpackRGB( r, g, b, gHUD.m_iDefaultHUDColor );
 		FillRGBA( x, y, iWidth, iHeight, r, g, b, a );
 	}
-
-	DrawDamage( flTime );
 	return DrawPain( flTime );
 }
 
@@ -367,58 +366,8 @@ int CHudHealth::DrawPain( float flTime )
 	return 1;
 }
 
-int CHudHealth::DrawDamage( float flTime )
-{
-	int i, r, g, b, a;
-	DAMAGE_IMAGE *pdmg;
-
-	if( !m_bitsDamage )
-		return 1;
-
-	UnpackRGB( r, g, b, gHUD.m_iDefaultHUDColor );
-
-	a = (int)( fabs( sin( flTime * 2 ) ) * 256.0 );
-
-	ScaleColors( r, g, b, a );
-
-	// check for bits that should be expired
-	for( i = 0; i < NUM_DMG_TYPES; i++ )
-	{
-		if( m_bitsDamage & giDmgFlags[i] )
-		{
-			// Draw all the items
-			SPR_Set( gHUD.GetSprite( m_HUD_dmg_bio + i ), r, g, b );
-			SPR_DrawAdditive( 0, pdmg->x, pdmg->y, &gHUD.GetSpriteRect( m_HUD_dmg_bio + i ) );
-
-			pdmg->fExpire = Q_min( flTime + DMG_IMAGE_LIFE, pdmg->fExpire );
-
-			if( pdmg->fExpire <= flTime		// when the time has expired
-				&& a < 40 )						// and the flash is at the low point of the cycle
-			{
-				pdmg->fExpire = 0;
-
-				int y = pdmg->y;
-				pdmg->x = pdmg->y = 0;
-
-				// move everyone above down
-				for( int j = 0; j < NUM_DMG_TYPES; j++ )
-				{
-					pdmg = &m_dmg[j];
-					if( ( pdmg->y ) && ( pdmg->y < y ) )
-						pdmg->y += giDmgHeight;
-
-				}
-
-				m_bitsDamage &= ~giDmgFlags[i];  // clear the bits
-			}
-		}
-	}
-
-	return 1;
-}
-
 void CHudHealth::UpdateTiles( float flTime, long bitsDamage )
-{	
+{
 	DAMAGE_IMAGE *pdmg;
 
 	// Which types are new?
