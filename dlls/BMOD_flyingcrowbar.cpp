@@ -105,7 +105,8 @@ void CFlyingCrowbar::SpinTouch( CBaseEntity *pOther )
 
 	// If we hit a player, make a nice squishy thunk sound. Otherwise
 	// make a clang noise and throw a bunch of sparks.
-	if ( pOther->IsPlayer() )
+	//if ( pOther->IsPlayer() )
+	if ( pOther->pev->takedamage )
 	{
 		switch( RANDOM_LONG( 0, 2 ) )
 		{

@@ -139,7 +139,6 @@ LOCAL_SRC_FILES := agrunt.cpp \
 	   h_player.cpp \
 	   construction.cpp \
 	   construction_dead.cpp \
-	   naziflag.cpp \
 	   zombie_barney.cpp \
 	   poisoncrab.cpp \
            gravgun.cpp \
@@ -154,9 +153,9 @@ LOCAL_SRC_FILES := agrunt.cpp \
 	   agglobal.cpp \
 	   agtimer.cpp \
            unpredictedweapon.cpp \
-	   ../pm_shared/pm_debug.c \
-	   ../pm_shared/pm_math.c \
-	   ../pm_shared/pm_shared.c \
+	   ../pm_shared/pm_debug.cpp \
+	   ../pm_shared/pm_math.cpp \
+	   ../pm_shared/pm_shared.cpp \
 	   coop.cpp \
 	   gateofbabylon.cpp \
 	   gravgunmod.cpp \

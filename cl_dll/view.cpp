@@ -49,15 +49,17 @@ extern "C"
 
 	void PM_ParticleLine( float *start, float *end, int pcolor, float life, float vert );
 	int PM_GetVisEntInfo( int ent );
-	int PM_GetPhysEntInfo( int ent );
+
 	void InterpolateAngles( float * start, float * end, float * output, float frac );
-	void NormalizeAngles( float * angles );
-	float Distance( const float * v1, const float * v2 );
 	float AngleBetweenVectors(  const float * v1,  const float * v2 );
 
 	float vJumpOrigin[3];
 	float vJumpAngles[3];
 }
+
+extern float Distance( const float * v1, const float * v2 );
+extern void NormalizeAngles( float * angles );
+extern int PM_GetPhysEntInfo( int ent );
 
 void V_DropPunchAngle( float frametime, float *ev_punchangle );
 void VectorAngles( const float *forward, float *angles );
@@ -84,7 +86,7 @@ extern Vector   dead_viewangles;
 #define CAM_MODE_FOCUS		2
 
 vec3_t v_origin, v_angles, v_cl_angles, v_sim_org, v_lastAngles;
-float v_frametime, v_lastDistance;	
+float v_frametime, v_lastDistance;
 float v_cameraRelaxAngle = 5.0f;
 float v_cameraFocusAngle = 35.0f;
 int v_cameraMode = CAM_MODE_FOCUS;
@@ -115,64 +117,6 @@ cvar_t	v_iroll_level		= {"v_iroll_level", "0.1", 0, 0.1};
 cvar_t	v_ipitch_level		= {"v_ipitch_level", "0.3", 0, 0.3};
 
 float	v_idlescale;  // used by TFC for concussion grenade effect
-
-//=============================================================================
-/*
-void V_NormalizeAngles( float *angles )
-{
-	int i;
-
-	// Normalize angles
-	for( i = 0; i < 3; i++ )
-	{
-		if( angles[i] > 180.0 )
-		{
-			angles[i] -= 360.0;
-		}
-		else if( angles[i] < -180.0 )
-		{
-			angles[i] += 360.0;
-		}
-	}
-}
-
-===================
-V_InterpolateAngles
-
-Interpolate Euler angles.
-FIXME:  Use Quaternions to avoid discontinuities
-Frac is 0.0 to 1.0 ( i.e., should probably be clamped, but doesn't have to be )
-===================
-
-void V_InterpolateAngles( float *start, float *end, float *output, float frac )
-{
-	int i;
-	float ang1, ang2;
-	float d;
-
-	V_NormalizeAngles( start );
-	V_NormalizeAngles( end );
-
-	for( i = 0 ; i < 3 ; i++ )
-	{
-		ang1 = start[i];
-		ang2 = end[i];
-
-		d = ang2 - ang1;
-		if( d > 180 )
-		{
-			d -= 360;
-		}
-		else if( d < -180 )
-		{
-			d += 360;
-		}
-
-		output[i] = ang1 + d * frac;
-	}
-
-	V_NormalizeAngles( output );
-} */
 
 // Quakeworld bob code, this fixes jitters in the mutliplayer since the clock (pparams->time) isn't quite linear
 float V_CalcBob( struct ref_params_s *pparams )

@@ -22,11 +22,8 @@
 #include "cl_util.h"
 #include "netadr.h"
 #include "parsemsg.h"
-
-extern "C"
-{
 #include "pm_shared.h"
-}
+
 
 #include <string.h>
 

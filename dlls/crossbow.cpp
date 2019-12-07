@@ -43,18 +43,7 @@ class CCrossbowBolt : public CBaseEntity
 	void EXPORT BoltTouch( CBaseEntity *pOther );
 	float TouchGravGun( CBaseEntity *attacker, int stage )
 	{
-		if( stage >= 2 )
-		{
-
-			pev->movetype = MOVETYPE_FLY;
-			pev->solid = SOLID_BBOX;
-			pev->nextthink = gpGlobals->time + 60.0;
-			SetTouch( &CCrossbowBolt::BoltTouch );
-			UTIL_MakeVectors( attacker->pev->v_angle + attacker->pev->punchangle);
-			pev->angles = UTIL_VecToAngles(gpGlobals->v_forward);
-			SetThink( &CCrossbowBolt::BubbleThink );
-		}
-		return 2000;
+		return FALSE;
 	}
 
 	int m_iTrail;
