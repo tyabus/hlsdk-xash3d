@@ -85,8 +85,7 @@ extern cvar_t mp_maxdecals;
 #elif defined(__ANDROID__)
 #define GGM_PLATFORM	"Android"
 #elif defined(__APPLE__)
-#define GGM_PLATFORM	"gay"
-#error "Gay devices are no longer supported!"
+#error "Gay devices are not supported!"
 #elif defined(__FreeBSD__)
 #define GGM_PLATFORM	"FreeBSD"
 #elif defined(__NetBSD__)
