@@ -5,7 +5,7 @@ Extended Half-Life mod
 
 ### Main features:
 
-* New weapons (GravGun, AR2, Big Cock, Gate of Babylon, M249, Knife, ShockRifle, Displacer)
+* New weapons (GravGun, AR2, Big Cock, Gate of Babylon, M249, Knife, ShockRifle)
 * New monsters (Poisoncrab, Cleansuit Scientist, Dead Skeleton, Zombie Soldier, Zombie Barney, Dead Construction Workerer, Construction Workerer, Diablo, Dead Houndeye)
 * Pseudo-physics for weapons, ammo, items, props
 * Co-op mode
@@ -157,7 +157,6 @@ mp_allow_ar2
 mp_allow_bigcock
 mp_allow_knife
 mp_allow_m249
-mp_allow_displacer
 mp_allow_shockrifle
 mp_allow_gateofbabylon
 0 - disable, 1 - enable (precache), 2 - give to player

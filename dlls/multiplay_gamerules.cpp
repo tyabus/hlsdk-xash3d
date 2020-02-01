@@ -654,8 +654,6 @@ void CHalfLifeMultiplay::PlayerSpawn( CBasePlayer *pPlayer )
                         pPlayer->GiveNamedItem( "weapon_shockrifle" );
                 if( (int)cvar_allow_m249.value == 2 )
                         pPlayer->GiveNamedItem( "weapon_m249" );
-		if( (int)cvar_allow_displacer.value == 2 )
-			pPlayer->GiveNamedItem( "weapon_displacer" );
 	}
 	else
 	{
