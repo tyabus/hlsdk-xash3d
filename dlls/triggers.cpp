@@ -1790,7 +1790,10 @@ void CChangeLevel::ChangeLevelNow( CBaseEntity *pActivator )
 //
 void CChangeLevel::TouchChangeLevel( CBaseEntity *pOther )
 {
-	if( !pOther->pev->deadflag != DEAD_NO || !pOther->IsPlayer() )
+	if( !pOther->IsPlayer() )
+		return;
+
+	if( !pOther->pev->deadflag != DEAD_NO )
 		return;
 
 	m_coopData.fSkipSpawnCheck = false;
