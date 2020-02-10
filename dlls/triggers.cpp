@@ -1793,7 +1793,7 @@ void CChangeLevel::TouchChangeLevel( CBaseEntity *pOther )
 	if( !pOther->IsPlayer() )
 		return;
 
-	if( !pOther->pev->deadflag != DEAD_NO )
+	if( !pOther->IsAlive() )
 		return;
 
 	m_coopData.fSkipSpawnCheck = false;
