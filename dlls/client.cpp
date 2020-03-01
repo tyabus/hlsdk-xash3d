@@ -245,7 +245,7 @@ void ClientPutInServer( edict_t *pEntity )
 	pPlayer->pev->iuser1 = 0;
 	pPlayer->pev->iuser2 = 0;
 
-	if( g_pGameRules->IsMultiplayer() || mp_anticheat.value )
+	if( g_pGameRules->IsMultiplayer() && mp_anticheat.value )
 	{
 		pPlayer->m_flCheckCvars = gpGlobals->time + 10;
 		g_engfuncs.pfnQueryClientCvarValue2( pEntity, "host_ver", 116 );
