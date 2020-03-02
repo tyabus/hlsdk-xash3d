@@ -149,7 +149,7 @@ void CShotgun::PrimaryAttack()
 	m_pPlayer->SetAnimation( PLAYER_ATTACK1 );
 
 	Vector vecSrc = m_pPlayer->GetGunPosition();
-	Vector vecAiming = m_pPlayer->GetAutoaimVector( AUTOAIM_5DEGREES );
+	Vector vecAiming = gpGlobals->v_forward;
 
 	Vector vecDir;
 
@@ -219,7 +219,7 @@ void CShotgun::SecondaryAttack( void )
 	m_pPlayer->SetAnimation( PLAYER_ATTACK1 );
 
 	Vector vecSrc = m_pPlayer->GetGunPosition();
-	Vector vecAiming = m_pPlayer->GetAutoaimVector( AUTOAIM_5DEGREES );
+	Vector vecAiming = gpGlobals->v_forward;
 
 	Vector vecDir;
 
@@ -316,8 +316,6 @@ void CShotgun::WeaponTick()
 void CShotgun::WeaponIdle( void )
 {
 	ResetEmptySound();
-
-	m_pPlayer->GetAutoaimVector( AUTOAIM_5DEGREES );
 
 	if( m_flTimeWeaponIdle <  UTIL_WeaponTimeBase() )
 	{

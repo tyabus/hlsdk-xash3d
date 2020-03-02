@@ -156,7 +156,7 @@ void CMP5::PrimaryAttack()
 	m_pPlayer->SetAnimation( PLAYER_ATTACK1 );
 
 	Vector vecSrc = m_pPlayer->GetGunPosition();
-	Vector vecAiming = m_pPlayer->GetAutoaimVector( AUTOAIM_5DEGREES );
+	Vector vecAiming = gpGlobals->v_forward;
 	Vector vecDir;
 #ifdef CLIENT_DLL
 	if( !bIsMultiplayer() )
@@ -255,8 +255,6 @@ void CMP5::Reload( void )
 void CMP5::WeaponIdle( void )
 {
 	ResetEmptySound();
-
-	m_pPlayer->GetAutoaimVector( AUTOAIM_5DEGREES );
 
 	if( m_flTimeWeaponIdle > UTIL_WeaponTimeBase() )
 		return;

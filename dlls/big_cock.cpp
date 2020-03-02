@@ -41,7 +41,7 @@ public:
 
 	void PrimaryAttack( void );
 	void SecondaryAttack( void );
-	void GlockFire( float flSpread, float flCycleTime, BOOL fUseAutoAim );
+	void GlockFire( float flSpread, float flCycleTime);
 	BOOL Deploy( void );
 	void Reload( void );
 	void WeaponIdle( void );
@@ -122,15 +122,15 @@ BOOL CBig_Cock::Deploy()
 
 void CBig_Cock::SecondaryAttack(void)
 {
-	GlockFire( 0.02, 0.06, FALSE );
+	GlockFire( 0.02, 0.06 );
 }
 
 void CBig_Cock::PrimaryAttack(void)
 {
-	GlockFire( 0, 0.9, TRUE );
+	GlockFire( 0, 0.9 );
 }
 
-void CBig_Cock::GlockFire(float flSpread, float flCycleTime, BOOL fUseAutoAim)
+void CBig_Cock::GlockFire(float flSpread, float flCycleTime)
 {
 	if (m_iClip <= 0)
 	{
@@ -154,14 +154,7 @@ void CBig_Cock::GlockFire(float flSpread, float flCycleTime, BOOL fUseAutoAim)
 		SendWeaponAnim( GLOCK_SHOOT_EMPTY );
 #endif
 
-	if ( fUseAutoAim )
-	{
-		PLAYBACK_EVENT_FULL( 0, m_pPlayer->edict(), m_usFireGlock1, 0.0, (float *)&g_vecZero, (float *)&g_vecZero, 0.0, 0.0, 0, 0, ( m_iClip == 0 ) ? 1 : 0, 0 );
-	}
-	else
-	{
-		PLAYBACK_EVENT_FULL( 0, m_pPlayer->edict(), m_usFireGlock2, 0.0, (float *)&g_vecZero, (float *)&g_vecZero, 0.0, 0.0, 0, 0, ( m_iClip == 0 ) ? 1 : 0, 0 );
-	}
+	PLAYBACK_EVENT_FULL( 0, m_pPlayer->edict(), m_usFireGlock2, 0.0, (float *)&g_vecZero, (float *)&g_vecZero, 0.0, 0.0, 0, 0, ( m_iClip == 0 ) ? 1 : 0, 0 );
 
 	// player "shoot" animation
 	m_pPlayer->SetAnimation( PLAYER_ATTACK1 );
@@ -204,16 +197,7 @@ void CBig_Cock::GlockFire(float flSpread, float flCycleTime, BOOL fUseAutoAim)
 	}
 
 	Vector vecSrc	 = m_pPlayer->GetGunPosition( );
-	Vector vecAiming;
-	
-	if ( fUseAutoAim )
-	{
-		vecAiming = m_pPlayer->GetAutoaimVector( AUTOAIM_10DEGREES );
-	}
-	else
-	{
-		vecAiming = gpGlobals->v_forward;
-	}
+	Vector vecAiming = gpGlobals->v_forward;
 
 	TraceResult tr;
 	if (flSpread > 0){
@@ -263,8 +247,6 @@ void CBig_Cock::Reload(void)
 void CBig_Cock::WeaponIdle(void)
 {
 	ResetEmptySound( );
-
-	m_pPlayer->GetAutoaimVector( AUTOAIM_10DEGREES );
 
 	if (m_flTimeWeaponIdle > gpGlobals->time)
 		return;

@@ -34,7 +34,6 @@ cvar_t selfgauss	= { "mp_selfgauss", "1", FCVAR_SERVER };
 cvar_t satchelfix	= { "mp_satchelfix", "0", FCVAR_SERVER };
 cvar_t forcerespawn	= { "mp_forcerespawn","1", FCVAR_SERVER };
 cvar_t flashlight	= { "mp_flashlight","0", FCVAR_SERVER };
-cvar_t aimcrosshair	= { "mp_autocrosshair","1", FCVAR_SERVER };
 cvar_t decalfrequency	= { "decalfrequency","30", FCVAR_SERVER };
 cvar_t teamlist		= { "mp_teamlist","hgrunt;scientist", FCVAR_SERVER };
 cvar_t teamoverride	= { "mp_teamoverride", "1", FCVAR_SERVER };
@@ -48,7 +47,6 @@ cvar_t mp_chattime	= { "mp_chattime","10", FCVAR_SERVER };
 
 // Engine Cvars
 cvar_t *g_psv_gravity = NULL;
-cvar_t *g_psv_aim = NULL;
 cvar_t *g_footsteps = NULL;
 
 //CVARS FOR SKILL LEVEL SETTINGS
@@ -453,7 +451,6 @@ void GameDLLInit( void )
 	// Register cvars here:
 
 	g_psv_gravity = CVAR_GET_POINTER( "sv_gravity" );
-	g_psv_aim = CVAR_GET_POINTER( "sv_aim" );
 	g_footsteps = CVAR_GET_POINTER( "mp_footsteps" );
 
 	GGM_RegisterCVars();
@@ -479,7 +476,6 @@ void GameDLLInit( void )
 	CVAR_REGISTER( &satchelfix );
 	CVAR_REGISTER( &forcerespawn );
 	CVAR_REGISTER( &flashlight );
-	CVAR_REGISTER( &aimcrosshair );
 	CVAR_REGISTER( &decalfrequency );
 	CVAR_REGISTER( &teamlist );
 	CVAR_REGISTER( &teamoverride );

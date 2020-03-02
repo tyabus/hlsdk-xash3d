@@ -297,10 +297,6 @@ public:
 	int AmmoInventory( int iAmmoIndex );
 	int Illumination( void );
 
-	void ResetAutoaim( void );
-	Vector GetAutoaimVector( float flDelta  );
-	Vector AutoaimDeflection( Vector &vecSrc, float flDist, float flDelta  );
-
 	void ForceClientDllUpdate( void );  // Forces all client .dll specific data to be resent to client.
 
 	void DeathMessage( entvars_t *pevKiller );
@@ -337,11 +333,6 @@ public:
 
 	float m_flCheckCvars;
 };
-
-#define AUTOAIM_2DEGREES  0.0348994967025
-#define AUTOAIM_5DEGREES  0.08715574274766
-#define AUTOAIM_8DEGREES  0.1391731009601
-#define AUTOAIM_10DEGREES 0.1736481776669
 
 extern int gmsgHudText;
 extern BOOL gInitHUD;

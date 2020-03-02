@@ -1291,7 +1291,6 @@ void CBasePlayerWeapon::RetireWeapon( void )
 		// Another weapon wasn't selected. Get rid of current one
 		if( m_pPlayer->m_pActiveItem == this )
 		{
-			m_pPlayer->ResetAutoaim();
 			m_pPlayer->m_pActiveItem->Holster();
 			m_pPlayer->m_pLastItem = NULL;
 			m_pPlayer->m_pActiveItem = NULL;

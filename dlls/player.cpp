@@ -116,34 +116,7 @@ TYPEDESCRIPTION	CBasePlayer::m_playerSaveData[] =
 	DEFINE_FIELD( CBasePlayer, m_pTank, FIELD_EHANDLE ),
 	DEFINE_FIELD( CBasePlayer, m_iHideHUD, FIELD_INTEGER ),
 	DEFINE_FIELD( CBasePlayer, m_iFOV, FIELD_INTEGER ),
-
-	//DEFINE_FIELD( CBasePlayer, m_fDeadTime, FIELD_FLOAT ), // only used in multiplayer games
-	//DEFINE_FIELD( CBasePlayer, m_fGameHUDInitialized, FIELD_INTEGER ), // only used in multiplayer games
-	//DEFINE_FIELD( CBasePlayer, m_flStopExtraSoundTime, FIELD_TIME ),
-	//DEFINE_FIELD( CBasePlayer, m_fKnownItem, FIELD_INTEGER ), // reset to zero on load
-	//DEFINE_FIELD( CBasePlayer, m_iPlayerSound, FIELD_INTEGER ),	// Don't restore, set in Precache()
-	//DEFINE_FIELD( CBasePlayer, m_pentSndLast, FIELD_EDICT ),	// Don't restore, client needs reset
-	//DEFINE_FIELD( CBasePlayer, m_flSndRoomtype, FIELD_FLOAT ),	// Don't restore, client needs reset
-	//DEFINE_FIELD( CBasePlayer, m_flSndRange, FIELD_FLOAT ),	// Don't restore, client needs reset
-	//DEFINE_FIELD( CBasePlayer, m_fNewAmmo, FIELD_INTEGER ), // Don't restore, client needs reset
-	//DEFINE_FIELD( CBasePlayer, m_flgeigerRange, FIELD_FLOAT ),	// Don't restore, reset in Precache()
-	//DEFINE_FIELD( CBasePlayer, m_flgeigerDelay, FIELD_FLOAT ),	// Don't restore, reset in Precache()
-	//DEFINE_FIELD( CBasePlayer, m_igeigerRangePrev, FIELD_FLOAT ),	// Don't restore, reset in Precache()
-	//DEFINE_FIELD( CBasePlayer, m_iStepLeft, FIELD_INTEGER ), // Don't need to restore
-	//DEFINE_ARRAY( CBasePlayer, m_szTextureName, FIELD_CHARACTER, CBTEXTURENAMEMAX ), // Don't need to restore
-	//DEFINE_FIELD( CBasePlayer, m_chTextureType, FIELD_CHARACTER ), // Don't need to restore
-	//DEFINE_FIELD( CBasePlayer, m_fNoPlayerSound, FIELD_BOOLEAN ), // Don't need to restore, debug
-	//DEFINE_FIELD( CBasePlayer, m_iUpdateTime, FIELD_INTEGER ), // Don't need to restore
-	//DEFINE_FIELD( CBasePlayer, m_iClientHealth, FIELD_INTEGER ), // Don't restore, client needs reset
-	//DEFINE_FIELD( CBasePlayer, m_iClientBattery, FIELD_INTEGER ), // Don't restore, client needs reset
-	//DEFINE_FIELD( CBasePlayer, m_iClientHideHUD, FIELD_INTEGER ), // Don't restore, client needs reset
-	//DEFINE_FIELD( CBasePlayer, m_fWeapon, FIELD_BOOLEAN ),  // Don't restore, client needs reset
-	//DEFINE_FIELD( CBasePlayer, m_nCustomSprayFrames, FIELD_INTEGER ), // Don't restore, depends on server message after spawning and only matters in multiplayer
-	//DEFINE_FIELD( CBasePlayer, m_vecAutoAim, FIELD_VECTOR ), // Don't save/restore - this is recomputed
-	//DEFINE_ARRAY( CBasePlayer, m_rgAmmoLast, FIELD_INTEGER, MAX_AMMO_SLOTS ), // Don't need to restore
-	//DEFINE_FIELD( CBasePlayer, m_fOnTarget, FIELD_BOOLEAN ), // Don't need to restore
-	//DEFINE_FIELD( CBasePlayer, m_nCustomSprayFrames, FIELD_INTEGER ), // Don't need to restore
-};	
+};
 
 int gmsgShake = 0;
 int gmsgFade = 0;
@@ -743,7 +716,6 @@ void CBasePlayer::RemoveAllItems( BOOL removeSuit )
 
 	if( m_pActiveItem )
 	{
-		ResetAutoaim();
 		m_pActiveItem->Holster();
 		m_pActiveItem = NULL;
 	}
@@ -3112,8 +3084,6 @@ void CBasePlayer::SelectNextItem( int iItem )
 		m_rgpPlayerItems[iItem] = pItem;
 	}
 
-	ResetAutoaim();
-
 	// FIX, this needs to queue them up and delay
 	if( m_pActiveItem )
 	{
@@ -3160,8 +3130,6 @@ void CBasePlayer::SelectItem( const char *pstr )
 	if( pItem == m_pActiveItem )
 		return;
 
-	ResetAutoaim();
-
 	// FIX, this needs to queue them up and delay
 	if( m_pActiveItem )
 		m_pActiveItem->Holster();
@@ -3187,8 +3155,6 @@ void CBasePlayer::SelectLastItem( void )
 	{
 		return;
 	}
-
-	ResetAutoaim();
 
 	// FIX, this needs to queue them up and delay
 	if( m_pActiveItem )
@@ -3668,7 +3634,6 @@ int CBasePlayer::RemovePlayerItem( CBasePlayerItem *pItem, bool bCallHolster )
 
 	if( m_pActiveItem == pItem )
 	{
-		ResetAutoaim();
 		if( bCallHolster )
 			pItem->Holster();
 		m_pActiveItem = NULL;
@@ -4193,218 +4158,6 @@ void CBasePlayer::EnableControl( BOOL fControl )
 #define DOT_20DEGREE  0.9396926207859
 #define DOT_25DEGREE  0.9063077870367
 
-//=========================================================
-// Autoaim
-// set crosshair position to point to enemey
-//=========================================================
-Vector CBasePlayer::GetAutoaimVector( float flDelta )
-{
-	if( g_iSkillLevel == SKILL_HARD )
-	{
-		UTIL_MakeVectors( pev->v_angle + pev->punchangle );
-		return gpGlobals->v_forward;
-	}
-
-	Vector vecSrc = GetGunPosition();
-	float flDist = 8192;
-
-	// always use non-sticky autoaim
-	// UNDONE: use sever variable to chose!
-	if( 1 || g_iSkillLevel == SKILL_MEDIUM )
-	{
-		m_vecAutoAim = Vector( 0, 0, 0 );
-		// flDelta *= 0.5;
-	}
-
-	BOOL m_fOldTargeting = m_fOnTarget;
-	Vector angles = AutoaimDeflection(vecSrc, flDist, flDelta );
-
-	// update ontarget if changed
-	if( !g_pGameRules->AllowAutoTargetCrosshair() )
-		m_fOnTarget = 0;
-	else if( m_fOldTargeting != m_fOnTarget )
-	{
-		m_pActiveItem->UpdateItemInfo();
-	}
-
-	if( angles.x > 180 )
-		angles.x -= 360;
-	if( angles.x < -180 )
-		angles.x += 360;
-	if( angles.y > 180 )
-		angles.y -= 360;
-	if( angles.y < -180 )
-		angles.y += 360;
-
-	if( angles.x > 25 )
-		angles.x = 25;
-	if( angles.x < -25 )
-		angles.x = -25;
-	if( angles.y > 12 )
-		angles.y = 12;
-	if( angles.y < -12 )
-		angles.y = -12;
-
-	// always use non-sticky autoaim
-	// UNDONE: use sever variable to chose!
-	if( 0 || g_iSkillLevel == SKILL_EASY )
-	{
-		m_vecAutoAim = m_vecAutoAim * 0.67 + angles * 0.33;
-	}
-	else
-	{
-		m_vecAutoAim = angles * 0.9;
-	}
-
-	// m_vecAutoAim = m_vecAutoAim * 0.99;
-
-	// Don't send across network if sv_aim is 0
-	if( g_psv_aim->value != 0 )
-	{
-		if( m_vecAutoAim.x != m_lastx || m_vecAutoAim.y != m_lasty )
-		{
-			SET_CROSSHAIRANGLE( edict(), -m_vecAutoAim.x, m_vecAutoAim.y );
-
-			m_lastx = (int)m_vecAutoAim.x;
-			m_lasty = (int)m_vecAutoAim.y;
-		}
-	}
-
-	// ALERT( at_console, "%f %f\n", angles.x, angles.y );
-
-	UTIL_MakeVectors( pev->v_angle + pev->punchangle + m_vecAutoAim );
-	return gpGlobals->v_forward;
-}
-
-Vector CBasePlayer::AutoaimDeflection( Vector &vecSrc, float flDist, float flDelta )
-{
-	edict_t *pEdict = g_engfuncs.pfnPEntityOfEntIndex( 1 );
-	CBaseEntity *pEntity;
-	float bestdot;
-	Vector bestdir;
-	edict_t *bestent;
-	TraceResult tr;
-
-	if( g_psv_aim->value == 0 )
-	{
-		m_fOnTarget = FALSE;
-		return g_vecZero;
-	}
-
-	UTIL_MakeVectors( pev->v_angle + pev->punchangle + m_vecAutoAim );
-
-	// try all possible entities
-	bestdir = gpGlobals->v_forward;
-	bestdot = flDelta; // +- 10 degrees
-	bestent = NULL;
-
-	m_fOnTarget = FALSE;
-
-	UTIL_TraceLine( vecSrc, vecSrc + bestdir * flDist, dont_ignore_monsters, edict(), &tr );
-
-	if( tr.pHit && tr.pHit->v.takedamage != DAMAGE_NO )
-	{
-		// don't look through water
-		if( !( ( pev->waterlevel != 3 && tr.pHit->v.waterlevel == 3 ) || ( pev->waterlevel == 3 && tr.pHit->v.waterlevel == 0 ) ) )
-		{
-			if( tr.pHit->v.takedamage == DAMAGE_AIM )
-				m_fOnTarget = TRUE;
-
-			return m_vecAutoAim;
-		}
-	}
-
-	for( int i = 1; i < gpGlobals->maxEntities; i++, pEdict++ )
-	{
-		Vector center;
-		Vector dir;
-		float dot;
-
-		if( pEdict->free )	// Not in use
-			continue;
-
-		if( pEdict->v.takedamage != DAMAGE_AIM )
-			continue;
-		if( pEdict == edict() )
-			continue;
-		//if( pev->team > 0 && pEdict->v.team == pev->team )
-		//	continue;	// don't aim at teammate
-		if( !g_pGameRules->ShouldAutoAim( this, pEdict ) )
-			continue;
-
-		pEntity = Instance( pEdict );
-		if( pEntity == NULL )
-			continue;
-
-		if( !pEntity->IsAlive() )
-			continue;
-
-		// don't look through water
-		if( ( pev->waterlevel != 3 && pEntity->pev->waterlevel == 3 ) || ( pev->waterlevel == 3 && pEntity->pev->waterlevel == 0 ) )
-			continue;
-
-		center = pEntity->BodyTarget( vecSrc );
-
-		dir = ( center - vecSrc ).Normalize();
-
-		// make sure it's in front of the player
-		if( DotProduct( dir, gpGlobals->v_forward ) < 0 )
-			continue;
-
-		dot = fabs( DotProduct( dir, gpGlobals->v_right ) ) + fabs( DotProduct( dir, gpGlobals->v_up ) ) * 0.5;
-
-		// tweek for distance
-		dot *= 1.0 + 0.2 * ( ( center - vecSrc ).Length() / flDist );
-
-		if( dot > bestdot )
-			continue;	// to far to turn
-
-		UTIL_TraceLine( vecSrc, center, dont_ignore_monsters, edict(), &tr );
-		if( tr.flFraction != 1.0 && tr.pHit != pEdict )
-		{
-			// ALERT( at_console, "hit %s, can't see %s\n", STRING( tr.pHit->v.classname ), STRING( pEdict->v.classname ) );
-			continue;
-		}
-
-		// don't shoot at friends
-		if( IRelationship( pEntity ) < 0 )
-		{
-			if( !pEntity->IsPlayer() && !g_pGameRules->IsDeathmatch() )
-				// ALERT( at_console, "friend\n" );
-				continue;
-		}
-
-		// can shoot at this one
-		bestdot = dot;
-		bestent = pEdict;
-		bestdir = dir;
-	}
-
-	if( bestent )
-	{
-		bestdir = UTIL_VecToAngles( bestdir );
-		bestdir.x = -bestdir.x;
-		bestdir = bestdir - pev->v_angle - pev->punchangle;
-
-		if( bestent->v.takedamage == DAMAGE_AIM )
-			m_fOnTarget = TRUE;
-
-		return bestdir;
-	}
-
-	return Vector( 0, 0, 0 );
-}
-
-void CBasePlayer::ResetAutoaim()
-{
-	if( m_vecAutoAim.x != 0 || m_vecAutoAim.y != 0 )
-	{
-		m_vecAutoAim = Vector( 0, 0, 0 );
-		SET_CROSSHAIRANGLE( edict(), 0, 0 );
-	}
-	m_fOnTarget = FALSE;
-}
-
 /*
 =============
 SetCustomDecalFrames
@@ -4581,8 +4334,6 @@ BOOL CBasePlayer::SwitchWeapon( CBasePlayerItem *pWeapon )
 	{
 		return FALSE;
 	}
-	
-	ResetAutoaim();
 
 	if( m_pActiveItem )
 	{

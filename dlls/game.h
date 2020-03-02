@@ -31,7 +31,6 @@ extern cvar_t selfgauss;
 extern cvar_t satchelfix;
 extern cvar_t forcerespawn;
 extern cvar_t flashlight;
-extern cvar_t aimcrosshair;
 extern cvar_t decalfrequency;
 extern cvar_t teamlist;
 extern cvar_t teamoverride;
@@ -44,6 +43,5 @@ extern cvar_t allowmonsters;
 
 // Engine Cvars
 extern cvar_t *g_psv_gravity;
-extern cvar_t *g_psv_aim;
 extern cvar_t *g_footsteps;
 #endif // GAME_H

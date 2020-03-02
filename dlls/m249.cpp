@@ -178,7 +178,7 @@ void CM249::PrimaryAttack()
 	m_pPlayer->SetAnimation(PLAYER_ATTACK1);
 
 	Vector vecSrc = m_pPlayer->GetGunPosition();
-	Vector vecAiming = m_pPlayer->GetAutoaimVector(AUTOAIM_5DEGREES);
+	Vector vecAiming = gpGlobals->v_forward;
 	Vector vecDir;
 
 
@@ -231,8 +231,6 @@ void CM249::Reload(void)
 void CM249::WeaponIdle(void)
 {
 	ResetEmptySound();
-
-	m_pPlayer->GetAutoaimVector(AUTOAIM_5DEGREES);
 
 	if (m_flTimeWeaponIdle > gpGlobals->time)
 		return;

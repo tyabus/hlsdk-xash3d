@@ -677,7 +677,7 @@ float CHalfLifeMultiplay::FlPlayerSpawnTime( CBasePlayer *pPlayer )
 
 BOOL CHalfLifeMultiplay::AllowAutoTargetCrosshair( void )
 {
-	return ( aimcrosshair.value != 0 );
+	return FALSE;
 }
 
 //=========================================================

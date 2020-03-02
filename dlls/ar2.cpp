@@ -534,7 +534,7 @@ void CAR2::PrimaryAttack()
 	m_pPlayer->SetAnimation(PLAYER_ATTACK1);
 
 	Vector vecSrc = m_pPlayer->GetGunPosition();
-	Vector vecAiming = m_pPlayer->GetAutoaimVector(AUTOAIM_10DEGREES);
+	Vector vecAiming = gpGlobals->v_forward;
 	Vector vecDir;
 
 	vecDir = m_pPlayer->FireBulletsPlayer(5, vecSrc, vecAiming, VECTOR_CONE_3DEGREES, 8192, BULLET_PLAYER_MP5, 0, 3, m_pPlayer->pev, m_pPlayer->random_seed);
@@ -651,9 +651,7 @@ void CAR2::WeaponIdle(void)
 {
 	ResetEmptySound();
 
-	m_pPlayer->GetAutoaimVector(AUTOAIM_5DEGREES);
-
-	if (m_flTimeWeaponIdle >gpGlobals->time)
+	if (m_flTimeWeaponIdle > gpGlobals->time)
 		return;
 
 	int iAnim;
