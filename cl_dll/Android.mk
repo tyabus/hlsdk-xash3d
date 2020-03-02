@@ -86,7 +86,6 @@ LOCAL_C_INCLUDES := $(LOCAL_PATH)/. \
 		 $(LOCAL_PATH)/../engine \
 		 $(LOCAL_PATH)/../game_shared \
 		 $(LOCAL_PATH)/../dlls \
-		 $(LOCAL_PATH)/../pm_shared \
-		 $(LOCAL_PATH)/../utils/false_vgui/include
+		 $(LOCAL_PATH)/../pm_shared
 
 include $(BUILD_SHARED_LIBRARY)

@@ -289,9 +289,6 @@ void CBasePlayer::BarnacleVictimBitten( entvars_t *pevBarnacle ) { }
 void CBasePlayer::BarnacleVictimReleased( void ) { }
 int CBasePlayer::Illumination( void ) { return 0; }
 void CBasePlayer::EnableControl( BOOL fControl ) { }
-Vector CBasePlayer::GetAutoaimVector( float flDelta ) { return g_vecZero; }
-Vector CBasePlayer::AutoaimDeflection( Vector &vecSrc, float flDist, float flDelta  ) { return g_vecZero; }
-void CBasePlayer::ResetAutoaim() { }
 void CBasePlayer::SetCustomDecalFrames( int nFrames ) { }
 int CBasePlayer::GetCustomDecalFrames( void ) { return -1; }
 void CBasePlayer::DropPlayerItem( char *pszItemName ) { }
