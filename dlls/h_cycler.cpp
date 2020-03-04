@@ -28,9 +28,6 @@
 #include "weapons.h"
 #include "player.h"
 
-#define TEMP_FOR_SCREEN_SHOTS
-#ifdef TEMP_FOR_SCREEN_SHOTS //===================================================
-
 class CCycler : public CBaseMonster
 {
 public:
@@ -206,7 +203,6 @@ int CCycler::TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float 
 
 	return 0;
 }
-#endif
 
 class CCyclerSprite : public CBaseEntity
 {

@@ -148,9 +148,7 @@ void DLLEXPORT CAM_Think( void )
 	float dist;
 	vec3_t camAngles;
 	float flSensitivity;
-#ifdef LATER
-	int i;
-#endif
+
 	vec3_t viewangles;
 
 	switch( (int)cam_command->value )
@@ -168,13 +166,7 @@ void DLLEXPORT CAM_Think( void )
 
 	if( !cam_thirdperson )
 		return;
-#ifdef LATER
-	if( cam_contain->value )
-	{
-		gEngfuncs.GetClientOrigin( origin );
-		ext[0] = ext[1] = ext[2] = 0.0;
-	}
-#endif
+
 	camAngles[PITCH] = cam_idealpitch->value;
 	camAngles[YAW] = cam_idealyaw->value;
 	dist = cam_idealdist->value;
@@ -315,34 +307,11 @@ void DLLEXPORT CAM_Think( void )
 		cam_old_mouse_y = cam_mouse.y * gHUD.GetSensitivity();
 		SetCursorPos( gEngfuncs.GetWindowCenterX(), gEngfuncs.GetWindowCenterY() );
 	}
-#ifdef LATER
-	if( cam_contain->value )
-	{
-		// check new ideal
-		VectorCopy( origin, pnt );
-		AngleVectors( camAngles, camForward, camRight, camUp );
-		for( i = 0; i < 3; i++ )
-			pnt[i] += -dist * camForward[i];
 
-		// check line from r_refdef.vieworg to pnt
-		memset( &clip, 0, sizeof(moveclip_t) );
-		clip.trace = SV_ClipMoveToEntity( sv.edicts, r_refdef.vieworg, ext, ext, pnt );
-		if( clip.trace.fraction == 1.0 )
-		{
-			// update ideal
-			cam_idealpitch->value = camAngles[PITCH];
-			cam_idealyaw->value = camAngles[YAW];
-			cam_idealdist->value = dist;
-		}
-	}
-	else
-#endif
-	{
-		// update ideal
-		cam_idealpitch->value = camAngles[PITCH];
-		cam_idealyaw->value = camAngles[YAW];
-		cam_idealdist->value = dist;
-	}
+	// update ideal
+	cam_idealpitch->value = camAngles[PITCH];
+	cam_idealyaw->value = camAngles[YAW];
+	cam_idealdist->value = dist;
 
 	// Move towards ideal
 	VectorCopy( cam_ofs, camAngles );
@@ -368,26 +337,7 @@ void DLLEXPORT CAM_Think( void )
 		else
 			camAngles[2] += ( cam_idealdist->value - camAngles[2] ) / 4.0;
 	}
-#ifdef LATER
-	if( cam_contain->value )
-	{
-		// Test new position
-		dist = camAngles[ROLL];
-		camAngles[ROLL] = 0;
 
-		VectorCopy( origin, pnt );
-		AngleVectors( camAngles, camForward, camRight, camUp );
-		for( i = 0; i < 3; i++ )
-			pnt[i] += -dist * camForward[i];
-
-		// check line from r_refdef.vieworg to pnt
-		memset( &clip, 0, sizeof(moveclip_t) );
-		ext[0] = ext[1] = ext[2] = 0.0;
-		clip.trace = SV_ClipMoveToEntity( sv.edicts, r_refdef.vieworg, ext, ext, pnt );
-		if( clip.trace.fraction != 1.0 )
-			return;
-	}
-#endif
 	cam_ofs[0] = camAngles[0];
 	cam_ofs[1] = camAngles[1];
 	cam_ofs[2] = dist;
