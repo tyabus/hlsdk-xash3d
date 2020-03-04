@@ -31,12 +31,6 @@
 //=========================================================
 void CBaseMonster::SetState( MONSTERSTATE State )
 {
-/*
-	if( State != m_MonsterState )
-	{
-		ALERT( at_aiconsole, "State Changed to %d\n", State );
-	}
-*/
 	switch( State )
 	{
 

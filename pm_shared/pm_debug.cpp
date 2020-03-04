@@ -12,7 +12,7 @@
 *   without written permission from Valve LLC.
 *
 ****/
-
+#if defined( _DEBUG )
 #include "mathlib.h"
 #include "const.h"
 #include "usercmd.h"
@@ -31,7 +31,7 @@
 extern playermove_t *pmove;
 
 // Expand debugging BBOX particle hulls by this many units.
-#define BOX_GAP 0.0f               
+#define BOX_GAP 0.0f
 
 static int PM_boxpnt[6][4] =
 {
@@ -41,21 +41,15 @@ static int PM_boxpnt[6][4] =
 	{ 7, 5, 1, 3 }, // -X
 	{ 7, 3, 2, 6 }, // -Y
 	{ 7, 6, 4, 5 }, // -Z
-};	
+};
 
 void PM_ShowClipBox( void )
 {
-#if defined( _DEBUG )
 	vec3_t org;
 	vec3_t offset = { 0, 0, 0 };
 
 	if ( !pmove->runfuncs )
 		return;
-
-	// More debugging, draw the particle bbox for player and for the entity we are looking directly at.
-	//  aslo prints entity info to the console overlay.
-	//if ( !pmove->server )
-	//	return;
 
 	// Draw entity in center of view
 	// Also draws the normal to the clip plane that intersects our movement ray.  Leaves a particle
@@ -78,19 +72,6 @@ void PM_ShowClipBox( void )
 	PM_DrawBBox( pmove->player_mins[pmove->usehull], pmove->player_maxs[pmove->usehull], org, pmove->server ? 132 : 0, 0.1 );
 
 	PM_ParticleLine( org, org, pmove->server ? 132 : 0, 0.1, 5.0 );
-/*
-	{
-		int i;
-		for ( i = 0; i < pmove->numphysent; i++ )
-		{
-			if ( pmove->physents[ i ].info >= 1 && pmove->physents[ i ].info <= 4 )
-			{
-			 	PM_DrawBBox( pmove->player_mins[pmove->usehull], pmove->player_maxs[pmove->usehull], pmove->physents[i].origin, 132, 0.1 );
-			}
-		}
-	}
-*/
-#endif
 }
 
 /*
@@ -110,7 +91,7 @@ void PM_ParticleLine(vec3_t start, vec3_t end, int pcolor, float life, float ver
 	// Determine distance;
 
 	VectorSubtract(end, start, diff);
-	
+
 	len = VectorNormalize(diff);
 
 	curdist = 0;
@@ -118,7 +99,7 @@ void PM_ParticleLine(vec3_t start, vec3_t end, int pcolor, float life, float ver
 	{
 		for (i = 0; i < 3; i++)
 			curpos[i] = start[i] + curdist * diff[i];
-		
+
 		pmove->PM_Particle( curpos, pcolor, life, 0, vert);
 		curdist += linestep;
 	}
@@ -238,7 +219,7 @@ PM_DrawBBox(vec3_t mins, vec3_t maxs, vec3_t origin, int pcolor, float life)
 void PM_DrawBBox(vec3_t mins, vec3_t maxs, vec3_t origin, int pcolor, float life)
 {
 	int j;
-	
+
 	vec3_t tmp;
 	vec3_t		p[8];
 	float gap = BOX_GAP;
@@ -306,3 +287,4 @@ void PM_ViewEntity( void )
 		PM_DrawPhysEntBBox(trace.ent, pcolor, 0.3f);
 	}
 }
+#endif

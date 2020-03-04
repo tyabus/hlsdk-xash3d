@@ -38,7 +38,6 @@ LOCAL_SRC_FILES := agrunt.cpp \
            barnacle.cpp \
            barney.cpp \
            bigmomma.cpp \
-           bloater.cpp \
            bmodels.cpp \
            bullsquid.cpp \
            buttons.cpp \
@@ -133,12 +132,9 @@ LOCAL_SRC_FILES := agrunt.cpp \
 	   cleansuit_scientist.cpp \
 	   skeleton.cpp \
 	   xtree.cpp \
-	   diablo.cpp \
 	   creeper.cpp \
 	   houndeye_dead.cpp \
 	   h_player.cpp \
-	   construction.cpp \
-	   construction_dead.cpp \
 	   zombie_barney.cpp \
 	   poisoncrab.cpp \
            gravgun.cpp \
