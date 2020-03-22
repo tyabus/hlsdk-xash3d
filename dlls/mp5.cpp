@@ -159,9 +159,9 @@ void CMP5::PrimaryAttack()
 	Vector vecAiming = gpGlobals->v_forward;
 	Vector vecDir;
 #ifdef CLIENT_DLL
-	if( !bIsMultiplayer() )
+	if( bIsMultiplayer() )
 #else
-	if( !g_pGameRules->IsMultiplayer() && !mp_coop.value )
+	if( g_pGameRules->IsMultiplayer() && !mp_coop.value )
 #endif
 	{
 		// optimized multiplayer. Widened to make it easier to hit a moving player

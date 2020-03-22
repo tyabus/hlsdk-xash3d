@@ -24,6 +24,7 @@
 #include "effects.h"
 #include "customentity.h"
 #include "gamerules.h"
+#include "coop.h"
 
 #define	EGON_PRIMARY_VOLUME		450
 #define EGON_BEAM_SPRITE		"sprites/xbeam1.spr"
@@ -287,7 +288,7 @@ void CEgon::Fire( const Vector &vecOrigSrc, const Vector &vecDir )
 
 			ApplyMultiDamage( m_pPlayer->pev, m_pPlayer->pev );
 
-			if( g_pGameRules->IsMultiplayer() )
+			if( g_pGameRules->IsMultiplayer() && !mp_coop.value )
 			{
 				// multiplayer uses 1 ammo every 1/10th second
 				if( gpGlobals->time >= m_flAmmoUseTime )
@@ -326,7 +327,7 @@ void CEgon::Fire( const Vector &vecOrigSrc, const Vector &vecDir )
 			if( !m_pPlayer->IsAlive() )
 				return;
 
-			if( g_pGameRules->IsMultiplayer() )
+			if( g_pGameRules->IsMultiplayer() && !mp_coop.value )
 			{
 				// multiplayer uses 5 ammo/second
 				if( gpGlobals->time >= m_flAmmoUseTime )

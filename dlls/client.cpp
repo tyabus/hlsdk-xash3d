@@ -143,7 +143,6 @@ void ClientDisconnect( edict_t *pEntity )
 	// since this client isn't around to think anymore, reset their sound. 
 	if( pSound )
 	{
-
 		pSound->Reset();
 	}
 

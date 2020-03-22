@@ -705,9 +705,6 @@ void CGib::BounceGibTouch( CBaseEntity *pOther )
 	Vector	vecSpot;
 	TraceResult	tr;
 
-	//if( RANDOM_LONG( 0, 1 ) )
-	//	return;// don't bleed everytime
-
 	if( pev->flags & FL_ONGROUND )
 	{
 		pev->velocity = pev->velocity * 0.9;
