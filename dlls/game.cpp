@@ -448,6 +448,12 @@ cvar_t	sk_player_leg3	= { "sk_player_leg3","1" };
 // This gets called one time when the game is initialied
 void GameDLLInit( void )
 {
+	if( !CVAR_GET_POINTER( "host_ver" ) )
+	{
+		ALERT( at_error, "GravGunMod Dosen't work on goldsource!\n" );
+		return;
+	}
+
 	// Register cvars here:
 
 	g_psv_gravity = CVAR_GET_POINTER( "sv_gravity" );
