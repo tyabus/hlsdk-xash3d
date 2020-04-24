@@ -302,7 +302,6 @@ void W_Precache( void )
 	// 9mm ammo box
 	UTIL_PrecacheOther( "ammo_9mmbox" );
 
-#if !defined( OEM_BUILD ) && !defined( HLDEMO_BUILD )
 	// python
 	UTIL_PrecacheOtherWeapon( "weapon_357" );
 	UTIL_PrecacheOther( "ammo_357" );
@@ -321,22 +320,22 @@ void W_Precache( void )
 
 	// egon
 	UTIL_PrecacheOtherWeapon( "weapon_egon" );
-#endif
+
 	// tripmine
 	UTIL_PrecacheOtherWeapon( "weapon_tripmine" );
-#if !defined( OEM_BUILD ) && !defined( HLDEMO_BUILD )
+
 	// satchel charge
 	UTIL_PrecacheOtherWeapon( "weapon_satchel" );
-#endif
+
 	// hand grenade
 	UTIL_PrecacheOtherWeapon("weapon_handgrenade");
-#if !defined( OEM_BUILD ) && !defined( HLDEMO_BUILD )
+
 	// squeak grenade
 	UTIL_PrecacheOtherWeapon( "weapon_snark" );
 
 	// hornetgun
 	UTIL_PrecacheOtherWeapon( "weapon_hornetgun" );
-#endif
+
 	if( cvar_allow_gravgun.value )
 		UTIL_PrecacheOtherWeapon( "weapon_gravgun" );
 	if( cvar_allow_ar2.value )
@@ -352,12 +351,11 @@ void W_Precache( void )
 	if( cvar_allow_m249.value )
 		UTIL_PrecacheOtherWeapon( "weapon_m249" );
 
-#if !defined( OEM_BUILD ) && !defined( HLDEMO_BUILD )
 	if ( g_pGameRules->IsDeathmatch() )
 	{
 		UTIL_PrecacheOther( "weaponbox" );// container for dropped deathmatch weapons
 	}
-#endif
+
 	g_sModelIndexFireball = PRECACHE_MODEL( "sprites/zerogxplode.spr" );// fireball
 	g_sModelIndexWExplosion = PRECACHE_MODEL( "sprites/WXplo1.spr" );// underwater fireball
 	g_sModelIndexSmoke = PRECACHE_MODEL( "sprites/steam1.spr" );// smoke

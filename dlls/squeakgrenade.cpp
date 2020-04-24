@@ -12,8 +12,6 @@
 *   without written permission from Valve LLC.
 *
 ****/
-#if !defined( OEM_BUILD ) && !defined( HLDEMO_BUILD )
-
 #include "extdll.h"
 #include "util.h"
 #include "cbase.h"
@@ -589,4 +587,3 @@ void CSqueak::WeaponIdle( void )
 	}
 	SendWeaponAnim( iAnim );
 }
-#endif

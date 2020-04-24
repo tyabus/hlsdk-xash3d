@@ -12,8 +12,6 @@
 *   use or distribution of this code by or to any unlicensed person is illegal.
 *
 ****/
-#if !defined( OEM_BUILD ) && !defined( HLDEMO_BUILD )
-
 /*
 
 	tentacle.cpp - silo of death tentacle monster (half life)
@@ -1027,4 +1025,3 @@ void CTentacleMaw::Precache()
 {
 	PRECACHE_MODEL( "models/maw.mdl" );
 }
-#endif

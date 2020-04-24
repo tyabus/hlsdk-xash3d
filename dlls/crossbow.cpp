@@ -12,8 +12,6 @@
 *   without written permission from Valve LLC.
 *
 ****/
-#if !defined( OEM_BUILD ) && !defined( HLDEMO_BUILD )
-
 #include "extdll.h"
 #include "util.h"
 #include "cbase.h"
@@ -25,7 +23,7 @@
 
 #ifndef CLIENT_DLL
 #define BOLT_AIR_VELOCITY	2000
-#define BOLT_WATER_VELOCITY	1500
+#define BOLT_WATER_VELOCITY	1000
 
 extern BOOL gPhysicsInterfaceInitialized;
 
@@ -41,9 +39,21 @@ class CCrossbowBolt : public CBaseEntity
 	int Classify( void );
 	void EXPORT BubbleThink( void );
 	void EXPORT BoltTouch( CBaseEntity *pOther );
+	void EXPORT ExplodeThink( void );
 	float TouchGravGun( CBaseEntity *attacker, int stage )
 	{
-		return FALSE;
+		if( stage >= 2 )
+		{
+
+			pev->movetype = MOVETYPE_FLY;
+			pev->solid = SOLID_BBOX;
+			pev->nextthink = gpGlobals->time + 60.0;
+			SetTouch( &CCrossbowBolt::BoltTouch );
+			UTIL_MakeVectors( attacker->pev->v_angle + attacker->pev->punchangle);
+			pev->angles = UTIL_VecToAngles(gpGlobals->v_forward);
+			SetThink( &CCrossbowBolt::BubbleThink );
+		}
+		return 2000;
 	}
 
 	int m_iTrail;
@@ -194,6 +204,46 @@ void CCrossbowBolt::BubbleThink( void )
 		return;
 
 	UTIL_BubbleTrail( pev->origin - pev->velocity * 0.1, pev->origin, 1 );
+}
+
+void CCrossbowBolt::ExplodeThink( void )
+{
+	int iContents = UTIL_PointContents( pev->origin );
+	int iScale;
+
+	pev->dmg = 40;
+	iScale = 10;
+
+	MESSAGE_BEGIN( MSG_PVS, SVC_TEMPENTITY, pev->origin );
+		WRITE_BYTE( TE_EXPLOSION );
+		WRITE_COORD( pev->origin.x );
+		WRITE_COORD( pev->origin.y );
+		WRITE_COORD( pev->origin.z );
+		if( iContents != CONTENTS_WATER )
+		{
+			WRITE_SHORT( g_sModelIndexFireball );
+		}
+		else
+		{
+			WRITE_SHORT( g_sModelIndexWExplosion );
+		}
+		WRITE_BYTE( iScale ); // scale * 10
+		WRITE_BYTE( 15 ); // framerate
+		WRITE_BYTE( TE_EXPLFLAG_NONE );
+	MESSAGE_END();
+
+	entvars_t *pevOwner;
+
+	if( pev->owner )
+		pevOwner = VARS( pev->owner );
+	else
+		pevOwner = NULL;
+
+	pev->owner = NULL; // can't traceline attack owner if this is set
+
+	::RadiusDamage( pev->origin, pev, pevOwner, pev->dmg, 128, CLASS_NONE, DMG_BLAST | DMG_ALWAYSGIB );
+
+	UTIL_Remove( this );
 }
 #endif
 
@@ -400,7 +450,7 @@ void CCrossbow::Reload( void )
 void CCrossbow::WeaponIdle( void )
 {
 	ResetEmptySound();
-
+	
 	if( m_flTimeWeaponIdle < UTIL_WeaponTimeBase() )
 	{
 		float flRand = UTIL_SharedRandomFloat( m_pPlayer->random_seed, 0, 1 );
@@ -436,7 +486,7 @@ void CCrossbow::WeaponIdle( void )
 class CCrossbowAmmo : public CBasePlayerAmmo
 {
 	void Spawn( void )
-	{
+	{ 
 		Precache();
 		SET_MODEL( ENT( pev ), "models/w_crossbow_clip.mdl" );
 		CBasePlayerAmmo::Spawn();
@@ -447,7 +497,7 @@ class CCrossbowAmmo : public CBasePlayerAmmo
 		PRECACHE_SOUND( "items/9mmclip1.wav" );
 	}
 	BOOL AddAmmo( CBaseEntity *pOther )
-	{
+	{ 
 		if( pOther->GiveAmmo( AMMO_CROSSBOWCLIP_GIVE, "bolts", BOLT_MAX_CARRY ) != -1 )
 		{
 			EMIT_SOUND( ENT( pev ), CHAN_ITEM, "items/9mmclip1.wav", 1, ATTN_NORM );
@@ -458,4 +508,3 @@ class CCrossbowAmmo : public CBasePlayerAmmo
 };
 
 LINK_ENTITY_TO_CLASS( ammo_crossbow, CCrossbowAmmo )
-#endif
