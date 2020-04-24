@@ -628,6 +628,7 @@ public:
 	int GetItemInfo(ItemInfo *p);
 
 	void FireBolt( void );
+	void FireSniperBolt( void );
 	void PrimaryAttack( void );
 	void SecondaryAttack( void );
 	int AddToPlayer( CBasePlayer *pPlayer );

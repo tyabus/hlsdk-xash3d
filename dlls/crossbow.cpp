@@ -12,6 +12,7 @@
 *   without written permission from Valve LLC.
 *
 ****/
+
 #include "extdll.h"
 #include "util.h"
 #include "cbase.h"
@@ -22,8 +23,8 @@
 #include "gamerules.h"
 
 #ifndef CLIENT_DLL
-#define BOLT_AIR_VELOCITY	2000
-#define BOLT_WATER_VELOCITY	1000
+#define BOLT_AIR_VELOCITY	2500
+#define BOLT_WATER_VELOCITY	1500
 
 extern BOOL gPhysicsInterfaceInitialized;
 
@@ -39,7 +40,6 @@ class CCrossbowBolt : public CBaseEntity
 	int Classify( void );
 	void EXPORT BubbleThink( void );
 	void EXPORT BoltTouch( CBaseEntity *pOther );
-	void EXPORT ExplodeThink( void );
 	float TouchGravGun( CBaseEntity *attacker, int stage )
 	{
 		if( stage >= 2 )
@@ -205,46 +205,6 @@ void CCrossbowBolt::BubbleThink( void )
 
 	UTIL_BubbleTrail( pev->origin - pev->velocity * 0.1, pev->origin, 1 );
 }
-
-void CCrossbowBolt::ExplodeThink( void )
-{
-	int iContents = UTIL_PointContents( pev->origin );
-	int iScale;
-
-	pev->dmg = 40;
-	iScale = 10;
-
-	MESSAGE_BEGIN( MSG_PVS, SVC_TEMPENTITY, pev->origin );
-		WRITE_BYTE( TE_EXPLOSION );
-		WRITE_COORD( pev->origin.x );
-		WRITE_COORD( pev->origin.y );
-		WRITE_COORD( pev->origin.z );
-		if( iContents != CONTENTS_WATER )
-		{
-			WRITE_SHORT( g_sModelIndexFireball );
-		}
-		else
-		{
-			WRITE_SHORT( g_sModelIndexWExplosion );
-		}
-		WRITE_BYTE( iScale ); // scale * 10
-		WRITE_BYTE( 15 ); // framerate
-		WRITE_BYTE( TE_EXPLFLAG_NONE );
-	MESSAGE_END();
-
-	entvars_t *pevOwner;
-
-	if( pev->owner )
-		pevOwner = VARS( pev->owner );
-	else
-		pevOwner = NULL;
-
-	pev->owner = NULL; // can't traceline attack owner if this is set
-
-	::RadiusDamage( pev->origin, pev, pevOwner, pev->dmg, 128, CLASS_NONE, DMG_BLAST | DMG_ALWAYSGIB );
-
-	UTIL_Remove( this );
-}
 #endif
 
 enum crossbow_e
@@ -344,7 +304,62 @@ void CCrossbow::Holster( int skiplocal /* = 0 */ )
 
 void CCrossbow::PrimaryAttack( void )
 {
+#ifdef CLIENT_DLL
+	if( m_fInZoom && bIsMultiplayer() )
+#else
+	if( m_fInZoom && g_pGameRules->IsMultiplayer() )
+#endif
+	{
+		FireSniperBolt();
+		return;
+	}
+
 	FireBolt();
+}
+
+// this function only gets called in multiplayer
+void CCrossbow::FireSniperBolt()
+{
+	m_flNextPrimaryAttack = GetNextAttackDelay( 0.75 );
+
+	if( m_iClip == 0 )
+	{
+		PlayEmptySound();
+		return;
+	}
+
+	TraceResult tr;
+
+	m_pPlayer->m_iWeaponVolume = QUIET_GUN_VOLUME;
+	m_iClip--;
+
+	int flags;
+#if defined( CLIENT_WEAPONS )
+	flags = FEV_NOTHOST;
+#else
+	flags = 0;
+#endif
+
+	PLAYBACK_EVENT_FULL( flags, m_pPlayer->edict(), m_usCrossbow2, 0.0, g_vecZero, g_vecZero, 0, 0, m_iClip, m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType], 0, 0 );
+
+	// player "shoot" animation
+	m_pPlayer->SetAnimation( PLAYER_ATTACK1 );
+
+	Vector anglesAim = m_pPlayer->pev->v_angle + m_pPlayer->pev->punchangle;
+	UTIL_MakeVectors( anglesAim );
+	Vector vecSrc = m_pPlayer->GetGunPosition() - gpGlobals->v_up * 2;
+	Vector vecDir = gpGlobals->v_forward;
+
+	UTIL_TraceLine( vecSrc, vecSrc + vecDir * 8192, dont_ignore_monsters, m_pPlayer->edict(), &tr );
+
+#ifndef CLIENT_DLL
+	if( tr.pHit->v.takedamage )
+	{
+		ClearMultiDamage();
+		CBaseEntity::Instance( tr.pHit )->TraceAttack( m_pPlayer->pev, 100, vecDir, &tr, DMG_BULLET | DMG_NEVERGIB ); 
+		ApplyMultiDamage( pev, m_pPlayer->pev );
+	}
+#endif
 }
 
 void CCrossbow::FireBolt()
