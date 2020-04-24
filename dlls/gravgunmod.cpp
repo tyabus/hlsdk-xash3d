@@ -1203,7 +1203,7 @@ void GGM_Save( const char *savename )
 	if( health <= 0 )
 		client0->v.health = 1;
 
-	client0->v.deadflag = 0;
+	client0->v.deadflag = 0; // I live again!
 
 	if( zombietime )
 		zombietime_old = zombietime->value;
@@ -1453,6 +1453,7 @@ struct GGMPlayerState *GGM_GetState( const char *uid, const char *name )
 	const char *rgpszBadNames[] = {
 	"player*", // does not even can set own name
 	"*talat*",
+	"*unnamed*",
 	"*hmse*",
 	"*mhmd*",
 	"*aeman*",
@@ -3222,6 +3223,10 @@ void GGM_RegisterCVars( void )
 	g_engfuncs.pfnCvar_DirectSet( &ggm_platform, UTIL_VarArgs( "%s", GGM_PLATFORM ) );
 	g_engfuncs.pfnCvar_DirectSet( &ggm_arch, UTIL_VarArgs( "%s", GGM_ARCH ) );
 	g_engfuncs.pfnCvar_DirectSet( &ggm_commit, UTIL_VarArgs( "%s", GGM_COMMIT ) );
+
+	// Prevent some retarded people to launch coop on their shitty local server
+	if( !IS_DEDICATED_SERVER )
+		g_engfuncs.pfnCvar_DirectSet( &mp_coop, UTIL_VarArgs( "0" ) );
 
 	zombietime = CVAR_GET_POINTER("zombietime");
 

@@ -450,8 +450,9 @@ void GameDLLInit( void )
 {
 	if( !CVAR_GET_POINTER( "host_ver" ) )
 	{
-		ALERT( at_error, "GravGunMod Dosen't work on goldsource!\n" );
-		return;
+		// I don't know fucking why people want to launch GGM on goldsource
+	   	ALERT( at_error, "GravGunMod Dosen't work on goldsource!\n" );
+	  	return;
 	}
 
 	// Register cvars here:
@@ -461,7 +462,10 @@ void GameDLLInit( void )
 
 	GGM_RegisterCVars();
 	#ifndef __ANDROID__
-	COOP_RegisterCVars();
+	if( IS_DEDICATED_SERVER )
+	{
+		COOP_RegisterCVars();
+	}
 	#endif
 	ENT_RegisterCVars();
 

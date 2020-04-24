@@ -1,3 +1,6 @@
+#ifndef CUSTOMWEAPONS_H
+#define CUSTOMWEAPONS_H
+
 #define WEAPON_GRAVGUN			17
 #define WEAPON_BIG_COCK			18
 #define WEAPON_AR2			19
@@ -5,3 +8,5 @@
 #define WEAPON_M249			21
 #define WEAPON_KNIFE			22
 #define WEAPON_SHOCKRIFLE		23
+
+#endif
