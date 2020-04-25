@@ -1373,7 +1373,7 @@ void CWeaponBox::Spawn( void )
 {
 	Precache();
 
-	pev->movetype = MOVETYPE_BOUNCE;
+	pev->movetype = MOVETYPE_TOSS;
 	pev->solid = SOLID_TRIGGER;
 
 	UTIL_SetSize( pev, Vector(-16,-16,-32), Vector(16,16,32) );
@@ -1425,10 +1425,11 @@ static const char* IsAmmoForExhaustibleWeapon(const char* ammoName, int& weaponI
 //=========================================================
 void CWeaponBox::Touch( CBaseEntity *pOther )
 {
-	/*if( !( pev->flags & FL_ONGROUND ) )
+	if( !( pev->flags & FL_ONGROUND ) )
 	{
 		return;
-	}*/
+	}
+
 	pev->velocity = ( pev->velocity + pOther->pev->velocity) / 2;
 
 	if( pev->velocity.Length() > 300 )
