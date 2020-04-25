@@ -488,7 +488,7 @@ void Host_Say( edict_t *pEntity, int teamonly )
 	{
         	FILE *flsaylog;
         	flsaylog = fopen("saylog.txt", "a");
-        	fprintf( flsaylog, "%s %s %s: %s\n", GETPLAYERAUTHID( pEntity ), pEntity->v.netname, temp, text ); // XashID, nickname, say or say team, the text
+        	fprintf( flsaylog, "%s %s%s: %s", GETPLAYERAUTHID( pEntity ), pEntity->v.netname, temp, text ); // XashID, nickname, say or say team, the text
         	fclose( flsaylog );
 	}
 	#endif
