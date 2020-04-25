@@ -23,8 +23,8 @@
 #include "gamerules.h"
 
 #ifndef CLIENT_DLL
-#define BOLT_AIR_VELOCITY	2500
-#define BOLT_WATER_VELOCITY	1500
+#define BOLT_AIR_VELOCITY	2200
+#define BOLT_WATER_VELOCITY	1200
 
 extern BOOL gPhysicsInterfaceInitialized;
 

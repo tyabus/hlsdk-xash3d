@@ -372,9 +372,9 @@ void Host_Say( edict_t *pEntity, int teamonly )
 	entvars_t *pev = &pEntity->v;
 	CBasePlayer* player = GetClassPtr((CBasePlayer *)pev);
 
-	//Not yet.
+	// Not yet.
 	if ( player->m_flNextChatTime > gpGlobals->time )
-		 return;
+		return;
 
 	if ( !stricmp( pcmd, cpSay) || !stricmp( pcmd, cpSayTeam ) )
 	{
@@ -427,7 +427,6 @@ void Host_Say( edict_t *pEntity, int teamonly )
 
 	strcat( text, p );
 	strcat( text, "\n" );
-
 
 	player->m_flNextChatTime = gpGlobals->time + CHAT_INTERVAL;
 
@@ -483,27 +482,40 @@ void Host_Say( edict_t *pEntity, int teamonly )
 		temp = "say_team";
 	else
 		temp = "say";
-	
-	// team match?
-	if ( g_teamplay )
+
+	#ifndef __ANDROID__
+	if( mp_saylog.value )
 	{
-		UTIL_LogPrintf( "\"%s<%i><%s><%s>\" %s \"%s\"\n", 
-			STRING( pEntity->v.netname ), 
-			GETPLAYERUSERID( pEntity ),
-			GETPLAYERAUTHID( pEntity ),
-			g_engfuncs.pfnInfoKeyValue( g_engfuncs.pfnGetInfoKeyBuffer( pEntity ), "model" ),
-			temp,
-			p );
+        	FILE *flsaylog;
+        	flsaylog = fopen("saylog.txt", "a");
+        	fprintf( flsaylog, "%s %s %s: %s\n", GETPLAYERAUTHID( pEntity ), pEntity->v.netname, temp, text ); // XashID, nickname, say or say team, the text
+        	fclose( flsaylog );
 	}
-	else
+	#endif
+
+	if( mp_saylog.value != 2 )
 	{
-		UTIL_LogPrintf( "\"%s<%i><%s><%i>\" %s \"%s\"\n", 
-			STRING( pEntity->v.netname ), 
-			GETPLAYERUSERID( pEntity ),
-			GETPLAYERAUTHID( pEntity ),
-			GETPLAYERUSERID( pEntity ),
-			temp,
-			p );
+		// team match?
+		if ( g_teamplay )
+		{
+			UTIL_LogPrintf( "\"%s<%i><%s><%s>\" %s \"%s\"\n", 
+				STRING( pEntity->v.netname ), 
+				GETPLAYERUSERID( pEntity ),
+				GETPLAYERAUTHID( pEntity ),
+				g_engfuncs.pfnInfoKeyValue( g_engfuncs.pfnGetInfoKeyBuffer( pEntity ), "model" ),
+				temp,
+				p );
+		}
+		else
+		{
+			UTIL_LogPrintf( "\"%s<%i><%s><%i>\" %s \"%s\"\n", 
+				STRING( pEntity->v.netname ), 
+				GETPLAYERUSERID( pEntity ),
+				GETPLAYERAUTHID( pEntity ),
+				GETPLAYERUSERID( pEntity ),
+				temp,
+				p );
+		}
 	}
 }
 

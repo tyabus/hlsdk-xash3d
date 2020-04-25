@@ -33,6 +33,7 @@ cvar_t mp_spectator = { "mp_spectator", "0", FCVAR_SERVER };
 cvar_t mp_unduck = { "mp_unduck", "0", FCVAR_SERVER };
 cvar_t mp_megahornet = { "mp_megahornet", "0", FCVAR_SERVER };
 cvar_t mp_anticheat = { "mp_anticheat", "1", FCVAR_SERVER };
+cvar_t mp_saylog = { "mp_saylog", "0", FCVAR_SERVER };
 cvar_t mp_q1stuff = { "mp_q1stuff", "1", FCVAR_SERVER };
 
 cvar_t ggm_arch = { "ggm_arch", "", FCVAR_SERVER | FCVAR_UNLOGGED };
@@ -3192,6 +3193,7 @@ void GGM_RegisterCVars( void )
 	CVAR_REGISTER( &mp_megahornet );
 	#ifndef __ANDROID__
 	CVAR_REGISTER( &mp_anticheat );
+	CVAR_REGISTER( &mp_saylog );
 	#endif
 	CVAR_REGISTER( &mp_q1stuff );
 	CVAR_REGISTER( &mp_fixhornetbug );
