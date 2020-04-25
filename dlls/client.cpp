@@ -244,11 +244,13 @@ void ClientPutInServer( edict_t *pEntity )
 	pPlayer->pev->iuser1 = 0;
 	pPlayer->pev->iuser2 = 0;
 
+	#ifndef __ANDROID__
 	if( g_pGameRules->IsMultiplayer() && mp_anticheat.value )
 	{
 		pPlayer->m_flCheckCvars = gpGlobals->time + 10;
 		g_engfuncs.pfnQueryClientCvarValue2( pEntity, "host_ver", 116 );
 	}
+	#endif
 }
 
 #ifndef NO_VOICEGAMEMGR
@@ -825,6 +827,7 @@ void PlayerPreThink( edict_t *pEntity )
 	if ( pPlayer )
 		pPlayer->PreThink( );
 
+	#ifndef __ANDROID__
 	if( mp_anticheat.value && g_pGameRules->IsMultiplayer() )
 	{
 		if( pPlayer->m_flCheckCvars <= gpGlobals->time )
@@ -835,6 +838,7 @@ void PlayerPreThink( edict_t *pEntity )
 			pPlayer->m_flCheckCvars = gpGlobals->time + 10;
 		}
 	}
+	#endif
 }
 
 /*
@@ -2133,6 +2137,7 @@ void CreateInstancedBaselines ( void )
 void CvarValue2( const edict_t *pEnt, int requestID, const char *cvarName, const char *value )
 {
 	CBasePlayer *player = (CBasePlayer * ) CBaseEntity::Instance( (edict_t*)pEnt );
+	#ifndef __ANDROID__
 	if( mp_anticheat.value )
 	{
 		if( pEnt && requestID == 112 && FStrEq( cvarName , "r_drawentities" ) && (atoi( value ) == 5 || atoi( value ) == 10 ))
@@ -2156,6 +2161,7 @@ void CvarValue2( const edict_t *pEnt, int requestID, const char *cvarName, const
 				GGM_KickCheater( player, "build 7a3ffb" );
 		}
 	}
+	#endif
 
 	GGM_CvarValue2( pEnt, requestID, cvarName, value );
 }

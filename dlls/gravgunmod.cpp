@@ -2988,6 +2988,7 @@ Handle cheater kick
 */
 void GGM_KickCheater( CBasePlayer *player, char *CheatType )
 {
+	#ifndef __ANDROID__
 	time_t mytime = time(NULL);
 	char * time_str = ctime(&mytime);
 	time_str[strlen(time_str)-1] = '\0';
@@ -2996,6 +2997,7 @@ void GGM_KickCheater( CBasePlayer *player, char *CheatType )
 	fprintf( flch , "%s Name: %s id: %s cheat: %s\n", time_str, GGM_PlayerName(player), GETPLAYERAUTHID(player->edict()), CheatType);
 	SERVER_COMMAND(UTIL_VarArgs("kick #%i %s\n", GETPLAYERUSERID(player->edict()), CheatType ));
 	fclose( flch );
+	#endif
 }
 
 /*
@@ -3188,7 +3190,9 @@ void GGM_RegisterCVars( void )
 	CVAR_REGISTER( &mp_gravgun_players );
 	CVAR_REGISTER( &mp_gravgun_beams );
 	CVAR_REGISTER( &mp_megahornet );
+	#ifndef __ANDROID__
 	CVAR_REGISTER( &mp_anticheat );
+	#endif
 	CVAR_REGISTER( &mp_q1stuff );
 	CVAR_REGISTER( &mp_fixhornetbug );
 	CVAR_REGISTER( &mp_fixsavetime );
