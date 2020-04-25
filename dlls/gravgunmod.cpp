@@ -7,6 +7,8 @@
 #include "gamerules.h"
 #include "weapons.h"
 
+#include <time.h>	// TODO: Implement this another way; used in GGM_KickCheater
+
 cvar_t cvar_allow_gravgun = { "mp_allow_gravgun","2", FCVAR_SERVER };
 cvar_t cvar_allow_ar2 = { "mp_allow_ar2","0", FCVAR_SERVER };
 cvar_t cvar_allow_knife = { "mp_allow_knife","0", FCVAR_SERVER };
@@ -2986,10 +2988,13 @@ Handle cheater kick
 */
 void GGM_KickCheater( CBasePlayer *player, char *CheatType )
 {
+	time_t mytime = time(NULL);
+	char * time_str = ctime(&mytime);
+	time_str[strlen(time_str)-1] = '\0';
 	FILE *flch;
 	flch = fopen("cheaters.txt", "a");
-	fprintf( flch , "name: %s id: %s %s\n", GGM_PlayerName(player), GETPLAYERAUTHID(player->edict()), CheatType);
-	SERVER_COMMAND(UTIL_VarArgs("kick #%i cheater\n", GETPLAYERUSERID(player->edict()) ));
+	fprintf( flch , "%s Name: %s id: %s cheat: %s\n", time_str, GGM_PlayerName(player), GETPLAYERAUTHID(player->edict()), CheatType);
+	SERVER_COMMAND(UTIL_VarArgs("kick #%i %s\n", GETPLAYERUSERID(player->edict()), CheatType ));
 	fclose( flch );
 }
 
