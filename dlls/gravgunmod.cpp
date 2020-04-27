@@ -40,6 +40,8 @@ cvar_t ggm_arch = { "ggm_arch", "", FCVAR_SERVER | FCVAR_UNLOGGED };
 cvar_t ggm_platform = { "ggm_platform", "", FCVAR_SERVER | FCVAR_UNLOGGED };
 cvar_t ggm_commit = { "ggm_commit", "", FCVAR_SERVER | FCVAR_UNLOGGED };
 
+cvar_t ggm_saverestore_enable = { "ggm_saverestore_enable", "1", FCVAR_SERVER };
+
 cvar_t mp_fixhornetbug = { "mp_fixhornetbug", "0", FCVAR_SERVER };
 cvar_t mp_fixsavetime = { "mp_fixsavetime", "0", FCVAR_SERVER };
 cvar_t mp_checkentities = { "mp_checkentities", "0", FCVAR_SERVER };
@@ -825,8 +827,11 @@ void GGM_ClientPutinServer( edict_t *pEntity, CBasePlayer *pPlayer )
 	pPlayer->m_ggm.menu.m_pPlayer = pPlayer;
 	pPlayer->m_ggm.menu.Clear();
 	pPlayer->m_ggm.pState = GGM_GetState( GGM_GetAuthID(pPlayer), STRING(pEntity->v.netname) );
-	// restore frags
-	GGM_RestoreState( pPlayer );
+	// restore
+	if( ggm_saverestore_enable.value && !mp_coop.value )
+	{
+		GGM_RestoreState( pPlayer );
+	}
 }
 
 /*
@@ -839,7 +844,7 @@ Handle first spawn in deathmatch
 void GGM_ClientFirstSpawn(CBasePlayer *pPlayer)
 {
 	// AGHL-like spectator
-	if( mp_spectator.value && g_pGameRules->IsMultiplayer()  )
+	if( mp_spectator.value && g_pGameRules->IsMultiplayer() )
 	{
 		pPlayer->RemoveAllItems( TRUE );
 		UTIL_BecomeSpectator( pPlayer );
@@ -1554,8 +1559,12 @@ Update GGMPlayerState record
 */
 void GGM_SaveState( CBasePlayer *pPlayer )
 {
+	if( !ggm_saverestore_enable.value && !mp_coop.value )
+		return;
+
 	if( !pPlayer )
 		return;
+
 	GGMPlayerState *pState = pPlayer->m_ggm.pState;
 	int i, j = 0;
 
@@ -1668,6 +1677,9 @@ Copy data from GGMPlayerState to player, update persist part
 */
 bool GGM_RestoreState( CBasePlayer *pPlayer )
 {
+	if( !ggm_saverestore_enable.value && !mp_coop.value )
+		return false;
+
 	GGMPlayerState *pState = pPlayer->m_ggm.pState;
 	int i;
 
@@ -3172,6 +3184,7 @@ void GGM_RegisterCVars( void )
 	CVAR_REGISTER( &ggm_commit );
 	CVAR_REGISTER( &ggm_arch );
 	CVAR_REGISTER( &ggm_platform );
+	CVAR_REGISTER( &ggm_saverestore_enable );
 	CVAR_REGISTER( &cvar_allow_m249 );
 	CVAR_REGISTER( &cvar_allow_shockrifle );
 	CVAR_REGISTER( &cvar_allow_knife );
@@ -3237,7 +3250,19 @@ void GGM_RegisterCVars( void )
 
 	// Prevent some retarded people to launch coop on their shitty local server
 	if( !IS_DEDICATED_SERVER )
-		g_engfuncs.pfnCvar_DirectSet( &mp_coop, UTIL_VarArgs( "0" ) );
+		g_engfuncs.pfnCvar_DirectSet( &mp_coop, UTIL_VarArgs( "0" ) ); // see ya
+
+	#ifndef __ANDROID__
+	// Save-restore crap
+	if( IS_DEDICATED_SERVER )
+	{
+		if( mp_coop.value && !ggm_saverestore_enable.value )
+		{
+			g_engfuncs.pfnCvar_DirectSet( &ggm_saverestore_enable, UTIL_VarArgs( "1" ) );
+			ALERT( at_warning, "Please don't mess with ggm_saverestore_enable with mp_coop enabled, forcing CVAR value to 1\n" );
+		}
+	}
+	#endif
 
 	zombietime = CVAR_GET_POINTER("zombietime");
 

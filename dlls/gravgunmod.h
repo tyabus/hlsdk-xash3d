@@ -23,6 +23,8 @@ extern cvar_t mp_megahornet;
 extern cvar_t mp_anticheat;
 extern cvar_t mp_saylog;
 
+
+extern cvar_t ggm_saverestore_enable;
 extern cvar_t ggm_arch;
 extern cvar_t ggm_platform;
 extern cvar_t ggm_commit;

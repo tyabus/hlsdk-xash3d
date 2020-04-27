@@ -2015,7 +2015,7 @@ void PM_Duck( void )
 	}
 
 	// Prevent ducking if the iuser3 variable is set
-	if( pmove->iuser3 || pmove->dead )
+	if( pmove->iuser3 || pmove->dead || pmove->flags & FL_SPECTATOR )
 	{
 		// Try to unduck
 		if( pmove->flags & FL_DUCKING )
