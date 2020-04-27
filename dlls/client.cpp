@@ -121,7 +121,13 @@ void ClientDisconnect( edict_t *pEntity )
 
 	if( pPlayer && pPlayer->IsPlayer() )
 	{
-		GGM_SaveState( pPlayer );
+		pPlayer->m_ggm.IsAdmin = false;
+
+		if( ggm_saverestore_enable.value && !mp_coop.value )
+		{
+			GGM_SaveState( pPlayer );
+		}
+
 		pPlayer->m_ggm.iState = STATE_UNINITIALIZED;
 	}
 

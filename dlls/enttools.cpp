@@ -64,7 +64,9 @@ void Ent_ClearBlacklist_f( void )
 
 bool Ent_CheckFire( edict_t *player, edict_t *ent, const char *command )
 {
-	if( !mp_enttools_players.value && ENTINDEX( ent ) < gpGlobals->maxClients + 1 )
+	CBasePlayer *pl = (CBasePlayer*)CBaseEntity::Instance( player );
+
+	if( !mp_enttools_players.value && !pl->m_ggm.IsAdmin && ENTINDEX( ent ) < gpGlobals->maxClients + 1 )
 		return false;
 
 	CBaseEntity *pEntity = CBaseEntity::Instance( ent );
@@ -101,6 +103,9 @@ bool Ent_CheckCreate( edict_t *player, const char *classname )
 		return false;
 
 	if( p->m_ggm.flEntScore > 1 )
+		return false;
+
+	if( p->m_ggm.IsAdmin )
 		return false;
 
 	if( gpGlobals->time - p->m_ggm.flEntTime > 60 )
@@ -1118,13 +1123,12 @@ ucmd_t enttoolscmds[] =
 bool Ent_ProcessClientCommand( edict_t *player )
 {
 	ucmd_t	*u;
+	CBasePlayer *pl = (CBasePlayer*)CBaseEntity::Instance(player);
 
-	if( !mp_enttools_enable.value )
-		return false;
+        if( !pl || !pl->IsPlayer() )
+                return false;
 
-	CBaseEntity *pl = CBaseEntity::Instance( player );
-
-	if( !pl || !pl->IsPlayer() )
+	if( !mp_enttools_enable.value && !pl->m_ggm.IsAdmin )
 		return false;
 
 	for( u = enttoolscmds; u->name; u++ )

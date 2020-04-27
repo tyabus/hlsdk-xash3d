@@ -39,7 +39,7 @@ cvar_t mp_q1stuff = { "mp_q1stuff", "1", FCVAR_SERVER };
 cvar_t ggm_arch = { "ggm_arch", "", FCVAR_SERVER | FCVAR_UNLOGGED };
 cvar_t ggm_platform = { "ggm_platform", "", FCVAR_SERVER | FCVAR_UNLOGGED };
 cvar_t ggm_commit = { "ggm_commit", "", FCVAR_SERVER | FCVAR_UNLOGGED };
-
+cvar_t ggm_adminpw = { "ggm_adminpw", "", FCVAR_SERVER | FCVAR_UNLOGGED };
 cvar_t ggm_saverestore_enable = { "ggm_saverestore_enable", "1", FCVAR_SERVER };
 
 cvar_t mp_fixhornetbug = { "mp_fixhornetbug", "0", FCVAR_SERVER };
@@ -1850,6 +1850,23 @@ bool GGM_PlayerSpawn( CBasePlayer *pPlayer )
 
 /*
 =====================
+GGM_LogAdminStuff
+
+Log failed/success attempts for admin system
+=====================
+*/
+#ifndef __ANDROID__
+void GGM_LogAdminStuff( CBasePlayer *pPlayer, char *LogType )
+{
+                FILE *fladminlog = fopen("logattempts.txt", "a");
+
+                fprintf( fladminlog, "%s %s %s\n", LogType, GETPLAYERAUTHID( pPlayer->edict() ), STRING( pPlayer->pev->netname ) ); // LogType, XashID, Nickname
+                fclose( fladminlog );
+}
+#endif
+
+/*
+=====================
 GGM_Logout
 
 Remove login record. This does not free state
@@ -2983,6 +3000,135 @@ bool GGM_ClientCommand( CBasePlayer *pPlayer, const char *pCmd )
 		CLIENT_COMMAND( pPlayer->edict(), args );
 		return true;
 	}
+	#ifndef __ANDROID__
+	else if( FStrEq(pCmd, "admin_logout") )
+	{
+		if( pPlayer->m_ggm.IsAdmin )
+		{
+			pPlayer->m_ggm.IsAdmin = false;
+			GGM_ChatPrintf( pPlayer, "^2Successful logout^7\n" );
+			GGM_LogAdminStuff( pPlayer, "Successful logout:" );
+			return true;
+		}
+		else
+		{
+			GGM_LogAdminStuff( pPlayer, "Failure logout:" );
+			GGM_ChatPrintf( pPlayer, "^1You are not admin!!!^7\n" );
+			return false;
+		}
+		return true;
+	}
+	else if( FStrEq(pCmd, "admin_login") )
+	{
+		if( CMD_ARGC() != 2 )
+		{
+			GGM_ChatPrintf( pPlayer, "^1Usage: admin_login ^2<password>^7\n" );
+			return false;
+		}
+
+		if( pPlayer->m_ggm.IsAdmin )
+		{
+			GGM_ChatPrintf( pPlayer, "^1Already logged in!!!^7\n" );
+			GGM_LogAdminStuff( pPlayer, "Already logged in:" );
+			return false;
+		}
+
+		const char *passwordargv = CMD_ARGV( 1 );
+
+		if( !ggm_adminpw.string )
+		{
+			GGM_ChatPrintf( pPlayer, "^1Can't login, password cvar is empty!^7\n" );
+			return false;
+		}
+
+		if( !strcmp( passwordargv, ggm_adminpw.string ) )
+		{
+			pPlayer->m_ggm.IsAdmin = true;
+			GGM_ChatPrintf( pPlayer, "^2Login successful!^7\n" );
+			GGM_LogAdminStuff( pPlayer, "Became admin:" );
+			return true;
+		}
+		else
+		{
+			GGM_ChatPrintf( pPlayer, "^1Login failed!^7\n" );
+			GGM_LogAdminStuff( pPlayer, "Failure login:" );
+			return true;
+		}
+		return true;
+	}
+	else if( FStrEq(pCmd, "admin_noclip") )
+	{
+		if( !pPlayer->m_ggm.IsAdmin )
+		{
+			return false;
+		}
+
+		if( pPlayer->pev->movetype != MOVETYPE_NOCLIP )
+		{
+			pPlayer->pev->movetype = MOVETYPE_NOCLIP;
+			GGM_ChatPrintf( pPlayer, "^2Admin noclip ON^7\n" );
+			return true;
+		}
+		else
+		{
+			pPlayer->pev->movetype = MOVETYPE_WALK;
+			GGM_ChatPrintf( pPlayer, "^2Admin noclip OFF^7\n" );
+			return true;
+		}
+		return true;
+	}
+	else if( FStrEq(pCmd, "admin_invis") || FStrEq(pCmd, "admin_invisibility") )
+        {
+                if( !pPlayer->m_ggm.IsAdmin )
+		{
+                        return false;
+		}
+
+                if( pPlayer->pev->solid != SOLID_NOT )
+		{
+                        pPlayer->pev->movetype = MOVETYPE_NOCLIP;
+			pPlayer->pev->solid = SOLID_NOT;
+                        pPlayer->pev->flags |= FL_NOTARGET;
+			pPlayer->pev->flags |= FL_GODMODE;
+                        GGM_ChatPrintf( pPlayer, "^2Admin invisibility ON^7\n" );
+                        return true;
+		}
+                else
+		{
+                        pPlayer->pev->movetype = MOVETYPE_WALK;
+                        pPlayer->pev->flags &= ~FL_NOTARGET;
+			pPlayer->pev->flags &= ~FL_GODMODE;
+			pPlayer->pev->solid = SOLID_SLIDEBOX;
+                        GGM_ChatPrintf( pPlayer, "^2Admin invisibility OFF^7\n" );
+                        return true;
+		}
+		return true;
+        }
+	else if( FStrEq(pCmd, "admin_godmode") || FStrEq(pCmd, "admin_god") )
+        {
+                if( !pPlayer->m_ggm.IsAdmin )
+		{
+                        return false;
+		}
+
+                if( !pPlayer->pev->health == 228 )
+		{
+			pPlayer->pev->health = 228; // l33t mode ON
+                        pPlayer->pev->flags |= FL_GODMODE;
+                        GGM_ChatPrintf( pPlayer, "^2Admin godmode ON^7\n" );
+                        return true;
+		}
+                else
+		{
+			pPlayer->pev->health = pPlayer->pev->max_health; // l33t mode OFF
+                        pPlayer->pev->flags &= ~FL_GODMODE;
+                        GGM_ChatPrintf( pPlayer, "^2Admin godmode OFF^7\n" );
+                        return true;
+		}
+		return true;
+        }
+	#endif
+
 	else if( COOP_ClientCommand( pPlayer->edict() ) )
 		return true;
 	else if( Ent_ProcessClientCommand( pPlayer->edict() ) )
@@ -3184,6 +3330,9 @@ void GGM_RegisterCVars( void )
 	CVAR_REGISTER( &ggm_commit );
 	CVAR_REGISTER( &ggm_arch );
 	CVAR_REGISTER( &ggm_platform );
+	#ifndef __ANDROID__
+	CVAR_REGISTER( &ggm_adminpw );
+	#endif
 	CVAR_REGISTER( &ggm_saverestore_enable );
 	CVAR_REGISTER( &cvar_allow_m249 );
 	CVAR_REGISTER( &cvar_allow_shockrifle );

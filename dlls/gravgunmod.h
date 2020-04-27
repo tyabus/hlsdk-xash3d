@@ -23,11 +23,11 @@ extern cvar_t mp_megahornet;
 extern cvar_t mp_anticheat;
 extern cvar_t mp_saylog;
 
-
 extern cvar_t ggm_saverestore_enable;
 extern cvar_t ggm_arch;
 extern cvar_t ggm_platform;
 extern cvar_t ggm_commit;
+extern cvar_t ggm_adminpw;
 
 extern cvar_t cvar_gibtime;
 extern cvar_t cvar_hgibcount;
@@ -239,6 +239,7 @@ struct GGMData
 	bool fTouchLoading;
 	struct GGMPlayerState *pState;
 	char fRegisterInput[32];
+	bool IsAdmin;
 };
 
 struct GGMPlayerState *GGM_GetState(const char *uid, const char *name);
