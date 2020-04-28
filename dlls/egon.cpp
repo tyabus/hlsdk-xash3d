@@ -288,11 +288,11 @@ void CEgon::Fire( const Vector &vecOrigSrc, const Vector &vecDir )
 
 			if( g_pGameRules->IsMultiplayer() && !mp_coop.value )
 			{
-				// multiplayer uses 1 ammo every 1/10th second
+				// multiplayer uses 2.5 ammo every 1/5th second
 				if( gpGlobals->time >= m_flAmmoUseTime )
 				{
-					UseAmmo( 1 );
-					m_flAmmoUseTime = gpGlobals->time + 0.1;
+					UseAmmo( 2.5 );
+					m_flAmmoUseTime = gpGlobals->time + 0.2;
 				}
 			}
 			else
@@ -318,7 +318,7 @@ void CEgon::Fire( const Vector &vecOrigSrc, const Vector &vecDir )
 			ClearMultiDamage();
 			if( pEntity->pev->takedamage )
 			{
-				pEntity->TraceAttack( m_pPlayer->pev, gSkillData.plrDmgEgonWide, vecDir, &tr, DMG_ENERGYBEAM | DMG_ALWAYSGIB );
+				pEntity->TraceAttack( m_pPlayer->pev, gSkillData.plrDmgEgonWide/2, vecDir, &tr, DMG_ENERGYBEAM | DMG_ALWAYSGIB );
 			}
 			ApplyMultiDamage( m_pPlayer->pev, m_pPlayer->pev );
 

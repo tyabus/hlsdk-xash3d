@@ -114,11 +114,11 @@ void CCrossbowBolt::BoltTouch( CBaseEntity *pOther )
 
 		if( pOther->IsPlayer() )
 		{
-			pOther->TraceAttack( pevOwner, gSkillData.plrDmgCrossbowClient, pev->velocity.Normalize(), &tr, DMG_NEVERGIB ); 
+			pOther->TraceAttack( pevOwner, gSkillData.plrDmgCrossbowClient, pev->velocity.Normalize(), &tr, DMG_NEVERGIB );
 		}
 		else
 		{
-			pOther->TraceAttack( pevOwner, gSkillData.plrDmgCrossbowMonster, pev->velocity.Normalize(), &tr, DMG_BULLET | DMG_NEVERGIB ); 
+			pOther->TraceAttack( pevOwner, gSkillData.plrDmgCrossbowMonster, pev->velocity.Normalize(), &tr, DMG_BULLET | DMG_NEVERGIB );
 		}
 
 		ApplyMultiDamage( pev, pevOwner );
@@ -146,6 +146,11 @@ void CCrossbowBolt::BoltTouch( CBaseEntity *pOther )
 
 		SetThink( &CBaseEntity::SUB_Remove );
 		pev->nextthink = gpGlobals->time;// this will get changed below if the bolt is allowed to stick in what it hit.
+
+		if( pOther->IsPlayer() && !pOther->pev->takedamage && !pOther->pev->effects & EF_NODRAW )
+		{
+			UTIL_Remove( this );
+		}
 
 		if( FClassnameIs( pOther->pev, "worldspawn" ) )
 		{
@@ -309,7 +314,7 @@ void CCrossbow::PrimaryAttack( void )
 // this function only gets called in multiplayer
 void CCrossbow::FireSniperBolt()
 {
-	m_flNextPrimaryAttack = GetNextAttackDelay( 0.75 );
+	m_flNextPrimaryAttack = GetNextAttackDelay( 0.70 );
 
 	if( m_iClip == 0 )
 	{
@@ -345,7 +350,7 @@ void CCrossbow::FireSniperBolt()
 	if( tr.pHit->v.takedamage )
 	{
 		ClearMultiDamage();
-		CBaseEntity::Instance( tr.pHit )->TraceAttack( m_pPlayer->pev, 100, vecDir, &tr, DMG_BULLET | DMG_NEVERGIB ); 
+		CBaseEntity::Instance( tr.pHit )->TraceAttack( m_pPlayer->pev, 110, vecDir, &tr, DMG_BULLET | DMG_NEVERGIB );
 		ApplyMultiDamage( pev, m_pPlayer->pev );
 	}
 #endif

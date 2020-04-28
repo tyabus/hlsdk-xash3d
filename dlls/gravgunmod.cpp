@@ -3087,32 +3087,36 @@ bool GGM_ClientCommand( CBasePlayer *pPlayer, const char *pCmd )
 		{
                         pPlayer->pev->movetype = MOVETYPE_NOCLIP;
 			pPlayer->pev->solid = SOLID_NOT;
+			pPlayer->pev->takedamage = DAMAGE_NO;
 			pPlayer->pev->effects |= EF_NODRAW;
                         pPlayer->pev->flags |= FL_NOTARGET;
 			pPlayer->pev->flags |= FL_GODMODE;
+			pPlayer->m_fNoPlayerSound = TRUE;
                         GGM_ChatPrintf( pPlayer, "^2Admin invisibility ON^7\n" );
                         return true;
 		}
                 else
 		{
+			pPlayer->pev->takedamage = DAMAGE_AIM;
                         pPlayer->pev->movetype = MOVETYPE_WALK;
                         pPlayer->pev->flags &= ~FL_NOTARGET;
 			pPlayer->pev->flags &= ~FL_GODMODE;
 			pPlayer->pev->effects &= ~EF_NODRAW;
 			pPlayer->pev->solid = SOLID_SLIDEBOX;
+			pPlayer->m_fNoPlayerSound = FALSE;
                         GGM_ChatPrintf( pPlayer, "^2Admin invisibility OFF^7\n" );
                         return true;
 		}
 		return true;
         }
-	else if( FStrEq(pCmd, "admin_godmode") || FStrEq(pCmd, "admin_god") )
+	else if( FStrEq(pCmd, "admin_god") )
         {
                 if( !pPlayer->m_ggm.IsAdmin )
 		{
                         return false;
 		}
 
-                if( !pPlayer->pev->takedamage != DAMAGE_NO )
+                if( pPlayer->pev->takedamage != DAMAGE_NO )
 		{
                         pPlayer->pev->takedamage = DAMAGE_NO;
                         GGM_ChatPrintf( pPlayer, "^2Admin godmode ON^7\n" );
@@ -3126,6 +3130,28 @@ bool GGM_ClientCommand( CBasePlayer *pPlayer, const char *pCmd )
 		}
 		return true;
         }
+	else if( FStrEq(pCmd, "admin_notarget") )
+        {
+                if( !pPlayer->m_ggm.IsAdmin )
+                {
+                        return false;
+                }
+
+                if( !pPlayer->pev->flags & FL_NOTARGET )
+                {
+                        pPlayer->pev->flags |= FL_NOTARGET;
+                        GGM_ChatPrintf( pPlayer, "^2Admin notarget ON^7\n" );
+                        return true;
+                }
+                else
+                {
+                        pPlayer->pev->flags &= ~FL_NOTARGET;
+                        GGM_ChatPrintf( pPlayer, "^2Admin notarget OFF^7\n" );
+                        return true;
+                }
+                return true;
+        }
+
 	else if( FStrEq(pCmd, "admin_strip") )
         {
                 if( !pPlayer->m_ggm.IsAdmin )

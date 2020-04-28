@@ -117,8 +117,8 @@ public:
 #define HANDGRENADE_MAX_CARRY		10
 #define SATCHEL_MAX_CARRY		5
 #define TRIPMINE_MAX_CARRY		5
-#define SNARK_MAX_CARRY			15
-#define HORNET_MAX_CARRY		8
+#define SNARK_MAX_CARRY			10
+#define HORNET_MAX_CARRY		6
 #define M203_GRENADE_MAX_CARRY		10
 
 // the maximum amount of ammo each weapon's clip can hold
@@ -153,7 +153,7 @@ public:
 #define SATCHEL_DEFAULT_GIVE		1
 #define TRIPMINE_DEFAULT_GIVE		1
 #define SNARK_DEFAULT_GIVE		5
-#define HIVEHAND_DEFAULT_GIVE		8
+#define HIVEHAND_DEFAULT_GIVE		6
 
 // The amount of ammo given to a player by an ammo item.
 #define AMMO_URANIUMBOX_GIVE		20
