@@ -7,7 +7,9 @@
 #include "gamerules.h"
 #include "weapons.h"
 
+#ifndef __ANDROID__
 #include <time.h>	// TODO: Implement this another way; used in GGM_KickCheater
+#endif
 
 cvar_t cvar_allow_gravgun = { "mp_allow_gravgun","2", FCVAR_SERVER };
 cvar_t cvar_allow_ar2 = { "mp_allow_ar2","0", FCVAR_SERVER };
@@ -3001,21 +3003,18 @@ bool GGM_ClientCommand( CBasePlayer *pPlayer, const char *pCmd )
 		return true;
 	}
 	#ifndef __ANDROID__
-	else if( FStrEq(pCmd, "admin_logout") )
+	else if( FStrEq(pCmd, "admin_logout" ) )
 	{
-		if( pPlayer->m_ggm.IsAdmin )
+		if( !pPlayer->m_ggm.IsAdmin )
 		{
-			pPlayer->m_ggm.IsAdmin = false;
-			GGM_ChatPrintf( pPlayer, "^2Successful logout^7\n" );
-			GGM_LogAdminStuff( pPlayer, "Successful logout:" );
-			return true;
+                        GGM_LogAdminStuff( pPlayer, "Failure logout:" );
+                        GGM_ChatPrintf( pPlayer, "^1You are not admin!!!^7\n" );
+                        return false;
 		}
-		else
-		{
-			GGM_LogAdminStuff( pPlayer, "Failure logout:" );
-			GGM_ChatPrintf( pPlayer, "^1You are not admin!!!^7\n" );
-			return false;
-		}
+
+		pPlayer->m_ggm.IsAdmin = false;
+		GGM_ChatPrintf( pPlayer, "^2Successful logout^7\n" );
+		GGM_LogAdminStuff( pPlayer, "Successful logout:" );
 		return true;
 	}
 	else if( FStrEq(pCmd, "admin_login") )
@@ -3088,6 +3087,7 @@ bool GGM_ClientCommand( CBasePlayer *pPlayer, const char *pCmd )
 		{
                         pPlayer->pev->movetype = MOVETYPE_NOCLIP;
 			pPlayer->pev->solid = SOLID_NOT;
+			pPlayer->pev->effects |= EF_NODRAW;
                         pPlayer->pev->flags |= FL_NOTARGET;
 			pPlayer->pev->flags |= FL_GODMODE;
                         GGM_ChatPrintf( pPlayer, "^2Admin invisibility ON^7\n" );
@@ -3098,6 +3098,7 @@ bool GGM_ClientCommand( CBasePlayer *pPlayer, const char *pCmd )
                         pPlayer->pev->movetype = MOVETYPE_WALK;
                         pPlayer->pev->flags &= ~FL_NOTARGET;
 			pPlayer->pev->flags &= ~FL_GODMODE;
+			pPlayer->pev->effects &= ~EF_NODRAW;
 			pPlayer->pev->solid = SOLID_SLIDEBOX;
                         GGM_ChatPrintf( pPlayer, "^2Admin invisibility OFF^7\n" );
                         return true;
@@ -3111,22 +3112,32 @@ bool GGM_ClientCommand( CBasePlayer *pPlayer, const char *pCmd )
                         return false;
 		}
 
-                if( !pPlayer->pev->health == 228 )
+                if( !pPlayer->pev->takedamage != DAMAGE_NO )
 		{
-			pPlayer->pev->health = 228; // l33t mode ON
-                        pPlayer->pev->flags |= FL_GODMODE;
+                        pPlayer->pev->takedamage = DAMAGE_NO;
                         GGM_ChatPrintf( pPlayer, "^2Admin godmode ON^7\n" );
                         return true;
 		}
                 else
 		{
-			pPlayer->pev->health = pPlayer->pev->max_health; // l33t mode OFF
-                        pPlayer->pev->flags &= ~FL_GODMODE;
+                        pPlayer->pev->takedamage = DAMAGE_AIM;
                         GGM_ChatPrintf( pPlayer, "^2Admin godmode OFF^7\n" );
                         return true;
 		}
 		return true;
         }
+	else if( FStrEq(pCmd, "admin_strip") )
+        {
+                if( !pPlayer->m_ggm.IsAdmin )
+                {
+                        return false;
+                }
+
+		GGM_ChatPrintf( pPlayer, "^2Your items were removed^7\n" );
+		pPlayer->RemoveAllItems( FALSE );
+		return true;
+
+	}
 	#endif
 
 	else if( COOP_ClientCommand( pPlayer->edict() ) )

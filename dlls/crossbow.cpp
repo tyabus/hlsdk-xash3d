@@ -23,8 +23,8 @@
 #include "gamerules.h"
 
 #ifndef CLIENT_DLL
-#define BOLT_AIR_VELOCITY	2200
-#define BOLT_WATER_VELOCITY	1200
+#define BOLT_AIR_VELOCITY	2000
+#define BOLT_WATER_VELOCITY	1000
 
 extern BOOL gPhysicsInterfaceInitialized;
 
@@ -42,18 +42,7 @@ class CCrossbowBolt : public CBaseEntity
 	void EXPORT BoltTouch( CBaseEntity *pOther );
 	float TouchGravGun( CBaseEntity *attacker, int stage )
 	{
-		if( stage >= 2 )
-		{
-
-			pev->movetype = MOVETYPE_FLY;
-			pev->solid = SOLID_BBOX;
-			pev->nextthink = gpGlobals->time + 60.0;
-			SetTouch( &CCrossbowBolt::BoltTouch );
-			UTIL_MakeVectors( attacker->pev->v_angle + attacker->pev->punchangle);
-			pev->angles = UTIL_VecToAngles(gpGlobals->v_forward);
-			SetThink( &CCrossbowBolt::BubbleThink );
-		}
-		return 2000;
+		return false;
 	}
 
 	int m_iTrail;
@@ -164,12 +153,12 @@ void CCrossbowBolt::BoltTouch( CBaseEntity *pOther )
 			Vector vecDir = pev->velocity.Normalize();
 			UTIL_SetOrigin( pev, pev->origin - vecDir * 12 );
 			pev->angles = UTIL_VecToAngles( vecDir );
-			//pev->solid = SOLID_NOT;
+			pev->solid = SOLID_NOT;
 			pev->movetype = MOVETYPE_FLY;
 			pev->velocity = Vector( 0, 0, 0 );
 			pev->avelocity.z = 0;
 			pev->angles.z = RANDOM_LONG( 0, 360 );
-			pev->nextthink = gpGlobals->time + 60.0;
+			pev->nextthink = gpGlobals->time + 15.0;
 		}
 		else if( pOther->pev->movetype == MOVETYPE_PUSH || pOther->pev->movetype == MOVETYPE_PUSHSTEP )
 		{
