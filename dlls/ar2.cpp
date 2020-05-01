@@ -454,7 +454,7 @@ int CAR2::GetItemInfo(ItemInfo *p)
 		if ( cvar_ar2_allow_balls.value )
 		{
 			p->pszAmmo2 = "ARgrenades";
-			p->iMaxAmmo2 = M203_GRENADE_MAX_CARRY;
+			p->iMaxAmmo2 = 3;
 		}
 		else
 		{
@@ -476,6 +476,7 @@ int CAR2::AddToPlayer(CBasePlayer *pPlayer)
 {
 	if( !cvar_allow_ar2.value )
 		return FALSE;
+
 	if (CBasePlayerWeapon::AddToPlayer(pPlayer))
 	{
 		MESSAGE_BEGIN(MSG_ONE, gmsgWeapPickup, NULL, pPlayer->pev);

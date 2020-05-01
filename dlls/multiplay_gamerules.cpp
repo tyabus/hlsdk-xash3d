@@ -77,33 +77,8 @@ CHalfLifeMultiplay::CHalfLifeMultiplay()
 	RefreshSkillData();
 	m_flIntermissionEndTime = 0;
 	g_flIntermissionStartTime = 0;
-	
-	// 11/8/98
-	// Modified by YWB:  Server .cfg file is now a cvar, so that 
-	//  server ops can run multiple game servers, with different server .cfg files,
-	//  from a single installed directory.
-	// Mapcyclefile is already a cvar.
 
-	// 3/31/99
-	// Added lservercfg file cvar, since listen and dedicated servers should not
-	// share a single config file. (sjb)
-	if( IS_DEDICATED_SERVER() )
-	{
-		// dedicated server
-		/*const char *servercfgfile = CVAR_GET_STRING( "servercfgfile" );
-
-		if( servercfgfile && servercfgfile[0] )
-		{
-			char szCommand[256];
-			
-			ALERT( at_console, "Executing dedicated server config file\n" );
-			sprintf( szCommand, "exec %s\n", servercfgfile );
-			SERVER_COMMAND( szCommand );
-		}
-		*/
-		// this code has been moved into engine, to only run server.cfg once
-	}
-	else
+	if( !IS_DEDICATED_SERVER() )
 	{
 		// listen server
 		const char *lservercfgfile = CVAR_GET_STRING( "lservercfgfile" );
@@ -117,6 +92,9 @@ CHalfLifeMultiplay::CHalfLifeMultiplay()
 			SERVER_COMMAND( szCommand );
 		}
 	}
+
+	ALERT( at_console, "Executing map config file\n" );
+	SERVER_COMMAND( UTIL_VarArgs( "exec maps/%s\n", STRING( gpGlobals->mapname ) ) );
 }
 
 void UTIL_CoopProcessMenu( CBasePlayer *pPlayer, int imenu );

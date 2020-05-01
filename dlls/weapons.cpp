@@ -1373,7 +1373,7 @@ void CWeaponBox::Spawn( void )
 {
 	Precache();
 
-	pev->movetype = MOVETYPE_TOSS;
+	pev->movetype = MOVETYPE_BOUNCE;
 	pev->solid = SOLID_TRIGGER;
 
 	UTIL_SetSize( pev, Vector(-16,-16,-32), Vector(16,16,32) );
@@ -1429,6 +1429,9 @@ void CWeaponBox::Touch( CBaseEntity *pOther )
 	{
 		return;
 	}
+
+	if( pev->solid != SOLID_TRIGGER ) // make sure that player can pickup box
+		pev->solid = SOLID_TRIGGER;
 
 	pev->velocity = ( pev->velocity + pOther->pev->velocity) / 2;
 

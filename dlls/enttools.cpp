@@ -106,7 +106,7 @@ bool Ent_CheckCreate( edict_t *player, const char *classname )
 		return false;
 
 	if( p->m_ggm.IsAdmin )
-		return false;
+		return true; // Always trust to admin
 
 	if( gpGlobals->time - p->m_ggm.flEntTime > 60 )
 	{

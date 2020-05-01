@@ -127,6 +127,21 @@ void ClientDisconnect( edict_t *pEntity )
 		{
 			GGM_SaveState( pPlayer );
 		}
+		else // I noticed that score dosen't get destroyed properly even if ggm_saverestore_enable is 0
+		{
+		        pPlayer->pev->frags = 0; // pefrect zero
+                	pPlayer->m_iDeaths = 0; // perfect zero
+
+			extern int gmsgScoreInfo;
+	        	// update the scores
+                	MESSAGE_BEGIN( MSG_ALL, gmsgScoreInfo );
+                        	WRITE_BYTE( ENTINDEX(pPlayer->edict()) );
+                        	WRITE_SHORT( (int)pPlayer->pev->frags );
+                        	WRITE_SHORT( pPlayer->m_iDeaths );
+                        	WRITE_SHORT( 0 );
+                       	 	WRITE_SHORT( 0 );
+                	MESSAGE_END();
+		}
 
 		pPlayer->m_ggm.iState = STATE_UNINITIALIZED;
 	}

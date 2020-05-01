@@ -3002,6 +3002,23 @@ bool GGM_ClientCommand( CBasePlayer *pPlayer, const char *pCmd )
 		CLIENT_COMMAND( pPlayer->edict(), args );
 		return true;
 	}
+	else if( FStrEq(pCmd, "resetscore") || FStrEq(pCmd, "rs") )
+	{
+		pPlayer->pev->frags = 0; // pefrect zero
+        	pPlayer->m_iDeaths = 0; // perfect zero
+
+		// update the scores
+        	MESSAGE_BEGIN( MSG_ALL, gmsgScoreInfo );
+                	WRITE_BYTE( ENTINDEX(pPlayer->edict()) );
+                	WRITE_SHORT( (int)pPlayer->pev->frags );
+                	WRITE_SHORT( pPlayer->m_iDeaths );
+                	WRITE_SHORT( 0 );
+                	WRITE_SHORT( 0 );
+        	MESSAGE_END();
+
+		GGM_ChatPrintf( pPlayer, "^6Your score has been reset^7\n" );
+		return true;
+	}
 	#ifndef __ANDROID__
 	else if( FStrEq(pCmd, "admin_logout" ) )
 	{
@@ -3109,22 +3126,22 @@ bool GGM_ClientCommand( CBasePlayer *pPlayer, const char *pCmd )
 		}
 		return true;
         }
-	else if( FStrEq(pCmd, "admin_god") )
+	else if( FStrEq(pCmd, "admin_god") || FStrEq(pCmd, "admin_godmode") )
         {
                 if( !pPlayer->m_ggm.IsAdmin )
 		{
                         return false;
 		}
 
-                if( pPlayer->pev->takedamage != DAMAGE_NO )
+                if( !FBitSet( pPlayer->pev->flags, FL_GODMODE ) )
 		{
-                        pPlayer->pev->takedamage = DAMAGE_NO;
+                        pPlayer->pev->flags |= FL_GODMODE;
                         GGM_ChatPrintf( pPlayer, "^2Admin godmode ON^7\n" );
                         return true;
 		}
                 else
 		{
-                        pPlayer->pev->takedamage = DAMAGE_AIM;
+                        pPlayer->pev->flags &= ~FL_GODMODE;
                         GGM_ChatPrintf( pPlayer, "^2Admin godmode OFF^7\n" );
                         return true;
 		}
@@ -3137,7 +3154,7 @@ bool GGM_ClientCommand( CBasePlayer *pPlayer, const char *pCmd )
                         return false;
                 }
 
-                if( !pPlayer->pev->flags & FL_NOTARGET )
+                if( !FBitSet( pPlayer->pev->flags, FL_NOTARGET ) )
                 {
                         pPlayer->pev->flags |= FL_NOTARGET;
                         GGM_ChatPrintf( pPlayer, "^2Admin notarget ON^7\n" );
@@ -3151,7 +3168,6 @@ bool GGM_ClientCommand( CBasePlayer *pPlayer, const char *pCmd )
                 }
                 return true;
         }
-
 	else if( FStrEq(pCmd, "admin_strip") )
         {
                 if( !pPlayer->m_ggm.IsAdmin )

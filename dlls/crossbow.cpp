@@ -26,8 +26,6 @@
 #define BOLT_AIR_VELOCITY	2000
 #define BOLT_WATER_VELOCITY	1000
 
-extern BOOL gPhysicsInterfaceInitialized;
-
 // UNDONE: Save/restore this?  Don't forget to set classname and LINK_ENTITY_TO_CLASS()
 // 
 // OVERLOADS SOME ENTVARS:
@@ -76,8 +74,8 @@ void CCrossbowBolt::Spawn()
 	UTIL_SetOrigin( pev, pev->origin );
 	UTIL_SetSize( pev, Vector( 0, 0, 0 ), Vector( 0, 0, 0 ) );
 
-	SetTouch( &CCrossbowBolt::BoltTouch );
 	SetThink( &CCrossbowBolt::BubbleThink );
+	SetTouch( &CCrossbowBolt::BoltTouch );
 	pev->nextthink = gpGlobals->time + 0.2;
 }
 
@@ -139,18 +137,16 @@ void CCrossbowBolt::BoltTouch( CBaseEntity *pOther )
 		{
 			Killed( pev, GIB_NEVER );
 		}
+
+                SetThink( &CBaseEntity::SUB_Remove );
+                pev->nextthink = gpGlobals->time;
 	}
 	else
 	{
 		EMIT_SOUND_DYN( ENT( pev ), CHAN_BODY, "weapons/xbow_hit1.wav", RANDOM_FLOAT( 0.95, 1.0 ), ATTN_NORM, 0, 98 + RANDOM_LONG( 0, 7 ) );
 
 		SetThink( &CBaseEntity::SUB_Remove );
-		pev->nextthink = gpGlobals->time;// this will get changed below if the bolt is allowed to stick in what it hit.
-
-		if( pOther->IsPlayer() && !pOther->pev->takedamage && !pOther->pev->effects & EF_NODRAW )
-		{
-			UTIL_Remove( this );
-		}
+				pev->nextthink = gpGlobals->time;// this will get changed below if the bolt is allowed to stick in what it hit.
 
 		if( FClassnameIs( pOther->pev, "worldspawn" ) )
 		{
@@ -163,7 +159,7 @@ void CCrossbowBolt::BoltTouch( CBaseEntity *pOther )
 			pev->velocity = Vector( 0, 0, 0 );
 			pev->avelocity.z = 0;
 			pev->angles.z = RANDOM_LONG( 0, 360 );
-			pev->nextthink = gpGlobals->time + 15.0;
+			pev->nextthink = gpGlobals->time + RANDOM_FLOAT( 60.0, 120.0 );
 		}
 		else if( pOther->pev->movetype == MOVETYPE_PUSH || pOther->pev->movetype == MOVETYPE_PUSHSTEP )
 		{
@@ -174,19 +170,9 @@ void CCrossbowBolt::BoltTouch( CBaseEntity *pOther )
 			pev->velocity = Vector( 0, 0, 0 );
 			pev->avelocity.z = 0;
 			pev->angles.z = RANDOM_LONG( 0, 360 );
-			pev->nextthink = gpGlobals->time + 60.0;
-
-			if (gPhysicsInterfaceInitialized) {
-				// g-cont. Setup movewith feature
-				pev->movetype = MOVETYPE_COMPOUND;	// set movewith type
-				pev->aiment = ENT( pOther->pev );	// set parent
-			}
+			pev->nextthink = gpGlobals->time + RANDOM_FLOAT( 60.0, 120.0 );
 		}
 
-		if( UTIL_PointContents( pev->origin ) != CONTENTS_WATER )
-		{
-			UTIL_Sparks( pev->origin );
-		}
 	}
 }
 
@@ -194,7 +180,7 @@ void CCrossbowBolt::BubbleThink( void )
 {
 	pev->nextthink = gpGlobals->time + 0.1;
 
-	if( pev->waterlevel == 0 )
+	if( !pev->waterlevel )
 		return;
 
 	UTIL_BubbleTrail( pev->origin - pev->velocity * 0.1, pev->origin, 1 );
@@ -406,7 +392,6 @@ void CCrossbow::FireBolt()
 		pBolt->pev->velocity = vecDir * BOLT_AIR_VELOCITY;
 		pBolt->pev->speed = BOLT_AIR_VELOCITY;
 	}
-	pBolt->pev->avelocity.z = 10;
 #endif
 
 	if( !m_iClip && m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0 )

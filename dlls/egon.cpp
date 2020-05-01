@@ -281,7 +281,7 @@ void CEgon::Fire( const Vector &vecOrigSrc, const Vector &vecDir )
 			ClearMultiDamage();
 			if( pEntity->pev->takedamage )
 			{
-				pEntity->TraceAttack( m_pPlayer->pev, gSkillData.plrDmgEgonNarrow/2, vecDir, &tr, DMG_ENERGYBEAM );
+				pEntity->TraceAttack( m_pPlayer->pev, gSkillData.plrDmgEgonNarrow/1.5, vecDir, &tr, DMG_ENERGYBEAM );
 			}
 
 			ApplyMultiDamage( m_pPlayer->pev, m_pPlayer->pev );
@@ -318,7 +318,7 @@ void CEgon::Fire( const Vector &vecOrigSrc, const Vector &vecDir )
 			ClearMultiDamage();
 			if( pEntity->pev->takedamage )
 			{
-				pEntity->TraceAttack( m_pPlayer->pev, gSkillData.plrDmgEgonWide/2, vecDir, &tr, DMG_ENERGYBEAM | DMG_ALWAYSGIB );
+				pEntity->TraceAttack( m_pPlayer->pev, gSkillData.plrDmgEgonWide/1.7, vecDir, &tr, DMG_ENERGYBEAM | DMG_ALWAYSGIB );
 			}
 			ApplyMultiDamage( m_pPlayer->pev, m_pPlayer->pev );
 
