@@ -19,6 +19,9 @@
 #include "unpredictedweapon.h"
 
 #define AR2_BEAM_SPRITE		"sprites/xbeam1.spr"
+#define AR2_BALLS_MAX_CARRY	3
+#define _AR2_MAX_CARRY		120
+
 enum AR2_e
 {
 	AR2_LONGIDLE = 0,
@@ -435,11 +438,11 @@ int CAR2::GetItemInfo(ItemInfo *p)
 	if( !cvar_ar2_mp5.value )
 	{
 		p->pszAmmo1 = "AR2";
-		p->iMaxAmmo1 = 120;
+		p->iMaxAmmo1 = _AR2_MAX_CARRY;
 		if ( cvar_ar2_allow_balls.value )
 		{
 			p->pszAmmo2 = "AR2grenades";
-			p->iMaxAmmo2 = 3;
+			p->iMaxAmmo2 = AR2_BALLS_MAX_CARRY;
 		}
 		else
 		{
@@ -454,12 +457,12 @@ int CAR2::GetItemInfo(ItemInfo *p)
 		if ( cvar_ar2_allow_balls.value )
 		{
 			p->pszAmmo2 = "ARgrenades";
-			p->iMaxAmmo2 = 3;
+			p->iMaxAmmo2 = AR2_BALLS_MAX_CARRY;
 		}
 		else
 		{
-			p->pszAmmo2 = "NULL";
-			p->iMaxAmmo2 = NULL;
+			p->pszAmmo2 = NULL;
+			p->iMaxAmmo2 = -1;
 		}
 	}
 	p->iMaxClip = 30;
