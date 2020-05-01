@@ -469,17 +469,9 @@ public:
 	virtual float TouchGravGun( CBaseEntity *attacker, int stage)
 	{
 		pev->framerate = 1;
-		pev->movetype = MOVETYPE_BOUNCE;
+		pev->movetype = MOVETYPE_TOSS;
 		pev->gravity = 1;
-		if( pev->velocity.z > 20 )
-			pev->velocity.z = 20;
 
-		/*if( stage == 2 )
-		{
-			if( (attacker->pev->origin - pev->origin ).Length() < 90 )
-				Touch( attacker );
-			return 0;
-		}*/
 		return 200;
 	}
 	int ObjectCaps( void ) { return ( CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION ) | FCAP_DONT_SAVE; }

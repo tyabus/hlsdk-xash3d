@@ -1117,7 +1117,7 @@ CBaseEntity* CBasePlayerAmmo::Respawn( void )
 
 	return this;
 }
-float CBasePlayerAmmo::TouchGravGun( CBaseEntity *attacker, int stage)
+float CBasePlayerAmmo::TouchGravGun( CBaseEntity *attacker, int stage )
 {
 	if( ( pev->movetype == MOVETYPE_TOSS ) && ( stage > 1 ) && ( m_pfnTouch == &CBasePlayerAmmo::DefaultTouch ) )
 	{
@@ -1373,7 +1373,7 @@ void CWeaponBox::Spawn( void )
 {
 	Precache();
 
-	pev->movetype = MOVETYPE_BOUNCE;
+	pev->movetype = MOVETYPE_TOSS;
 	pev->solid = SOLID_TRIGGER;
 
 	UTIL_SetSize( pev, Vector(-16,-16,-32), Vector(16,16,32) );
