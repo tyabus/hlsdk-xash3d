@@ -37,10 +37,11 @@ AgTimer::~AgTimer()
 // $fadein (message fade in time - per character in effect 2)
 // $fadeout (message fade out time)
 // $holdtime (stay on the screen for this long)
-void AgSay(CBasePlayer* pPlayer, char *sText, int fHoldTime, float x, float y, int iChannel)
+void AgTimer::Print(char *sText, int fHoldTime, float x, float y, int iChannel)
 {
         hudtextparms_t hText;
         memset(&hText, 0, sizeof(hText));
+
         hText.channel = iChannel;
         // These X and Y coordinates are just above the health meter.
         hText.x = x;
@@ -58,19 +59,12 @@ void AgSay(CBasePlayer* pPlayer, char *sText, int fHoldTime, float x, float y, i
         hText.fadeoutTime = 0.000;
         hText.fxTime = 0.25;
 
-        if ( pPlayer )
+        for( int i = 1; i <= gpGlobals->maxClients; i++ )
         {
-                UTIL_HudMessage(pPlayer, hText, sText);
-        }
-        else
-        {
-                for (int i = 1; i <= gpGlobals->maxClients; i++)
-                {
-                        CBaseEntity* pPlayerLoop = UTIL_PlayerByIndex(i);
-                        if (pPlayerLoop)
-                                UTIL_HudMessage(pPlayerLoop, hText, sText);
-                }
-        }
+        	CBaseEntity* pPlayerLoop = UTIL_PlayerByIndex(i);
+                if( pPlayerLoop )
+                	UTIL_HudMessage(pPlayerLoop, hText, sText);
+	}
 }
 
 void AgTimer::Think()
@@ -82,9 +76,9 @@ void AgTimer::Think()
 
 	if( m_fNextTimerUpdate <= m_fEffectiveTime )
 	{
-		// Sanity time check. Some dudes tends to put timelimit weird.
-		if( timelimit.value > 2880 )
-        		CVAR_SET_FLOAT( "mp_timelimit", 2880 ); //Max two days.
+		// Sanity time check
+		if( timelimit.value > 4320 )
+        		CVAR_SET_FLOAT( "mp_timelimit", 4320 ); // Three days maximum
 
 		// Write the time. (negative turns off timer on client)
 		long lTime = (m_pmp_timelimit->value * 60) - m_fEffectiveTime;
@@ -119,10 +113,9 @@ void AgTimer::Think()
 				sprintf( szTime, "%ld\n", lTime );
 			}
 
-			AgSay( NULL, szTime, 60, 0.5, 0.01, 1 );
+			Print( szTime, 60, 0.5, 0.01, 1 );
 				m_fNextTimerUpdate += 1;
 		}
 	}
 }
-
 //-- Martin Webrant

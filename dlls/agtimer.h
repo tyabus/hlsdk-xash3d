@@ -18,6 +18,7 @@ public:
 	AgTimer();
 	virtual ~AgTimer();
 
+	void Print(char *sText, int fHoldTime, float x, float y, int iChannel);
 	void Think();
 };
 
