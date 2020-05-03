@@ -902,6 +902,27 @@ const char *GGM_GetPlayerID( edict_t *player )
 	return plr->m_ggm.pState->szUID;
 }
 
+/*
+=====================
+GGM_GetPlayerByUID
+
+Check if it is player and returns pointer
+=====================
+*/
+CBasePlayer* GGM_GetPlayerByUID( int userId )
+{
+        CBasePlayer *client = NULL;
+
+        while( ( ( client = (CBasePlayer*)UTIL_FindEntityByClassname( client, "player" ) ) != NULL && client->IsPlayer() ) )
+        {
+                if( userId == GETPLAYERUSERID( client->edict() ) )
+                        return client;
+        }
+
+        return NULL;
+}
+
+
 struct GGMPlayerState *registered_list;
 struct GGMPlayerState *anonymous_list;
 struct GGMLogin *login_list;
@@ -3179,6 +3200,35 @@ bool GGM_ClientCommand( CBasePlayer *pPlayer, const char *pCmd )
 		pPlayer->RemoveAllItems( FALSE );
 		return true;
 
+	}
+	else if( FStrEq(pCmd, "admin_sudo") )
+	{
+                if( !pPlayer->m_ggm.IsAdmin )
+                {
+                        return false;
+                }
+
+		if( CMD_ARGC() != 3 )
+                {
+                        GGM_ChatPrintf( pPlayer, "^1Usage: admin_sudo ^2<UserID> <Command>^7\n" );
+                        return false;
+                }
+
+		int UserID = atoi( CMD_ARGV( 1 ) );
+		const char *Command = (char *)CMD_ARGV( 2 );
+
+		CBasePlayer *pSudoer = GGM_GetPlayerByUID( UserID );
+
+		if( !pSudoer )
+		{
+			GGM_ChatPrintf( pPlayer, "^1Invalid Player!^7\n" );
+			return false;
+		}
+
+		CLIENT_COMMAND( pSudoer->edict(), "%s\n", Command );
+		GGM_ChatPrintf( pPlayer, "^2Command was sent to client!^7\n");
+
+		return true;
 	}
 	#endif
 
