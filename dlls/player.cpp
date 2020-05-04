@@ -14,7 +14,7 @@
 ****/
 /*
 
-===== player.cpp ========================================================
+=============================== player.cpp ===============================
 
   functions dealing with the player
 
@@ -35,8 +35,6 @@
 #include "game.h"
 #include "pm_shared.h"
 #include "hltv.h"
-
-// #define DUCKFIX
 
 extern DLL_GLOBAL ULONG g_ulModelIndexPlayer;
 extern DLL_GLOBAL BOOL g_fGameOver;

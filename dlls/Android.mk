@@ -21,7 +21,6 @@ LOCAL_CFLAGS += -DGGM_COMMIT=\"$(GGM_COMMIT)\" -DCXX=\"$(CXX)\" -D_LINUX -DCLIEN
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/. \
 		    $(LOCAL_PATH)/wpn_shared \
 		    $(LOCAL_PATH)/../common \
-		    $(LOCAL_PATH)/../engine/common \
 		    $(LOCAL_PATH)/../engine \
 		    $(LOCAL_PATH)/../public \
 		    $(LOCAL_PATH)/../pm_shared \

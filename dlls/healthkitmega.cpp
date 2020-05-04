@@ -49,15 +49,18 @@ void CHealthKitMega::Spawn( void )
 void CHealthKitMega::Precache( void )
 {
 	PRECACHE_MODEL( "models/w_medkit.mdl" );
+
 	PRECACHE_SOUND( "items/smallmedkit1.wav" );
+	PRECACHE_SOUND( "items/airtank1.wav" );
 }
 
 void CHealthKitMega::Think( void )
 {
-	pev->rendercolor.x = rand() % 255;
-	pev->rendercolor.y = rand() % 255;
-	pev->rendercolor.z = rand() % 255;
-	pev->nextthink = gpGlobals->time + 0.20;
+	pev->rendercolor.x = RANDOM_FLOAT( 0, 255 );
+	pev->rendercolor.y = RANDOM_FLOAT( 0, 255 );
+	pev->rendercolor.z = RANDOM_FLOAT( 0, 255 );
+
+	pev->nextthink = gpGlobals->time + 0.25;
 }
 
 BOOL CHealthKitMega::MyTouch( CBasePlayer *pPlayer )
@@ -76,14 +79,15 @@ BOOL CHealthKitMega::MyTouch( CBasePlayer *pPlayer )
 	{
 		pPlayer->pev->armorvalue = 100;
 
-		if( pPlayer->pev->waterlevel != 0 )
-			pPlayer->pev->air_finished = gpGlobals->time + 15;
+		if( pPlayer->pev->waterlevel )
+			pPlayer->pev->air_finished = gpGlobals->time + 15; // give additional air
 
 		MESSAGE_BEGIN( MSG_ONE, gmsgItemPickup, NULL, pPlayer->pev );
 			WRITE_STRING( STRING( pev->classname ) );
 		MESSAGE_END();
 
 		EMIT_SOUND_DYN( ENT( pPlayer->pev ), CHAN_ITEM, "items/smallmedkit1.wav", 1, ATTN_NORM, 0, 75 );
+		EMIT_SOUND_DYN( ENT( pPlayer->pev ), CHAN_ITEM, "items/airtank1.wav", 1, ATTN_NORM, 0, 75 );
 
 		SetThink( NULL );
 		pev->nextthink = gpGlobals->time;

@@ -33,8 +33,6 @@
 
 extern CGraph WorldGraph;
 
-#define NOT_USED 255
-
 DLL_GLOBAL	short g_sModelIndexLaser;// holds the index for the laser beam
 DLL_GLOBAL const char *g_pModelNameLaser = "sprites/laserbeam.spr";
 DLL_GLOBAL	short g_sModelIndexLaserDot;// holds the index for the laser beam dot
@@ -351,10 +349,7 @@ void W_Precache( void )
 	if( cvar_allow_m249.value )
 		UTIL_PrecacheOtherWeapon( "weapon_m249" );
 
-	if ( g_pGameRules->IsDeathmatch() )
-	{
-		UTIL_PrecacheOther( "weaponbox" );// container for dropped deathmatch weapons
-	}
+	UTIL_PrecacheOther( "weaponbox" );// container for dropped weapons
 
 	g_sModelIndexFireball = PRECACHE_MODEL( "sprites/zerogxplode.spr" );// fireball
 	g_sModelIndexWExplosion = PRECACHE_MODEL( "sprites/WXplo1.spr" );// underwater fireball
