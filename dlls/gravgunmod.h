@@ -27,7 +27,6 @@ extern cvar_t ggm_saverestore_enable;
 extern cvar_t ggm_arch;
 extern cvar_t ggm_platform;
 extern cvar_t ggm_commit;
-extern cvar_t ggm_adminpw;
 
 extern cvar_t cvar_gibtime;
 extern cvar_t cvar_hgibcount;
@@ -110,7 +109,9 @@ void GGM_RegisterCVars( void );
 void Ent_RunGC( int flags, const char *userid, const char *pattern = NULL );
 bool Q_stricmpext( const char *pattern, const char *text );
 class CBasePlayer;
+void GGM_ChatPrintf( CBasePlayer *pPlayer, const char *format, ... );
 void GGM_ClientPutinServer(edict_t *pEntity , CBasePlayer *pPlayer);
+CBasePlayer* GGM_GetPlayerByUID( int userId );
 void GGM_ClientFirstSpawn(CBasePlayer *pPlayer );
 const char *GGM_GetPlayerID( edict_t *player );
 edict_t *GGM_PlayerByID( const char *id );

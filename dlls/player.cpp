@@ -3824,7 +3824,7 @@ float CBasePlayer::TouchGravGun( CBaseEntity *attacker, int stage )
 		return 200;
 
 	CBasePlayer *pPlayer = (CBasePlayer *)attacker;
-	if( mp_gravgun_players.value && pPlayer->m_ggm.IsAdmin )
+	if( mp_gravgun_players.value || pPlayer->m_ggm.IsAdmin )
 	{
 		return 200;
 	}

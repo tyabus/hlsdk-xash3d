@@ -16,6 +16,7 @@
 #include "eiface.h"
 #include "util.h"
 #include "game.h"
+#include "admin.h"
 
 cvar_t displaysoundlist = {"displaysoundlist","0"};
 
@@ -466,6 +467,7 @@ void GameDLLInit( void )
 	{
 		COOP_RegisterCVars();
 	}
+	Admin_RegisterCVars();
 	#endif
 	ENT_RegisterCVars();
 
