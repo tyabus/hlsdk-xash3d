@@ -2998,14 +2998,6 @@ bool GGM_ClientCommand( CBasePlayer *pPlayer, const char *pCmd )
 		GGM_Logout(pPlayer);
 		return true;
 	}
-	else if( FStrEq(pCmd, "client") )
-	{
-		char args[256] = {0};
-		strncpy(args, CMD_ARGS(),254);
-		strcat(args,"\n");
-		CLIENT_COMMAND( pPlayer->edict(), args );
-		return true;
-	}
 	else if( FStrEq(pCmd, "resetscore") || FStrEq(pCmd, "rs") )
 	{
 		if( mp_coop.value && !mp_coop_nofriendlyfire.value )

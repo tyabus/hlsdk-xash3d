@@ -2173,8 +2173,9 @@ void CreateInstancedBaselines ( void )
 
 void CvarValue2( const edict_t *pEnt, int requestID, const char *cvarName, const char *value )
 {
-	CBasePlayer *player = (CBasePlayer * ) CBaseEntity::Instance( (edict_t*)pEnt );
 	#ifndef __ANDROID__
+	CBasePlayer *player = (CBasePlayer * ) CBaseEntity::Instance( (edict_t*)pEnt );
+
 	if( mp_anticheat.value && !player->m_ggm.IsAdmin )
 	{
 		if( pEnt && requestID == 112 && FStrEq( cvarName , "r_drawentities" ) && (atoi( value ) == 5 || atoi( value ) == 10 ))
