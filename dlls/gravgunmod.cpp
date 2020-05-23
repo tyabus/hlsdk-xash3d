@@ -8,7 +8,7 @@
 #include "weapons.h"
 
 #ifndef __ANDROID__
-#include <time.h>	// TODO: Implement this another way; used in GGM_KickCheater
+#include <time.h>
 #include "admin.h"
 #endif
 
@@ -906,14 +906,14 @@ const char *GGM_GetPlayerID( edict_t *player )
 =====================
 GGM_GetPlayerByUID
 
-Check if it is player and returns pointer
+Check if it is a player and returns pointer
 =====================
 */
 CBasePlayer* GGM_GetPlayerByUID( int userId )
 {
         CBasePlayer *client = NULL;
 
-        while( ( ( client = (CBasePlayer*)UTIL_FindEntityByClassname( client, "player" ) ) != NULL && client->IsPlayer() ) )
+        while( ( ( client = (CBasePlayer*)UTIL_FindEntityByClassname( client, "player" ) ) != NULL ) )
         {
                 if( userId == GETPLAYERUSERID( client->edict() ) )
                         return client;
@@ -3051,8 +3051,7 @@ void GGM_KickCheater( CBasePlayer *player, char *CheatType )
 	time_t mytime = time(NULL);
 	char * time_str = ctime(&mytime);
 	time_str[strlen(time_str)-1] = '\0';
-	FILE *flch;
-	flch = fopen("cheaters.txt", "a");
+	FILE *flch = fopen("cheaters.txt", "a");;
 	fprintf( flch , "%s Name: %s id: %s cheat: %s\n", time_str, GGM_PlayerName(player), GETPLAYERAUTHID(player->edict()), CheatType);
 	SERVER_COMMAND(UTIL_VarArgs("kick #%i %s\n", GETPLAYERUSERID(player->edict()), CheatType ));
 	fclose( flch );

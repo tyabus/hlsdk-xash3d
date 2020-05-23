@@ -103,9 +103,9 @@
 #define DAMAGE_AIM			2
 
 // entity effects
-#define EF_BRIGHTFIELD		1	// swirling cloud of particles
-#define EF_MUZZLEFLASH		2	// single frame ELIGHT on entity attachment 0
-#define EF_BRIGHTLIGHT		4	// DLIGHT centered at entity origin
+#define EF_BRIGHTFIELD			1	// swirling cloud of particles
+#define EF_MUZZLEFLASH			2	// single frame ELIGHT on entity attachment 0
+#define EF_BRIGHTLIGHT			4	// DLIGHT centered at entity origin
 #define EF_DIMLIGHT			8	// player flashlight
 #define EF_INVLIGHT			16	// get lighting from ceiling
 #define EF_NOINTERP			32	// don't interpolate the next frame
@@ -120,8 +120,8 @@
 #define EF_REFLECTONLY		(1<<25)	// Entity will be drawing only in mirrors
 #define EF_NOWATERCSG		(1<<26)	// Do not remove sides for func_water entity
 #define EF_FULLBRIGHT		(1<<27)	// Just get fullbright
-#define EF_NOSHADOW			(1<<28)	// ignore shadow for this entity
-#define EF_MERGE_VISIBILITY		(1<<29)	// this entity allowed to merge vis (e.g. env_sky or portal camera)
+#define EF_NOSHADOW		(1<<28)	// ignore shadow for this entity
+#define EF_MERGE_VISIBILITY	(1<<29)	// this entity allowed to merge vis (e.g. env_sky or portal camera)
 #define EF_REQUEST_PHS		(1<<30)	// This entity requested phs bitvector instead of pvsbitvector in AddToFullPack calls
 // g-cont. one reserved bit here for me
 

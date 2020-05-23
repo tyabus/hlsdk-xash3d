@@ -1,11 +1,12 @@
+#ifndef __ANDROID__
 #include "extdll.h"
 #include "util.h"
 #include "cbase.h"
 #include "gravgunmod.h"
 #include "player.h"
+#include <time.h>
 
 cvar_t admin_password = { "admin_password", "", FCVAR_SERVER | FCVAR_UNLOGGED };
-#ifndef __ANDROID__
 
 void Admin_RegisterCVars( void )
 {
@@ -15,8 +16,11 @@ void Admin_RegisterCVars( void )
 void Admin_LogAttempts( CBasePlayer *pPlayer, char *LogType )
 {
                 FILE *fladminlog = fopen("logattempts.txt", "a");
+		time_t mytime = time(NULL);
+                char * time_str = ctime(&mytime);
+                time_str[strlen(time_str)-1] = '\0';
 
-                fprintf( fladminlog, "%s %s %s\n", LogType, GETPLAYERAUTHID( pPlayer->edict() ), STRING( pPlayer->pev->netname ) ); // LogType, XashID, Nickname
+                fprintf( fladminlog, "%s %s %s\n", time_str, LogType, GETPLAYERAUTHID( pPlayer->edict() ), GGM_PlayerName( pPlayer ) ); // Timestamp ,LogType, XashID, Nickname
                 fclose( fladminlog );
 }
 
@@ -28,6 +32,12 @@ bool Admin_ClientCommand( edict_t *pEntity )
 
 	if( FStrEq(pCmd, "admin_login") )
 	{
+	        if( !admin_password.string )
+                {
+                        GGM_ChatPrintf( pPlayer, "^1Can't login, password cvar is empty!^7\n" );
+                        return false;
+                }
+
 		if( CMD_ARGC() != 2 )
 		{
 			GGM_ChatPrintf( pPlayer, "^1Usage: admin_login ^2<password>^7\n" );
@@ -42,12 +52,6 @@ bool Admin_ClientCommand( edict_t *pEntity )
 		}
 
 		const char *passwordargv = CMD_ARGV( 1 );
-
-		if( !admin_password.string )
-		{
-			GGM_ChatPrintf( pPlayer, "^1Can't login, password cvar is empty!^7\n" );
-			return false;
-		}
 
 		if( !strcmp( passwordargv, admin_password.string ) )
 		{

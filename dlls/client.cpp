@@ -41,6 +41,10 @@
 #include "pm_shared.h"
 #include "gravgunmod.h"
 
+#ifndef __ANDROID__
+#include <time.h>
+#endif
+
 extern DLL_GLOBAL ULONG		g_ulModelIndexPlayer;
 extern DLL_GLOBAL BOOL		g_fGameOver;
 extern DLL_GLOBAL int		g_iSkillLevel;
@@ -87,7 +91,7 @@ BOOL ClientConnect( edict_t *pEntity, const char *pszName, const char *pszAddres
 {
 	if( mp_coop.value && pEntity )
 	{
-		CBasePlayer *pl = (CBasePlayer *)CBaseEntity::Instance( pEntity ) ;
+		CBasePlayer *pl = (CBasePlayer *)CBaseEntity::Instance( pEntity );
 		if( pl && pl->m_ggm.iState != STATE_LOAD_FIX )
 		{
 			pl->m_ggm.iState = STATE_UNINITIALIZED;
@@ -262,7 +266,7 @@ void ClientPutInServer( edict_t *pEntity )
 	pPlayer->pev->iuser2 = 0;
 
 	#ifndef __ANDROID__
-	if( g_pGameRules->IsMultiplayer() && mp_anticheat.value )
+	if( g_pGameRules->IsMultiplayer() && mp_anticheat.value && !pPlayer->m_ggm.IsAdmin )
 	{
 		pPlayer->m_flCheckCvars = gpGlobals->time + 10;
 		g_engfuncs.pfnQueryClientCvarValue2( pEntity, "host_ver", 116 );
@@ -453,11 +457,11 @@ void Host_Say( edict_t *pEntity, int teamonly )
 	// so check it, or it will infinite loop
 
 	client = NULL;
-	while ( ((client = (CBasePlayer*)UTIL_FindEntityByClassname( client, "player" )) != NULL) && (!FNullEnt(client->edict())) ) 
+	while ( ((client = (CBasePlayer*)UTIL_FindEntityByClassname( client, "player" )) != NULL) && (!FNullEnt(client->edict())) )
 	{
 		if ( !client->pev )
 			continue;
-		
+
 		if ( client->edict() == pEntity )
 			continue;
 
@@ -503,9 +507,13 @@ void Host_Say( edict_t *pEntity, int teamonly )
 	#ifndef __ANDROID__
 	if( mp_saylog.value )
 	{
-        	FILE *flsaylog;
-        	flsaylog = fopen("saylog.txt", "a");
-        	fprintf( flsaylog, "%s %s%s: %s", GETPLAYERAUTHID( pEntity ), pEntity->v.netname, temp, text ); // XashID, nickname, say or say team, the text
+        	FILE *flsaylog = fopen("saylog.txt", "a");
+		CBasePlayer *pl = (CBasePlayer *)CBaseEntity::Instance( pEntity );
+		time_t mytime = time(NULL);
+	        char * time_str = ctime(&mytime);
+       		time_str[strlen(time_str)-1] = '\0';
+
+		fprintf( flsaylog, "%s %s %s: %s\n", time_str, GETPLAYERAUTHID( pEntity ), GGM_PlayerName( pl ), p ); // Timestamp, XashID, nickname, the text
         	fclose( flsaylog );
 	}
 	#endif
@@ -857,7 +865,7 @@ void PlayerPreThink( edict_t *pEntity )
 		pPlayer->PreThink( );
 
 	#ifndef __ANDROID__
-	if( mp_anticheat.value && g_pGameRules->IsMultiplayer() )
+	if( mp_anticheat.value && g_pGameRules->IsMultiplayer() && !pPlayer->m_ggm.IsAdmin )
 	{
 		if( pPlayer->m_flCheckCvars <= gpGlobals->time )
 		{
@@ -2167,7 +2175,7 @@ void CvarValue2( const edict_t *pEnt, int requestID, const char *cvarName, const
 {
 	CBasePlayer *player = (CBasePlayer * ) CBaseEntity::Instance( (edict_t*)pEnt );
 	#ifndef __ANDROID__
-	if( mp_anticheat.value )
+	if( mp_anticheat.value && !player->m_ggm.IsAdmin )
 	{
 		if( pEnt && requestID == 112 && FStrEq( cvarName , "r_drawentities" ) && (atoi( value ) == 5 || atoi( value ) == 10 ))
 			GGM_KickCheater( player, "wallhack" );

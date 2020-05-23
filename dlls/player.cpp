@@ -1053,7 +1053,7 @@ void CBasePlayer::WaterMove()
 	if( pev->movetype == MOVETYPE_NOCLIP )
 		return;
 
-	if( pev->health < 0 )
+	if( !IsAlive() )
 		return;
 
 	// waterlevel 0 - not in water
@@ -1061,7 +1061,7 @@ void CBasePlayer::WaterMove()
 	// waterlevel 2 - waist in water
 	// waterlevel 3 - head in water
 
-	if( pev->waterlevel != 3 ) 
+	if( pev->waterlevel != 3 )
 	{
 		// not underwater
 
@@ -1110,7 +1110,7 @@ void CBasePlayer::WaterMove()
 				// player finally takes a breath
 
 				m_idrowndmg += (int)pev->dmg;
-			} 
+			}
 		}
 		else
 		{
@@ -1168,7 +1168,7 @@ void CBasePlayer::WaterMove()
 
 // TRUE if the player is attached to a ladder
 BOOL CBasePlayer::IsOnLadder( void )
-{ 
+{
 	return ( pev->movetype == MOVETYPE_FLY );
 }
 
@@ -1397,10 +1397,7 @@ void CBasePlayer::StartObserver( Vector vecPosition, Vector vecViewAngle )
 
 void CBasePlayer::PlayerUse( void )
 {
-	if( m_ggm.iState != STATE_SPAWNED && g_pGameRules->IsMultiplayer() )
-		return;
-
-	if( IsObserver() )
+	if( IsObserver() || pev->flags & FL_SPECTATOR )
 		return;
 
 	// Was use pressed or released?
