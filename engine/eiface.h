@@ -16,7 +16,11 @@
 #ifndef EIFACE_H
 #define EIFACE_H
 
+#ifdef HLDEMO_BUILD
+#define INTERFACE_VERSION       	001
+#else  // !HLDEMO_BUILD, i.e., regular version of HL
 #define INTERFACE_VERSION		140
+#endif // !HLDEMO_BUILD
 
 #include <stdio.h>
 #include "custom.h"
@@ -216,7 +220,7 @@ typedef struct enginefuncs_s
 	const char *(*pfnGetPhysicsInfoString)( const edict_t *pClient );
 	unsigned short (*pfnPrecacheEvent)( int type, const char*psz );
 	void	(*pfnPlaybackEvent)( int flags, const edict_t *pInvoker, unsigned short eventindex, float delay, const float *origin, const float *angles, float fparam1, float fparam2, int iparam1, int iparam2, int bparam1, int bparam2 );
-	
+
 	unsigned char *(*pfnSetFatPVS)( const float *org );
 	unsigned char *(*pfnSetFatPAS)( const float *org );
 

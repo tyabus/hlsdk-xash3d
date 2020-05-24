@@ -696,7 +696,7 @@ int CGraph::FindNearestNode( const Vector &vecOrigin, int afNodeTypes )
 
 	// Check with the cache
 	//
-	ULONG iHash = ( CACHE_SIZE - 1 ) & Hash( (void *)(const float *)vecOrigin, sizeof(vecOrigin) );
+	ULONG iHash = ( NODE_CACHE_SIZE - 1 ) & Hash( (void *)(const float *)vecOrigin, sizeof(vecOrigin) );
 	if( m_Cache[iHash].v == vecOrigin )
 	{
 		//ALERT( at_aiconsole, "Cache Hit.\n" );
