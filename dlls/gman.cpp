@@ -43,7 +43,14 @@ public:
 
         float TouchGravGun( CBaseEntity *attacker, int stage )
         {
-                return FALSE;
+		if( mp_coop.value )
+		{
+                	return FALSE;
+		}
+		else
+		{
+			return TRUE;
+		}
         }
 
 	void StartTask( Task_t *pTask );
