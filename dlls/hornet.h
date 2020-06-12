@@ -54,11 +54,7 @@ public:
 	void EXPORT DieTouch( CBaseEntity *pOther );
 	virtual float TouchGravGun( CBaseEntity *attacker, int stage )
 	{
-		pev->owner = attacker->edict();
-		pev->dmg *= 2;
-		if( m_pfnThink == &CBaseEntity::SUB_Remove )
-			pev->nextthink = gpGlobals->time + 1;
-		return 1000;
+		return FALSE;
 	}
 
 	int TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType );

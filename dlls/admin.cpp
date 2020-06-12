@@ -20,7 +20,7 @@ void Admin_LogAttempts( CBasePlayer *pPlayer, char *LogType )
                 char * time_str = ctime(&mytime);
                 time_str[strlen(time_str)-1] = '\0';
 
-                fprintf( fladminlog, "%s %s %s\n", time_str, LogType, GETPLAYERAUTHID( pPlayer->edict() ), GGM_PlayerName( pPlayer ) ); // Timestamp ,LogType, XashID, Nickname
+                fprintf( fladminlog, "%s %s %s %s\n", time_str, LogType, GETPLAYERAUTHID( pPlayer->edict() ), GGM_PlayerName( pPlayer ) ); // Timestamp, LogType, XashID, Nickname
                 fclose( fladminlog );
 }
 
