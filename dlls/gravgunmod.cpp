@@ -34,7 +34,6 @@ cvar_t mp_gravgun_beams = { "mp_gravgun_beams", "0", FCVAR_SERVER };
 cvar_t mp_skipdefaults = { "mp_skipdefaults", "0", FCVAR_SERVER };
 cvar_t mp_spectator = { "mp_spectator", "0", FCVAR_SERVER };
 cvar_t mp_unduck = { "mp_unduck", "0", FCVAR_SERVER };
-cvar_t mp_megahornet = { "mp_megahornet", "0", FCVAR_SERVER };
 cvar_t mp_anticheat = { "mp_anticheat", "1", FCVAR_SERVER };
 cvar_t mp_saylog = { "mp_saylog", "0", FCVAR_SERVER };
 cvar_t mp_q1stuff = { "mp_q1stuff", "1", FCVAR_SERVER };
@@ -3240,7 +3239,6 @@ void GGM_RegisterCVars( void )
 	CVAR_REGISTER( &cvar_agibcount );
 	CVAR_REGISTER( &mp_gravgun_players );
 	CVAR_REGISTER( &mp_gravgun_beams );
-	CVAR_REGISTER( &mp_megahornet );
 	#ifndef __ANDROID__
 	CVAR_REGISTER( &mp_anticheat );
 	CVAR_REGISTER( &mp_saylog );

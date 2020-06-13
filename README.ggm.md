@@ -173,7 +173,6 @@ mp_hgibcount - human gibs count
 mp_agibcount - alien gibs count
 mp_gibtime - set gib stay time
 mp_fixhornetbug - enable workaround for hornetgun bug
-mp_megahornet - enable/disable a new type of hornet
 mp_anticheat - enable/disable a simple anticheat
 mp_saylog - enable/disable log say,say_team in saylog.txt ( setting to 2 will disable default logging of say command )
 mp_q1stuff - enable/disable q1 stuff

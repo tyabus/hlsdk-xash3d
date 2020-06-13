@@ -89,17 +89,6 @@ void CHornet::Spawn( void )
 		m_iHornetType = HORNET_TYPE_ORANGE;
 		m_flFlySpeed = HORNET_ORANGE_SPEED;
 		break;
-	case 2:
-		if( mp_megahornet.value )
-		{
-		m_iHornetType = HORNET_TYPE_MEGA;
-		m_flFlySpeed = HORNET_MEGA_SPEED;
-		break;
-		}
-		else
-		m_iHornetType = HORNET_TYPE_ORANGE;
-                m_flFlySpeed = HORNET_ORANGE_SPEED * 0.25;
-                break;
 	}
 
 	SET_MODEL( ENT( pev ), "models/hornet.mdl" );
@@ -241,10 +230,6 @@ old colors
 			WRITE_BYTE( 128 );   // r, g, b
 			WRITE_BYTE( 0 );   // r, g, b
 			break;
-		case HORNET_TYPE_MEGA:
-			WRITE_BYTE ( 88 );
-			WRITE_BYTE ( 118 );
-			WRITE_BYTE ( 78 );
 		}
 
 		WRITE_BYTE( 128 );	// brightness
@@ -340,11 +325,6 @@ void CHornet::TrackTarget( void )
 			pev->velocity = pev->velocity * m_flFlySpeed;// do not have to slow down to turn.
 			pev->nextthink = gpGlobals->time + 0.1;// fixed think time
 			break;
-		case HORNET_TYPE_MEGA:
-			pev->health = pev->health + 9;
-			pev->velocity = pev->velocity * m_flFlySpeed * 1.35;
-			pev->nextthink = gpGlobals->time + 0.07;
-			pev->dmg = pev->dmg * 0.70;
 	}
 
 	pev->angles = UTIL_VecToAngles( pev->velocity );

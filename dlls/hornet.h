@@ -23,8 +23,6 @@
 //=========================================================
 #define HORNET_TYPE_RED			0
 #define HORNET_TYPE_ORANGE		1
-#define HORNET_TYPE_MEGA		2
-#define HORNET_MEGA_SPEED		(float)850
 #define HORNET_RED_SPEED		(float)600
 #define HORNET_ORANGE_SPEED		(float)800
 #define	HORNET_BUZZ_VOLUME		(float)0.8
@@ -52,7 +50,7 @@ public:
 	void EXPORT TrackTouch( CBaseEntity *pOther );
 	void EXPORT DartTouch( CBaseEntity *pOther );
 	void EXPORT DieTouch( CBaseEntity *pOther );
-	virtual float TouchGravGun( CBaseEntity *attacker, int stage )
+	float TouchGravGun( CBaseEntity *attacker, int stage )
 	{
 		return FALSE;
 	}

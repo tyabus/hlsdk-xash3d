@@ -19,7 +19,6 @@ extern cvar_t mp_gravgun_players;
 extern cvar_t mp_gravgun_beams;
 extern cvar_t mp_skipdefaults;
 extern cvar_t mp_unduck;
-extern cvar_t mp_megahornet;
 extern cvar_t mp_anticheat;
 extern cvar_t mp_saylog;
 
