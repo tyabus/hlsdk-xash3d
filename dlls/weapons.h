@@ -686,8 +686,9 @@ private:
 
 class CLaserSpot : public CBaseEntity
 {
-	void Spawn( void );
+	void Spawn( CBaseEntity *pMyOwner );
 	void Precache( void );
+	void OwnerCheck( void );
 
 	int	ObjectCaps( void ) { return FCAP_DONT_SAVE; }
 
@@ -695,7 +696,7 @@ public:
 	void Suspend( float flSuspendTime );
 	void EXPORT Revive( void );
 
-	static CLaserSpot *CreateSpot( void );
+	static CLaserSpot *CreateSpot( CBaseEntity *pOwner );
 };
 
 class CRpg : public CBasePlayerWeapon

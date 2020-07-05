@@ -45,23 +45,29 @@ LINK_ENTITY_TO_CLASS( laser_spot, CLaserSpot )
 
 //=========================================================
 //=========================================================
-CLaserSpot *CLaserSpot::CreateSpot( void )
+CLaserSpot *CLaserSpot::CreateSpot( CBaseEntity *pOwner )
 {
-	CLaserSpot *pSpot = GetClassPtr( (CLaserSpot *)NULL );
-	pSpot->Spawn();
+	if( pOwner )
+	{
+		CLaserSpot *pSpot = GetClassPtr( (CLaserSpot *)NULL );
+		pSpot->Spawn( pOwner );
 
-	pSpot->pev->classname = MAKE_STRING( "laser_spot" );
+		pSpot->pev->classname = MAKE_STRING( "laser_spot" );
 
-	return pSpot;
+		return pSpot;
+	}
+	return NULL;
 }
 
 //=========================================================
 //=========================================================
-void CLaserSpot::Spawn( void )
+void CLaserSpot::Spawn( CBaseEntity *pMyOwner )
 {
 	Precache();
 	pev->movetype = MOVETYPE_NONE;
 	pev->solid = SOLID_NOT;
+
+	pev->owner = pMyOwner->edict();
 
 	pev->rendermode = kRenderGlow;
 	pev->renderfx = kRenderFxNoDissipation;
@@ -72,7 +78,7 @@ void CLaserSpot::Spawn( void )
 }
 
 //=========================================================
-// Suspend- make the laser sight invisible. 
+// Suspend - make the laser sight invisible.
 //=========================================================
 void CLaserSpot::Suspend( float flSuspendTime )
 {
@@ -89,7 +95,20 @@ void CLaserSpot::Revive( void )
 {
 	pev->effects &= ~EF_NODRAW;
 
-	SetThink( NULL );
+	SetThink( &CLaserSpot::OwnerCheck );
+}
+
+//=========================================================
+// OwnerCheck - remove laser if owner has gone
+//=========================================================
+void CLaserSpot::OwnerCheck( void )
+{
+	if( !pev->owner )
+	{
+		UTIL_Remove( this );
+	}
+
+	pev->nextthink = gpGlobals->time + 5.0; // think every 5 seconds
 }
 
 void CLaserSpot::Precache( void )
@@ -171,8 +190,6 @@ void CRpgRocket::Precache( void )
 
 void CRpgRocket::IgniteThink( void )
 {
-	// pev->movetype = MOVETYPE_TOSS;
-
 	pev->movetype = MOVETYPE_FLY;
 	pev->effects |= EF_LIGHT;
 
@@ -211,23 +228,29 @@ void CRpgRocket::FollowThink( void )
 
 	vecTarget = gpGlobals->v_forward;
 	flMax = 4096;
-	
+
 	// Examine all entities within a reasonable radius
 	while( ( pOther = UTIL_FindEntityByClassname( pOther, "laser_spot" ) ) != NULL )
 	{
-		UTIL_TraceLine( pev->origin, pOther->pev->origin, dont_ignore_monsters, ENT( pev ), &tr );
-		// ALERT( at_console, "%f\n", tr.flFraction );
-		if( tr.flFraction >= 0.90 )
+		if( pev->owner )
 		{
-			vecDir = pOther->pev->origin - pev->origin;
-			flDist = vecDir.Length();
-			vecDir = vecDir.Normalize();
-			flDot = DotProduct( gpGlobals->v_forward, vecDir );
-			if( ( flDot > 0 ) && ( flDist * ( 1 - flDot ) < flMax ) )
+			UTIL_TraceLine( pev->origin, pOther->pev->origin, dont_ignore_monsters, ENT( pev ), &tr );
+			if( tr.flFraction >= 0.90 )
 			{
-				flMax = flDist * ( 1 - flDot );
-				vecTarget = vecDir;
+				vecDir = pOther->pev->origin - pev->origin;
+				flDist = vecDir.Length();
+				vecDir = vecDir.Normalize();
+				flDot = DotProduct( gpGlobals->v_forward, vecDir );
+				if( ( flDot > 0 ) && ( flDist * ( 1 - flDot ) < flMax ) )
+				{
+					flMax = flDist * ( 1 - flDot );
+					vecTarget = vecDir;
+				}
 			}
+		}
+		else
+		{
+			UTIL_Remove( this ); // owner of the rocket has left the game, so destroy it
 		}
 	}
 
@@ -263,21 +286,7 @@ void CRpgRocket::FollowThink( void )
 			STOP_SOUND( ENT( pev ), CHAN_VOICE, "weapons/rocket1.wav" );
 		}
 		pev->velocity = pev->velocity * 0.2 + vecTarget * flSpeed * 0.798;
-		/*
-		// WHY???
-		if( pev->waterlevel == 0 && pev->velocity.Length() < 1500 )
-		{
-			if( CRpg *pLauncher = (CRpg*)( (CBaseEntity*)( m_hLauncher ) ) )
-			{
-				// my launcher is still around, tell it I'm dead.
-				pLauncher->m_cActiveRockets--;
-			}
-			Detonate();
-		}
-		*/
 	}
-	// ALERT( at_console, "%.0f\n", flSpeed );
-
 	pev->nextthink = gpGlobals->time + 0.1;
 }
 #endif
@@ -543,7 +552,7 @@ void CRpg::UpdateSpot( void )
 
 		if( !m_pSpot )
 		{
-			m_pSpot = CLaserSpot::CreateSpot();
+			m_pSpot = CLaserSpot::CreateSpot( m_pPlayer );
 		}
 
 		UTIL_MakeVectors( m_pPlayer->pev->v_angle );
