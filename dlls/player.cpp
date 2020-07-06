@@ -2712,11 +2712,8 @@ edict_t *EntSelectSpawnPoint( CBaseEntity *pPlayer )
 	// choose a info_player_deathmatch point
 	if( g_pGameRules->IsCoOp() )
 	{
-		pSpot = UTIL_FindEntityByClassname( g_pLastSpawn, "info_player_coop" );
-		if( !FNullEnt( pSpot ) )
-			goto ReturnSpot;
 		pSpot = UTIL_FindEntityByClassname( g_pLastSpawn, "info_player_start" );
-		if( !FNullEnt(pSpot) ) 
+		if( !FNullEnt(pSpot) )
 			goto ReturnSpot;
 	}
 	else if( g_pGameRules->IsDeathmatch() )
