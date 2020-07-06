@@ -3058,7 +3058,7 @@ Handle touch_enable cvar request
 */
 void GGM_CvarValue2( const edict_t *pEnt, int requestID, const char *cvarName, const char *value )
 {
-	if( pEnt && requestID == 111  && FStrEq( cvarName , "touch_enable" ) && atoi( value) )
+	if( pEnt && requestID == 111 && FStrEq( cvarName , "touch_enable" ) && atoi( value ) && mp_coop.value )
 	{
 		CBasePlayer *player = (CBasePlayer * ) CBaseEntity::Instance( (edict_t*)pEnt );
 		player->m_ggm.fTouchMenu = !!atof( value );
