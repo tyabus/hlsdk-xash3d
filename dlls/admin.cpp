@@ -34,19 +34,18 @@ bool Admin_ClientCommand( edict_t *pEntity )
 	{
 	        if( !admin_password.string )
                 {
-                        GGM_ChatPrintf( pPlayer, "^1Can't login, password cvar is empty!^7\n" );
+                        GGM_ChatPrintf( pPlayer, "^1Password cvar is empty, admin system is disabled^7\n" );
                         return false;
                 }
 
-		if( CMD_ARGC() != 2 )
+		if( CMD_ARGC() != 2 && !pPlayer->m_ggm.IsAdmin )
 		{
 			GGM_ChatPrintf( pPlayer, "^1Usage: admin_login ^2<password>^7\n" );
 			return false;
 		}
-
-		if( pPlayer->m_ggm.IsAdmin )
+		else
 		{
-			GGM_ChatPrintf( pPlayer, "^1Already logged in!!!^7\n" );
+			GGM_ChatPrintf( pPlayer, "^1Already logged in^7\n" );
 			Admin_LogAttempts( pPlayer, "Already logged in:" );
 			return false;
 		}
@@ -56,15 +55,13 @@ bool Admin_ClientCommand( edict_t *pEntity )
 		if( !strcmp( passwordargv, admin_password.string ) )
 		{
 			pPlayer->m_ggm.IsAdmin = true;
-			GGM_ChatPrintf( pPlayer, "^2Login successful!^7\n" );
+			GGM_ChatPrintf( pPlayer, "^2Login successful^7\n" );
 			Admin_LogAttempts( pPlayer, "Became admin:" );
-			return true;
 		}
 		else
 		{
-			GGM_ChatPrintf( pPlayer, "^1Login failed!^7\n" );
+			GGM_ChatPrintf( pPlayer, "^1Login failed^7\n" );
 			Admin_LogAttempts( pPlayer, "Failure login:" );
-			return true;
 		}
 		return true;
 	}
@@ -86,7 +83,7 @@ bool Admin_ClientCommand( edict_t *pEntity )
 
 		if( !pSudoer )
 		{
-			GGM_ChatPrintf( pPlayer, "^1Invalid Player!^7\n" );
+			GGM_ChatPrintf( pPlayer, "^1Invalid player!^7\n" );
 			return false;
 		}
 
@@ -100,7 +97,6 @@ bool Admin_ClientCommand( edict_t *pEntity )
 		GGM_ChatPrintf( pPlayer, "^2Your items were removed^7\n" );
 		pPlayer->RemoveAllItems( FALSE );
 		return true;
-
 	}
 	else if( FStrEq(pCmd, "admin_notarget") )
         {
@@ -108,13 +104,11 @@ bool Admin_ClientCommand( edict_t *pEntity )
                 {
                         pPlayer->pev->flags |= FL_NOTARGET;
                         GGM_ChatPrintf( pPlayer, "^2Admin notarget ON^7\n" );
-                        return true;
                 }
                 else
                 {
                         pPlayer->pev->flags &= ~FL_NOTARGET;
                         GGM_ChatPrintf( pPlayer, "^2Admin notarget OFF^7\n" );
-                        return true;
                 }
                 return true;
         }
@@ -124,13 +118,11 @@ bool Admin_ClientCommand( edict_t *pEntity )
 		{
                         pPlayer->pev->flags |= FL_GODMODE;
                         GGM_ChatPrintf( pPlayer, "^2Admin godmode ON^7\n" );
-                        return true;
 		}
                 else
 		{
                         pPlayer->pev->flags &= ~FL_GODMODE;
                         GGM_ChatPrintf( pPlayer, "^2Admin godmode OFF^7\n" );
-                        return true;
 		}
 		return true;
         }
@@ -146,7 +138,6 @@ bool Admin_ClientCommand( edict_t *pEntity )
 			pPlayer->pev->flags |= FL_GODMODE;
 			pPlayer->m_fNoPlayerSound = TRUE;
                         GGM_ChatPrintf( pPlayer, "^2Admin invisibility ON^7\n" );
-                        return true;
 		}
                 else
 		{
@@ -158,7 +149,6 @@ bool Admin_ClientCommand( edict_t *pEntity )
 			pPlayer->pev->solid = SOLID_SLIDEBOX;
 			pPlayer->m_fNoPlayerSound = FALSE;
                         GGM_ChatPrintf( pPlayer, "^2Admin invisibility OFF^7\n" );
-                        return true;
 		}
 		return true;
         }
@@ -168,13 +158,11 @@ bool Admin_ClientCommand( edict_t *pEntity )
 		{
 			pPlayer->pev->movetype = MOVETYPE_NOCLIP;
 			GGM_ChatPrintf( pPlayer, "^2Admin noclip ON^7\n" );
-			return true;
 		}
 		else
 		{
 			pPlayer->pev->movetype = MOVETYPE_WALK;
 			GGM_ChatPrintf( pPlayer, "^2Admin noclip OFF^7\n" );
-			return true;
 		}
 		return true;
 	}
