@@ -32,22 +32,15 @@ bool Admin_ClientCommand( edict_t *pEntity )
 
 	if( FStrEq(pCmd, "admin_login") )
 	{
-	        if( !admin_password.string )
+	        if( !admin_password.string || pPlayer->m_ggm.IsAdmin )
                 {
-                        GGM_ChatPrintf( pPlayer, "^1Password cvar is empty, admin system is disabled^7\n" );
                         return false;
                 }
 
-		if( CMD_ARGC() != 2 && !pPlayer->m_ggm.IsAdmin )
+		if( CMD_ARGC() != 2 )
 		{
 			GGM_ChatPrintf( pPlayer, "^1Usage: admin_login ^2<password>^7\n" );
-			return false;
-		}
-		else
-		{
-			GGM_ChatPrintf( pPlayer, "^1Already logged in^7\n" );
-			Admin_LogAttempts( pPlayer, "Already logged in:" );
-			return false;
+			return true;
 		}
 
 		const char *passwordargv = CMD_ARGV( 1 );
@@ -73,7 +66,7 @@ bool Admin_ClientCommand( edict_t *pEntity )
 		if( CMD_ARGC() != 3 )
                 {
                         GGM_ChatPrintf( pPlayer, "^1Usage: admin_sudo ^2<UserID> <Command>^7\n" );
-                        return false;
+                        return true;
                 }
 
 		int UserID = atoi( CMD_ARGV( 1 ) );
@@ -84,7 +77,7 @@ bool Admin_ClientCommand( edict_t *pEntity )
 		if( !pSudoer )
 		{
 			GGM_ChatPrintf( pPlayer, "^1Invalid player!^7\n" );
-			return false;
+			return true;
 		}
 
 		CLIENT_COMMAND( pSudoer->edict(), "%s\n", Command );
