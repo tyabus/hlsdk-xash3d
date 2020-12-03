@@ -19,10 +19,8 @@ LOCAL_CFLAGS += -DGGM_COMMIT=\"$(GGM_COMMIT)\" -DCXX=\"$(CXX)\" -D_LINUX -DCLIEN
 	-fno-exceptions -fvisibility=hidden -DNO_VOICEGAMEMGR -Wno-conversion-null -pipe -Wno-write-strings -std=gnu++98 -Wno-invalid-offsetof
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/. \
-		    $(LOCAL_PATH)/wpn_shared \
 		    $(LOCAL_PATH)/../common \
 		    $(LOCAL_PATH)/../engine \
-		    $(LOCAL_PATH)/../public \
 		    $(LOCAL_PATH)/../pm_shared \
 		    $(LOCAL_PATH)/../game_shared
 
