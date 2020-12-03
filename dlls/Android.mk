@@ -71,7 +71,6 @@ LOCAL_SRC_FILES := agrunt.cpp \
            hassassin.cpp \
            headcrab.cpp \
            healthkit.cpp \
-	   healthkitmega.cpp \
            hgrunt.cpp \
            hornet.cpp \
            hornetgun.cpp \
@@ -138,7 +137,6 @@ LOCAL_SRC_FILES := agrunt.cpp \
 	   shock.cpp \
 	   shockrifle.cpp \
            ar2.cpp \
-	   lamp.cpp \
 	   m249.cpp \
 	   knife.cpp \
            big_cock.cpp \
