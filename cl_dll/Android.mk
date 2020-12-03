@@ -13,7 +13,7 @@ ifeq ($(TARGET_ARCH_ABI),armeabi-v7a-hard)
 LOCAL_MODULE_FILENAME = libclient_hardfp
 endif
 
-LOCAL_CFLAGS += -DCLIENT_DLL -Wno-write-strings -DLINUX -D_LINUX -Dstricmp=strcasecmp -Dstrnicmp=strncasecmp -DCLIENT_WEAPONS -w
+LOCAL_CFLAGS += -DCLIENT_DLL -Wno-write-strings -DLINUX -D_LINUX -Dstricmp=strcasecmp -Dstrnicmp=strncasecmp -DCLIENT_WEAPONS -pipe -w
 
 LOCAL_SRC_FILES := ../dlls/crossbow.cpp
 LOCAL_SRC_FILES += ../dlls/crowbar.cpp
