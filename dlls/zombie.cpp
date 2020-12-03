@@ -261,16 +261,16 @@ void CZombie::HandleAnimEvent( MonsterEvent_t *pEvent )
 //=========================================================
 void CZombie::TraceAttack( entvars_t *pevAttacker, float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType )
 {
-   if( ptr->iHitgroup )
-   {
-	if( ptr->iHitgroup == HITGROUP_HEAD )
-	  m_bloodColor = BLOOD_COLOR_YELLOW;
-	if( IsAlive() && flDamage >= 2 )
-	  flDamage = flDamage / 2;
+	if( ptr->iHitgroup && ptr->iHitgroup == HITGROUP_HEAD )
+	{
+		m_bloodColor = BLOOD_COLOR_YELLOW;
+	}
 	else
-	  m_bloodColor = BLOOD_COLOR_RED;
-   }
-CBaseMonster::TraceAttack( pevAttacker, flDamage, vecDir, ptr, bitsDamageType );
+	{
+		m_bloodColor = BLOOD_COLOR_RED;
+	}
+
+	CBaseMonster::TraceAttack( pevAttacker, flDamage, vecDir, ptr, bitsDamageType );
 }
 
 
