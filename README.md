@@ -1,142 +1,192 @@
-# Half-Life SDK for Xash3D
 
-Half-Life SDK for Xash3D
+# GravGunMod
 
-## How to build
+Extended Half-Life mod
 
-### CMake as most universal way
+### Main features:
 
-    mkdir build && cd build
-    cmake ../
-    make
+* New weapons (GravGun, AR2, Big Cock, Gate of Babylon, M249, Knife, ShockRifle)
+* New monsters (Poisoncrab, Cleansuit Scientist, Dead Skeleton, Zombie Soldier, Zombie Barney, Dead Construction Workerer, Construction Workerer, Diablo, Dead Houndeye)
+* Pseudo-physics for weapons, ammo, items, props
+* Co-op mode
+* Advanced game-side enitity tools
+* Advanced menu, motd and help system
+* Server-side visibility limit
+* Easter eggs
+* Anticheat
+* error.mdl support (like in Source Engine)
+* Other tools
 
-Crosscompiling using mingw:
+## Gravity gun and pseudo-physics
 
-    mkdir build-mingw && cd build-mingw
-    TOOLCHAIN_PREFIX=i686-w64-mingw32 # check up the actual mingw prefix of your mingw installation
-    cmake ../ -DCMAKE_SYSTEM_NAME=Windows -DCMAKE_C_COMPILER="$TOOLCHAIN_PREFIX-gcc" -DCMAKE_CXX_COMPILER="$TOOLCHAIN_PREFIX-g++"
+Gravity Gun may drag props, weapons, ammos, items, monsters and pushables
+`mp_gravgun_players` option allows dragging players
+`mp_gravgun_beams` option enables beams
 
-You may enable or disable some build options by -Dkey=value. All available build options are defined in CMakeLists.txt at root directory.
-See below if you want to build the GoldSource compatible libraries.
+prop is special entity for pseudo-physical objects (alternative to prop_physics from Source)
+While it still use hull for collision, it may change rotation angle and size for fake shape.
 
-See below, if CMake is not suitable for you:
+### Supported keyvalues:
 
-### Windows
+`"shape"` - fake shape number
 
-#### Using msvc
+Supported shapes:
 
-We use compilers provided with Microsoft Visual Studio 6. There're `compile.bat` scripts in both `cl_dll` and `dlls` directories.
-Before running any of those files you must define `MSVCDir` variable which is the path to your msvc installation.
+ * cylinder horizontal (0)
+ * cylinder vertical (1)
+ * generic (3)
+ * sphere (4)
 
-    set MSVCDir=C:\Program Files\Microsoft Visual Studio
-    compile.bat
+`"respawntime"` : idle time before respawn (for multiplayer)
 
-These scripts also can be ran via wine:
+`"customanglesx"`, `"customanglesz"` : custom angles for generic shape
 
-    MSVCDir="z:\home\$USER\.wine\drive_c\Program Files\Microsoft Visual Studio" wine cmd /c compile.bat
+`"hmin"`, `"hmax"`, `"vmin"`, `"vmax"` : size vectors for horizontal and vertical mode.
+All shapes except vertical cylinder uses horizontal size. Horizontal and vertical cylinders changes dynamically
 
-The libraries built this way are always GoldSource compatible.
+Breakable options: `"material"`,  `"explosion"`, `"gibmodel"`, `"explodemagnitude"`
 
-There're dsp projects for Visual Studio 6 in `cl_dll` and `dlls` directories, but we don't keep them up-to-date. You're free to adapt them for yourself and try to import into the newer Visual Studio versions.
+Use `dumpprops` command to dump all spawned props to `props.ent` file (need `sv_cheats`)
 
-#### Using mingw
+## Cooperative mode
 
-TODO
+Cooperative mode still does not work correctly in half-life, you need to remove all blockers on `c3a1` map with entpatch
 
-### Unix-like
+Note: Cooperative mode will not work correctly on non-dedicated builds, cooperative mode is disabled for android builds
 
-To use waf, you need to install python (2.7 minimum)
-
-    (./waf configure -T release)
-    (./waf)
-
-### Android
-
-Just typical `ndk-build`.
-TODO: describe what it is.
-
-### Building GoldSource-compatible libraries
-
-To enable building the goldsource compatible client library add GOLDSOURCE_SUPPORT flag when calling cmake:
-
-    cmake .. -DGOLDSOURCE_SUPPORT=ON
-
-or when using waf:
-
-     ./waf configure -T release --enable-goldsrc-support
-
-Unlike original client by Valve the resulting client library will not depend on vgui or SDL2 just like the one that's used in FWGS Xash3d.
-
-Note for **Windows**: it's not possible to create GoldSource compatible libraries using mingw, only msvc builds will work.
-
-Note for **Linux**: GoldSource requires libraries (both client and server) to be compiled with libstdc++ bundled with g++ of major version 4 (versions from 4.6 to 4.9 should work).
-If your Linux distribution does not provide compatible g++ version you have several options.
-
-#### Method 1: Statically build with c++ library
-
-This one is the most simple but has a drawback.
-
-    cmake ../ -DGOLDSOURCE_SUPPORT=ON -DCMAKE_C_FLAGS="-static-libstdc++ -static-libgcc"
-
-The drawback is that the compiled libraries will be larger in size.
-
-#### Method 2: Build in Steam Runtime chroot
-
-This is the official way to build Steam compatible games for Linux.
-
-Clone https://github.com/ValveSoftware/steam-runtime and follow instructions https://github.com/ValveSoftware/steam-runtime#building-in-the-runtime
-
-    sudo ./setup_chroot.sh --i386
-
-Then use cmake and make as usual, but prepend the commands with `schroot --chroot steamrt_scout_i386 --`:
-
-    mkdir build-in-steamrt && cd build-in-steamrt
-    schroot --chroot steamrt_scout_i386 -- cmake ../ -DGOLDSOURCE_SUPPORT=ON
-    schroot --chroot steamrt_scout_i386 -- make
-
-#### Method 3: Create your own chroot with older distro that includes g++ 4.
-
-Use the most suitable way for you to create an old distro 32-bit chroot. E.g. on Debian (and similar) you can use debootstrap.
-
-    sudo debootstrap --arch=i386 jessie /var/chroot/jessie-debian-i386 # On Ubuntu type trusty instead of jessie
-    sudo chroot /var/chroot/jessie-debian-i386
-
-Inside chroot install cmake, make, g++ and libsdl2-dev. Then exit the chroot.
-
-On the host system install schroot. Then create and adapt the following config in /etc/schroot/chroot.d/jessie.conf (you can choose a different name):
+### Sample cooperative config:
 
 ```
-[jessie]
-type=directory
-description=Debian jessie i386
-directory=/var/chroot/debian-jessie-i386/
-users=yourusername
-groups=yourusername
-root-groups=root
-preserve-environment=true
-personality=linux32
+set mp_coop 1 // enable cooperative mode. This enables frags from some monsters and unlocks other coop features like menu
+set mp_spectator 1 // make players spawned in spectator mode
+set mp_coop_changelevel 1 // enable changelevel with hacks
+set mp_coop_nofriendlyfire 1 // disallow damage players
+set mp_skipdefaults 1 // do not give glock/crowbar on player spawn
+set mp_allowmonsters 1 // allow monsters in multiplayer
+set mp_flashlight 1 // allow flashlight
+set mp_unduck 1 // allow duck hack. need to prevent blocking players on changelevel
+set mp_semclip 1 // semclip mode. prevent players blocking narrow places
+set mp_coop_checkpoints 1 // allow checkpoints. every player may create checkpoint to continue after respawn
+set mp_coop_strongcheckpoints 1 // do not allow changelevel back if map has checkpoints. This preventing some STUPID players from breaking the game
+set mp_coop_noangry 1 // prevent ally npc from angrying on bad players
 ```
 
-Insert your actual user name in place of `yourusername`. Then prepend any make or cmake call with `schroot -c jessie --`:
+## Entity tools
 
-    mkdir build-in-chroot && cd build-in-chroot
-    schroot --chroot jessie -- cmake ../ -DGOLDSOURCE_SUPPORT=ON
-    schroot --chroot jessie -- make
+Mod has server-side entity tools
 
-#### Method 4:  Install the needed g++ version yourself
+This allows making sandbox servers
 
-TODO: describe steps.
+To enable it, ensure `sv_enttools_enable` is set to `0` and `mp_enttools_enable` set to` 1`
 
-#### Configuring Qt Creator to use toolchain from chroot
+### Availiable options and commands
 
-Create a file with the following contents anywhere:
-
-```sh
-#!/bin/sh
-schroot --chroot steamrt_scout_i386 -- cmake "$@"
+```
+mp_enttools_enable (1/0) - enable entity tools
+mp_enttools_maxfire - limit entity count for ent_fire
+mp_enttools_lockmapentities - lock map's own entities from ent_fire
+mp_enttools_checkowner owner checking
+1: allow ent_fire on entity only if player owns it or disconnected from server
+2: allow ent_fire on entity only if player owns it
+mp_enttools_players - allow ent_fire on players (dangerous)
+mp_enttools_addblacklist <pattern> <per minute limit> <behaviour (0 - block, 1 - kick, 2 - ban)> [<clear>]
+rate-limiting and blacklist for ent_create
+if per-minute-limit set to 0, refuses to create entity
+if per-minute-limit reached, does action set in behaviour
+if clear is set, clears all entities created by this player
+mp_enttools_clearblacklist - clear blacklist.
+Add before addblacklist commands to config to prevent duplicates in blacklist
+mp_enttools_checkmodels - check model name before setting model
+Useful if you do not want to use error.mdl
 ```
 
-Make it executable.
-In Qt Creator go to `Tools` -> `Options` -> `Build & Run` -> `CMake`. Add a new cmake tool and specify the path of previously created file.
-Go to `Kits` tab, clone your default configuration and choose your CMake tool there.
-Choose the new kit when opening CMakeLists.txt.
+## Menu command system
+
+GravGunMod has advanced command processing
+
+Command may be entered in console, in chat with `'/'` prefix and from menu
+
+Every command may be associated to menu, custom motd message and short help message
+menus placed in `ggm/menus` folder in gamedir
+
+Each menu is plain text file without extension and formmated this way:
+```
+"Menu title"
+"Item name1" "command1"
+"Item name2" "command2"
+```
+Up to 5 items allowed
+
+Each custom motd placed in `ggm/motd` as `plain text`
+
+Each help message placed in `ggm/help` as `plain text`
+
+You may send commands to client with `"client"` command
+
+When client connects to server, it executes` "init" `command
+
+### Touch settings:
+
+```
+mp_touchname, mp_touchcommand - add button with specified name
+and command to touch controls on connect
+mp_touchmenu - upload touch menu to client.
+Will not be saved after exit. Will replace all text menus
+```
+
+
+## Other options
+
+
+server visibility distance limit:
+```
+mp_serverdistclip - general switch
+mp_maxbmodeldist - max distance for bmodels
+mp_maxtrashdist - max distance for small monsters and gibs
+mp_maxwaterdist - max distance for water
+mp_maxmonsterdist - max distance for monsters
+mp_maxotherdist - max distance for other entities
+mp_servercliptents - switch for tempentity clipping
+mp_maxtentdist - tempentity distance Cuts shoots, beams, ligths
+```
+weapon switches:
+
+```
+mp_allow_gravgun
+mp_allow_ar2
+mp_allow_bigcock
+mp_allow_knife
+mp_allow_m249
+mp_allow_shockrifle
+mp_allow_gateofbabylon
+0 - disable, 1 - enable (precache), 2 - give to player
+```
+tweaks:
+```
+mp_ar2_mp5 - make ar2 use mp5 ammo
+mp_ar2_bullets - default ar2 bullets count
+mp_ar2_balls - default ar2 balls count
+mp_ar2_allow_balls - allow ar2 balls ( can prevent crash on coop during transfer ar2grenade entity )
+mp_wresptime - weapon respawn time
+mp_iresptime - item respawn time
+mp_hgibcount - human gibs count
+mp_agibcount - alien gibs count
+mp_gibtime - set gib stay time
+mp_fixhornetbug - enable workaround for hornetgun bug
+mp_anticheat - enable/disable a simple anticheat
+mp_saylog - enable/disable log say,say_team in saylog.txt ( setting to 2 will disable default logging of say command )
+mp_q1stuff - enable/disable q1 stuff
+mp_fixsavetime - cut down time when loading
+save (useful for very LOOOOONG game and sandbox
+servers with save)
+mp_checkentities - check for entity overflow. preventing crash on edicts overflow.
+This enables garbage collector
+mp_maxdecals - set r_decals from server
+mp_errormdl, mp_errormdlpath - replace bad models with error.mdl
+mp_lightstyle <number> <pattern> - override lightstyle from server.
+For example, mp_lightstyle 0 k makes static light darker.
+ent_rungc <mode> [<pattern>] - execute garbage collector manually
+0 - default garbage collector
+1 - remove all entities created by enttools (freshen map)
+2 - remove all entities by given pattern
+```
