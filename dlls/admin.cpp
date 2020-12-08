@@ -28,7 +28,6 @@ bool Admin_ClientCommand( edict_t *pEntity )
 {
         const char *pCmd = CMD_ARGV(0);
         CBasePlayer *pPlayer = (CBasePlayer*)GET_PRIVATE(pEntity);
-        entvars_t *pev = &pEntity->v;
 
 	if( FStrEq(pCmd, "admin_login") )
 	{
