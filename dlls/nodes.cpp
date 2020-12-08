@@ -589,7 +589,7 @@ int CGraph::FindShortestPath( int *piPath, int iStart, int iDest, int iHull, int
 			iCurrentNode = m_pNodes[iCurrentNode].m_iPreviousNode;
 		}
 	}
-	return 1;
+	return iNumPathNodes;
 }
 
 inline ULONG Hash( void *p, int len )
