@@ -13,18 +13,18 @@ ifeq ($(TARGET_ARCH_ABI),armeabi-v7a-hard)
 LOCAL_MODULE_FILENAME = libclient_hardfp
 endif
 
-LOCAL_CFLAGS += -DCLIENT_DLL -D_LINUX -Dstricmp=strcasecmp -Dstrnicmp=strncasecmp -DCLIENT_WEAPONS -Wno-write-strings -pipe -w
+LOCAL_CFLAGS += -DCLIENT_DLL -D_LINUX -Dstricmp=strcasecmp -Dstrnicmp=strncasecmp -DCLIENT_WEAPONS -Wno-write-strings -std=gnu++0x -pipe
 
 LOCAL_SRC_FILES := ev_hldm.cpp \
+		hl/hl_baseentity.cpp \
+		hl/hl_events.cpp \
+		hl/hl_objects.cpp \
+		hl/hl_weapons.cpp \
 		../dlls/crowbar.cpp \
 		../dlls/egon.cpp \
 		../dlls/crossbow.cpp \
 		../dlls/gauss.cpp \
 		../dlls/handgrenade.cpp \
-		hl/hl_baseentity.cpp \
-		hl/hl_events.cpp \
-		hl/hl_objects.cpp \
-		hl/hl_weapons.cpp \
 		../dlls/hornetgun.cpp \
 		../dlls/mp5.cpp \
 		../dlls/python.cpp \
