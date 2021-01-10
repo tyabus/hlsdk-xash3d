@@ -269,7 +269,7 @@ void ClientPutInServer( edict_t *pEntity )
 	if( g_pGameRules->IsMultiplayer() && mp_anticheat.value && !pPlayer->m_ggm.IsAdmin )
 	{
 		pPlayer->m_flCheckCvars = gpGlobals->time + 10;
-		g_engfuncs.pfnQueryClientCvarValue2( pEntity, "host_ver", 116 );
+		g_engfuncs.pfnQueryClientCvarValue2( pEntity, "host_ver", 117 );
 	}
 	#endif
 }
@@ -872,6 +872,7 @@ void PlayerPreThink( edict_t *pEntity )
 			g_engfuncs.pfnQueryClientCvarValue2( pEntity, "r_drawentities", 112 );
 			g_engfuncs.pfnQueryClientCvarValue2( pEntity, "gl_wh", 114 );
 			g_engfuncs.pfnQueryClientCvarValue2( pEntity, "cl_wh", 115 );
+			g_engfuncs.pfnQueryClientCvarValue2( pEntity, "cl_aim", 116 );
 			pPlayer->m_flCheckCvars = gpGlobals->time + 10;
 		}
 	}
@@ -2190,7 +2191,10 @@ void CvarValue2( const edict_t *pEnt, int requestID, const char *cvarName, const
 		if( pEnt && requestID == 115 && FStrEq( cvarName , "cl_wh" ) && atoi( value ) )
 			GGM_KickCheater( player, "cl_wh" );
 
-		if( pEnt && requestID == 116 && FStrEq( cvarName , "host_ver" ) )
+		if( pEnt && requestID == 116 && FStrEq( cvarName , "cl_aim" ) && atoi( value ) )
+			GGM_KickCheater( player, "cl_aim" );
+
+		if( pEnt && requestID == 117 && FStrEq( cvarName , "host_ver" ) )
 		{
 			if( !strcmp( value , "eee764" ) )
 				GGM_KickCheater( player, "build eee764" );
