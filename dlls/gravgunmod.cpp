@@ -2891,6 +2891,57 @@ bool GGM_TouchCommand( CBasePlayer *pPlayer, const char *pcmd )
 	return true;
 }
 
+/*
+=====================
+GGM_RegisterCommand
+
+Handle register commands
+=====================
+*/
+bool GGM_RegisterCommand( edict_t *pEntity )
+{
+	const char *pCmd = CMD_ARGV(0);
+	CBasePlayer *pPlayer = (CBasePlayer*)GET_PRIVATE(pEntity);
+
+	if( FStrEq(pCmd, "reg_Name") )
+	{
+		GGM_RegName_f(pPlayer);
+		return true;
+        }
+	else if( FStrEq(pCmd, "reg_Password") )
+	{
+		GGM_RegPassword_f(pPlayer);
+		return true;
+	}
+	else if( FStrEq(pCmd, "login") )
+	{
+		GGM_Login_f(pPlayer);
+		return true;
+	}
+	else if( FStrEq(pCmd, "login_Name") )
+	{
+		GGM_LoginName_f(pPlayer);
+		return true;
+	}
+	else if( FStrEq(pCmd, "login_Password") )
+	{
+		GGM_LoginPassword_f(pPlayer);
+		return true;
+	}
+	else if( FStrEq(pCmd, "New_Password") || FStrEq(pCmd, "chpwd") )
+	{
+		GGM_ChangePassword_f(pPlayer);
+		return true;
+	}
+	else if( FStrEq(pCmd, "logout") )
+	{
+		GGM_Logout(pPlayer);
+		return true;
+	}
+
+	return true;
+}
+
 extern float g_flWeaponCheat;
 
 void DumpProps(); // prop.cpp
@@ -2944,36 +2995,6 @@ bool GGM_ClientCommand( CBasePlayer *pPlayer, const char *pCmd )
         	#endif
 		return true;
 	}
-	else if( FStrEq(pCmd, "reg_Name") )
-	{
-		GGM_RegName_f(pPlayer);
-		return true;
-	}
-	else if( FStrEq(pCmd, "reg_Password") )
-	{
-		GGM_RegPassword_f(pPlayer);
-		return true;
-	}
-	else if( FStrEq(pCmd, "login") )
-	{
-		GGM_Login_f(pPlayer);
-		return true;
-	}
-	else if( FStrEq(pCmd, "login_Name") )
-	{
-		GGM_LoginName_f(pPlayer);
-		return true;
-	}
-	else if( FStrEq(pCmd, "login_Password") )
-	{
-		GGM_LoginPassword_f(pPlayer);
-		return true;
-	}
-	else if( FStrEq(pCmd, "New_Password") || FStrEq(pCmd, "chpwd") )
-	{
-		GGM_ChangePassword_f(pPlayer);
-		return true;
-	}
 	else if( FStrEq(pCmd, "qsave") )
 	{
 		GGM_SaveState( pPlayer );
@@ -2990,11 +3011,6 @@ bool GGM_ClientCommand( CBasePlayer *pPlayer, const char *pCmd )
 			return false;
 
 		Ent_ChangeOwner( GGM_GetAuthID(pPlayer), NULL, pPlayer->m_ggm.pState->szUID, 1, 2 );
-		return true;
-	}
-	else if( FStrEq(pCmd, "logout") )
-	{
-		GGM_Logout(pPlayer);
 		return true;
 	}
 	else if( FStrEq(pCmd, "resetscore") || FStrEq(pCmd, "rs") )
@@ -3019,6 +3035,8 @@ bool GGM_ClientCommand( CBasePlayer *pPlayer, const char *pCmd )
 	}
 	else if( COOP_ClientCommand( pPlayer->edict() ) )
 		return true;
+	else if( GGM_RegisterCommand( pPlayer->edict() ) )
+                return true;
 	#ifndef __ANDROID__
 	else if( Admin_ClientCommand( pPlayer->edict() ) )
                 return true;
