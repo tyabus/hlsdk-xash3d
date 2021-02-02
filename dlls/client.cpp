@@ -505,20 +505,20 @@ void Host_Say( edict_t *pEntity, int teamonly )
 		temp = "say";
 
 	#ifndef __ANDROID__
-	if( mp_chatlog.value )
+	if( mp_logchat.value )
 	{
-        	FILE *flchatlog = fopen("chat.log", "a");
+		FILE *fllogchat = fopen("chat.log", "a");
 		CBasePlayer *pl = (CBasePlayer *)CBaseEntity::Instance( pEntity );
 		time_t mytime = time(NULL);
-	        char * time_str = ctime(&mytime);
-       		time_str[strlen(time_str)-1] = '\0';
+		char * time_str = ctime(&mytime);
+		time_str[strlen(time_str)-1] = '\0';
 
-		fprintf( flchatlog, "%s %s %s: %s\n", time_str, GETPLAYERAUTHID( pEntity ), GGM_PlayerName( pl ), p ); // Timestamp, XashID, nickname, the text
-        	fclose( flchatlog );
+		fprintf( fllogchat, "%s %s %s: %s\n", time_str, GETPLAYERAUTHID( pEntity ), GGM_PlayerName( pl ), p ); // Timestamp, XashID, nickname, the text
+		fclose( fllogchat );
 	}
 	#endif
 
-	if( mp_chatlog.value != 2 )
+	if( mp_logchat.value != 2 )
 	{
 		// team match?
 		if ( g_teamplay )
