@@ -174,7 +174,7 @@ mp_agibcount - alien gibs count
 mp_gibtime - set gib stay time
 mp_fixhornetbug - enable workaround for hornetgun bug
 mp_anticheat - enable/disable a simple anticheat
-mp_saylog - enable/disable log say,say_team in saylog.txt ( setting to 2 will disable default logging of say command )
+mp_logchat - enable/disable log say,say_team in chat.log ( setting to 2 will disable default logging of say command )
 mp_q1stuff - enable/disable q1 stuff
 mp_fixsavetime - cut down time when loading
 save (useful for very LOOOOONG game and sandbox

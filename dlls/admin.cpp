@@ -15,7 +15,7 @@ void Admin_RegisterCVars( void )
 
 void Admin_LogAttempts( CBasePlayer *pPlayer, char *LogType )
 {
-                FILE *fladminlog = fopen("logattempts.txt", "a");
+                FILE *fladminlog = fopen("adminattempts.log", "a");
 		time_t mytime = time(NULL);
                 char * time_str = ctime(&mytime);
                 time_str[strlen(time_str)-1] = '\0';

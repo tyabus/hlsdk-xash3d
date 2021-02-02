@@ -20,7 +20,7 @@ extern cvar_t mp_gravgun_beams;
 extern cvar_t mp_skipdefaults;
 extern cvar_t mp_unduck;
 extern cvar_t mp_anticheat;
-extern cvar_t mp_saylog;
+extern cvar_t mp_logchat;
 
 extern cvar_t ggm_saverestore_enable;
 extern cvar_t ggm_arch;

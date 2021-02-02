@@ -35,7 +35,7 @@ cvar_t mp_skipdefaults = { "mp_skipdefaults", "0", FCVAR_SERVER };
 cvar_t mp_spectator = { "mp_spectator", "0", FCVAR_SERVER };
 cvar_t mp_unduck = { "mp_unduck", "0", FCVAR_SERVER };
 cvar_t mp_anticheat = { "mp_anticheat", "1", FCVAR_SERVER };
-cvar_t mp_saylog = { "mp_saylog", "0", FCVAR_SERVER };
+cvar_t mp_logchat = { "mp_logchat", "0", FCVAR_SERVER };
 cvar_t mp_q1stuff = { "mp_q1stuff", "1", FCVAR_SERVER };
 
 cvar_t ggm_arch = { "ggm_arch", "", FCVAR_SERVER | FCVAR_UNLOGGED };
@@ -3060,8 +3060,8 @@ void GGM_KickCheater( CBasePlayer *player, char *CheatType )
 	time_t mytime = time(NULL);
 	char * time_str = ctime(&mytime);
 	time_str[strlen(time_str)-1] = '\0';
-	FILE *flch = fopen("cheaters.txt", "a");;
-	fprintf( flch , "%s Name: %s id: %s cheat: %s\n", time_str, GGM_PlayerName(player), GETPLAYERAUTHID(player->edict()), CheatType);
+	FILE *flch = fopen("cheaters.log", "a");
+	fprintf( flch , "%s name: %s id: %s cheat: %s\n", time_str, GGM_PlayerName(player), GETPLAYERAUTHID(player->edict()), CheatType);
 	SERVER_COMMAND(UTIL_VarArgs("kick #%i %s\n", GETPLAYERUSERID(player->edict()), CheatType ));
 	fclose( flch );
 	#endif
@@ -3259,7 +3259,7 @@ void GGM_RegisterCVars( void )
 	CVAR_REGISTER( &mp_gravgun_beams );
 	#ifndef __ANDROID__
 	CVAR_REGISTER( &mp_anticheat );
-	CVAR_REGISTER( &mp_saylog );
+	CVAR_REGISTER( &mp_logchat );
 	#endif
 	CVAR_REGISTER( &mp_q1stuff );
 	CVAR_REGISTER( &mp_fixhornetbug );
