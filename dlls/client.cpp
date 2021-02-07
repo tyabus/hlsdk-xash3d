@@ -518,7 +518,7 @@ void Host_Say( edict_t *pEntity, int teamonly )
 	}
 	#endif
 
-	if( mp_logchat.value != 2 )
+	if( !mp_logchat.value )
 	{
 		// team match?
 		if ( g_teamplay )
