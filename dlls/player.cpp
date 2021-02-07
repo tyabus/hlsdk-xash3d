@@ -259,15 +259,6 @@ int TrainSpeed( int iSpeed, int iMax )
 
 void CBasePlayer::DeathSound( void )
 {
-	if( mp_q1stuff.value )
-	{
-		if( pev->waterlevel == 3 )
-		{
-			EMIT_SOUND( ENT( pev ), CHAN_VOICE, "player/h2odeath.wav", 1, ATTN_NONE );
-			return;
-		}
-	}
-
 	// temporarily using pain sounds for death sounds
 	switch( RANDOM_LONG( 1, 5 ) )
 	{

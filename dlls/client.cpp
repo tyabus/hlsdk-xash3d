@@ -958,9 +958,6 @@ void ClientPrecache( void )
 	PRECACHE_SOUND("player/pl_fallpain2.wav");
 	PRECACHE_SOUND("player/pl_fallpain3.wav");
 
-	if( mp_q1stuff.value )
-		PRECACHE_SOUND("player/h2odeath.wav");	// drown
-
 	PRECACHE_SOUND("player/pl_step1.wav");		// walk on concrete
 	PRECACHE_SOUND("player/pl_step2.wav");
 	PRECACHE_SOUND("player/pl_step3.wav");

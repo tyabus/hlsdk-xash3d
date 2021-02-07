@@ -68,13 +68,6 @@ void CMP5::Precache( void )
 
 	PRECACHE_MODEL( "models/grenade.mdl" );	// grenade
 
-	#ifndef CLIENT_DLL
-	if( mp_q1stuff.value )
-	{
-        	PRECACHE_MODEL( "models/q1grenade.mdl" ); // q1grenade
-	}
-	#endif
-
 	PRECACHE_MODEL( "models/w_9mmARclip.mdl" );
 	PRECACHE_SOUND( "items/9mmclip1.wav" );
 
