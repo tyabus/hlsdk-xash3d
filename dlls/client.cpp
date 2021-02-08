@@ -520,7 +520,13 @@ void Host_Say( edict_t *pEntity, int teamonly )
 		char * time_str = ctime(&mytime);
 		time_str[strlen(time_str)-1] = '\0';
 
-		fprintf( fllogchat, "%s %s %s: %s\n", time_str, GETPLAYERAUTHID( pEntity ), GGM_PlayerName( pl ), p ); // Timestamp, XashID, nickname, the text
+		const char *ip = g_engfuncs.pfnInfoKeyValue( g_engfuncs.pfnGetInfoKeyBuffer( pl->edict() ), "ip" );
+		if( !ip )
+		{
+			ip = "UNKNOWN";
+		}
+
+		fprintf( fllogchat, "%s %s %s %s: %s\n", time_str, GETPLAYERAUTHID( pEntity ), ip, GGM_PlayerName( pl ), p ); // Timestamp, IP Address, XashID, nickname, the text
 		fclose( fllogchat );
 	}
 	#endif
