@@ -439,6 +439,8 @@ void Host_Say( edict_t *pEntity, int teamonly )
 		sprintf( text, "%c(SPEC) %s: ", 2, STRING( pEntity->v.netname ) );
 	else if( teamonly )
 		sprintf( text, "%c(TEAM) %s: ", 2, STRING( pEntity->v.netname ) );
+	else if( player->m_ggm.IsAdmin && ( teamonly ) )
+		sprintf( text, "%c(ADMIN) %s: ", 2, STRING( pEntity->v.netname ) );
 	else
 		sprintf( text, "%c%s: ", 2, STRING( pEntity->v.netname ) );
 
@@ -476,6 +478,11 @@ void Host_Say( edict_t *pEntity, int teamonly )
 
 		if( !player->IsObserver() && teamonly && g_pGameRules->PlayerRelationship( client, CBaseEntity::Instance( pEntity ) ) != GR_TEAMMATE )
 			continue;
+
+		// Admins can only talk to other admins
+		if( player->m_ggm.IsAdmin && teamonly )
+			if( !client->m_ggm.IsAdmin )
+				continue;
 
 		// Spectators can only talk to other specs
 		if( player->IsObserver() && teamonly )
