@@ -3060,7 +3060,14 @@ void GGM_KickCheater( CBasePlayer *player, char *CheatType )
 	char * time_str = ctime(&mytime);
 	time_str[strlen(time_str)-1] = '\0';
 	FILE *flch = fopen("cheaters.log", "a");
-	fprintf( flch , "%s name: %s id: %s cheat: %s\n", time_str, GGM_PlayerName(player), GETPLAYERAUTHID(player->edict()), CheatType);
+	const char *ip = g_engfuncs.pfnInfoKeyValue( g_engfuncs.pfnGetInfoKeyBuffer( player->edict() ), "ip" );
+
+	if( !ip )
+	{
+		ip = "UNKNOWN";
+	}
+
+	fprintf( flch , "%s name: %s ip: %s id: %s cheat: %s\n", time_str, GGM_PlayerName(player), ip, GETPLAYERAUTHID(player->edict()), CheatType);
 	SERVER_COMMAND(UTIL_VarArgs("kick #%i %s\n", GETPLAYERUSERID(player->edict()), CheatType ));
 	fclose( flch );
 	#endif
