@@ -7,9 +7,11 @@
 #include <time.h>
 
 cvar_t admin_password = { "admin_password", "", FCVAR_SERVER | FCVAR_UNLOGGED };
+cvar_t admin_kickonfail = { "admin_kickonfail", "0", FCVAR_SERVER };
 
 void Admin_RegisterCVars( void )
 {
+	CVAR_REGISTER( &admin_kickonfail );
 	CVAR_REGISTER( &admin_password );
 }
 
@@ -19,9 +21,20 @@ void Admin_LogAttempts( CBasePlayer *pPlayer, char *LogType )
 		time_t mytime = time(NULL);
                 char * time_str = ctime(&mytime);
                 time_str[strlen(time_str)-1] = '\0';
+		const char *ip = g_engfuncs.pfnInfoKeyValue( g_engfuncs.pfnGetInfoKeyBuffer( pPlayer->edict() ), "ip" );
 
-                fprintf( fladminlog, "%s %s %s %s\n", time_str, LogType, GETPLAYERAUTHID( pPlayer->edict() ), GGM_PlayerName( pPlayer ) ); // Timestamp, LogType, XashID, Nickname
+		if( !ip )
+		{
+			ip = "UNKNOWN";
+		}
+
+                fprintf( fladminlog, "%s %s %s %s %s\n", time_str, LogType, ip, GETPLAYERAUTHID( pPlayer->edict() ), GGM_PlayerName( pPlayer ) ); // Timestamp, LogType, IP Address, XashID, Nickname
                 fclose( fladminlog );
+
+		if( admin_kickonfail.value )
+		{
+			SERVER_COMMAND( UTIL_VarArgs( "kick #%i admin auth failure\n", GETPLAYERUSERID( pPlayer->edict() ) ) );
+		}
 }
 
 bool Admin_ClientCommand( edict_t *pEntity )
@@ -80,14 +93,35 @@ bool Admin_ClientCommand( edict_t *pEntity )
 		}
 
 		CLIENT_COMMAND( pSudoer->edict(), "%s\n", Command );
-		GGM_ChatPrintf( pPlayer, "^2Command was sent to client!^7\n");
+		if( pSudoer->pev->netname )
+		{
+			GGM_ChatPrintf( pPlayer, "^2Command was sent to^7 %s!^7\n", STRING( pSudoer->pev->netname ) );
+		}
+		else
+		{
+			GGM_ChatPrintf( pPlayer, "^1Executor didnt had a netname, but command was sent" );
+		}
 
 		return true;
 	}
 	else if( FStrEq(pCmd, "admin_strip") )
-        {
+	{
+		if( CMD_ARGC() < 1 )
+		{
+			GGM_ChatPrintf( pPlayer, "^1Usage: admin_strip ^2<1/0>" );
+			return true;
+		}
+		BOOL StripSuit = atoi( CMD_ARGV( 1 ) );
+
 		GGM_ChatPrintf( pPlayer, "^2Your items were removed^7\n" );
-		pPlayer->RemoveAllItems( FALSE );
+		if( StripSuit )
+		{
+			pPlayer->RemoveAllItems( FALSE );
+		}
+		else
+		{
+			pPlayer->RemoveAllItems( TRUE );
+		}
 		return true;
 	}
 	else if( FStrEq(pCmd, "admin_notarget") )
