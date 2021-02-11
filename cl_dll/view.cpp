@@ -265,6 +265,10 @@ V_CalcViewRoll
 Roll is induced by movement and damage
 ==============
 */
+extern cvar_t *cl_rollangle;
+extern cvar_t *cl_rollspeed;
+extern cvar_t *cl_viewroll;
+
 void V_CalcViewRoll( struct ref_params_s *pparams )
 {
 	float side;
@@ -273,6 +277,8 @@ void V_CalcViewRoll( struct ref_params_s *pparams )
 	viewentity = gEngfuncs.GetEntityByIndex( pparams->viewentity );
 	if( !viewentity )
 		return;
+
+	if( cl_viewroll->value ) pparams->viewangles[ROLL] = V_CalcRoll(pparams->viewangles, pparams->simvel, cl_rollangle->value, cl_rollspeed->value) * 4;
 
 	side = V_CalcRoll( viewentity->angles, pparams->simvel, pparams->movevars->rollangle, pparams->movevars->rollspeed );
 
@@ -350,6 +356,8 @@ V_CalcRefdef
 
 ==================
 */
+extern cvar_t *cl_bobtilt;
+
 void V_CalcNormalRefdef( struct ref_params_s *pparams )
 {
 	cl_entity_t *ent, *view;
@@ -537,6 +545,8 @@ void V_CalcNormalRefdef( struct ref_params_s *pparams )
 	view->angles[YAW] -= bob * 0.5;
 	view->angles[ROLL] -= bob * 1;
 	view->angles[PITCH] -= bob * 0.3;
+
+	if( cl_bobtilt->value ) VectorCopy( view->angles, view->curstate.angles );
 
 	VectorCopy( view->angles, view->curstate.angles );
 
