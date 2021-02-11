@@ -2897,46 +2897,49 @@ GGM_RegisterCommand
 Handle register commands
 =====================
 */
-bool GGM_RegisterCommand( edict_t *pEntity )
+bool GGM_RegisterCommand( CBasePlayer *pPlayer, const char *pcmd )
 {
-	const char *pCmd = CMD_ARGV(0);
-	CBasePlayer *pPlayer = (CBasePlayer*)GET_PRIVATE(pEntity);
-
-	if( FStrEq(pCmd, "reg_Name") )
+	if( FStrEq(pcmd, "reg_Name") )
 	{
 		GGM_RegName_f(pPlayer);
 		return true;
         }
-	else if( FStrEq(pCmd, "reg_Password") )
+	else if( FStrEq(pcmd, "reg_Password") )
 	{
 		GGM_RegPassword_f(pPlayer);
 		return true;
 	}
-	else if( FStrEq(pCmd, "login") )
+	else if( FStrEq(pcmd, "reg") )
+	{
+		GGM_Register_f(pPlayer);
+		return true;
+	}
+	else if( FStrEq(pcmd, "login") )
 	{
 		GGM_Login_f(pPlayer);
 		return true;
 	}
-	else if( FStrEq(pCmd, "login_Name") )
+	else if( FStrEq(pcmd, "login_Name") )
 	{
 		GGM_LoginName_f(pPlayer);
 		return true;
 	}
-	else if( FStrEq(pCmd, "login_Password") )
+	else if( FStrEq(pcmd, "login_Password") )
 	{
 		GGM_LoginPassword_f(pPlayer);
 		return true;
 	}
-	else if( FStrEq(pCmd, "New_Password") || FStrEq(pCmd, "chpwd") )
+	else if( FStrEq(pcmd, "New_Password") || FStrEq(pcmd, "chpwd") )
 	{
 		GGM_ChangePassword_f(pPlayer);
 		return true;
 	}
-	else if( FStrEq(pCmd, "logout") )
+	else if( FStrEq(pcmd, "logout") )
 	{
 		GGM_Logout(pPlayer);
 		return true;
 	}
+	else return false;
 
 	return true;
 }
@@ -2971,15 +2974,12 @@ bool GGM_ClientCommand( CBasePlayer *pPlayer, const char *pCmd )
 		return true;
 	else if( GGM_VoteProcess( pPlayer, pCmd ) )
 		return true;
+	else if( GGM_RegisterCommand( pPlayer, pCmd ) )
+		return true;
 	else if( FStrEq(pCmd, "dumpprops") )
 	{
 		if ( g_flWeaponCheat != 0.0 )
 			DumpProps();
-		return true;
-	}
-	else if( FStrEq(pCmd, "reg") )
-	{
-		GGM_Register_f(pPlayer);
 		return true;
 	}
 	else if( FStrEq( pCmd, "ggm_version" ) )
@@ -3034,11 +3034,9 @@ bool GGM_ClientCommand( CBasePlayer *pPlayer, const char *pCmd )
 	}
 	else if( COOP_ClientCommand( pPlayer->edict() ) )
 		return true;
-	else if( GGM_RegisterCommand( pPlayer->edict() ) )
-                return true;
 	#ifndef __ANDROID__
 	else if( Admin_ClientCommand( pPlayer->edict() ) )
-                return true;
+		return true;
 	#endif
 	else if( Ent_ProcessClientCommand( pPlayer->edict() ) )
 		return true;
