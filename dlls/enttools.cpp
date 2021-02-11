@@ -1128,7 +1128,7 @@ bool Ent_ProcessClientCommand( edict_t *player )
         if( !pl || !pl->IsPlayer() )
                 return false;
 
-	if( !mp_enttools_enable.value && !pl->m_ggm.IsAdmin )
+	if( !mp_enttools_enable.value || !pl->m_ggm.IsAdmin )
 		return false;
 
 	for( u = enttoolscmds; u->name; u++ )
