@@ -43,9 +43,9 @@ public:
 		return Get() != other.Get();
 	}
 
-	bool operator !=(int null1)
+	bool operator !=(int &null1)
 	{
-		return Get() != (edict_t*)null1;
+		return Get() != (edict_t*)&null1;
 	}
 };
 #else
