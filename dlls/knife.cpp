@@ -374,10 +374,7 @@ int CKnife::Swing(int fFirst)
 					EMIT_SOUND(ENT(m_pPlayer->pev), CHAN_ITEM, "weapons/knife_hit_flesh2.wav", 1, ATTN_NORM); break;
 				}
 				m_pPlayer->m_iWeaponVolume = KNIFE_BODYHIT_VOLUME;
-				if (!pEntity->IsAlive())
-					return TRUE;
-				else
-					flVol = 0.1;
+				flVol = 0.1;
 
 				fHitWorld = FALSE;
 			}
