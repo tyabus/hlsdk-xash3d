@@ -136,6 +136,9 @@ void CKnife::Holster(int skiplocal /* = 0 */)
 
 void CKnife::PrimaryAttack()
 {
+	if(( m_pPlayer->pev->button & IN_ATTACK2 ))
+		return;
+
 	if (!Swing(1))
 	{
 		SetThink(&CKnife::SwingAgain);
@@ -145,6 +148,9 @@ void CKnife::PrimaryAttack()
 
 void CKnife::SecondaryAttack( void )
 {
+	if(( m_pPlayer->pev->button & IN_ATTACK ))
+		return;
+
 	TraceResult tr;
 
 	UTIL_MakeVectors(m_pPlayer->pev->v_angle);
@@ -176,7 +182,10 @@ void CKnife::SecondaryAttack( void )
 	case 2:
 		EMIT_SOUND(ENT(m_pPlayer->pev), CHAN_WEAPON, "weapons/knife3.wav", 1, ATTN_NORM); break;
 	}
-	
+
+	// player "shoot" animation
+	m_pPlayer->SetAnimation(PLAYER_ATTACK1);
+
 	if (tr.flFraction >= 1.0)
 		SendWeaponAnim(KNIFE_ATTACK3);
 	else
