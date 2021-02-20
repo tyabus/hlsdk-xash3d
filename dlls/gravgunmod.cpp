@@ -37,9 +37,6 @@ cvar_t mp_unduck = { "mp_unduck", "0", FCVAR_SERVER };
 cvar_t mp_anticheat = { "mp_anticheat", "1", FCVAR_SERVER };
 cvar_t mp_logchat = { "mp_logchat", "0", FCVAR_SERVER };
 
-cvar_t ggm_arch = { "ggm_arch", "", FCVAR_SERVER | FCVAR_UNLOGGED };
-cvar_t ggm_platform = { "ggm_platform", "", FCVAR_SERVER | FCVAR_UNLOGGED };
-cvar_t ggm_commit = { "ggm_commit", "", FCVAR_SERVER | FCVAR_UNLOGGED };
 cvar_t ggm_saverestore_enable = { "ggm_saverestore_enable", "1", FCVAR_SERVER };
 
 cvar_t mp_fixhornetbug = { "mp_fixhornetbug", "0", FCVAR_SERVER };
@@ -2984,13 +2981,13 @@ bool GGM_ClientCommand( CBasePlayer *pPlayer, const char *pCmd )
 	}
 	else if( FStrEq( pCmd, "ggm_version" ) )
 	{
-        	GGM_ChatPrintf( pPlayer, "Build date: %s %s\n", __DATE__, __TIME__);
-        	GGM_ChatPrintf( pPlayer, "Compiled with: %s version %s\n", CXX, __VERSION__);
-        	GGM_ChatPrintf( pPlayer, "Build architecture: %s\n", CVAR_GET_STRING("ggm_arch") );
-        	GGM_ChatPrintf( pPlayer, "Build commit: %s\n", CVAR_GET_STRING("ggm_commit") );
-        	GGM_ChatPrintf( pPlayer, "Build platform: %s\n", CVAR_GET_STRING("ggm_platform") );
+		GGM_ChatPrintf( pPlayer, "Build date: %s %s\n", __DATE__, __TIME__);
+		GGM_ChatPrintf( pPlayer, "Compiled with: %s %s\n", CXX, __VERSION__);
+		GGM_ChatPrintf( pPlayer, "Build architecture: %s\n", GGM_ARCH );
+		GGM_ChatPrintf( pPlayer, "Build commit: %s\n", GGM_COMMIT );
+		GGM_ChatPrintf( pPlayer, "Build platform: %s\n", GGM_PLATFORM );
         	#ifdef _DEBUG
-        	GGM_ChatPrintf( pPlayer, "Debug build\n" );
+		GGM_ChatPrintf( pPlayer, "Debug build\n" );
         	#endif
 		return true;
 	}
@@ -3210,10 +3207,10 @@ call on ggm_version serverside command
 void GGM_Version_f()
 {
 	ALERT(at_console, "Build date: %s %s\n", __DATE__, __TIME__);
-	ALERT(at_console, "Compiled with: %s version %s\n", CXX, __VERSION__);
-	ALERT(at_console, "Build architecture: %s\n", CVAR_GET_STRING("ggm_arch") );
-	ALERT(at_console, "Build commit: %s\n", CVAR_GET_STRING("ggm_commit") );
-	ALERT(at_console, "Build platform: %s\n", CVAR_GET_STRING("ggm_platform") );
+	ALERT(at_console, "Compiled with: %s %s\n", CXX, __VERSION__);
+	ALERT(at_console, "Build architecture: %s\n", GGM_ARCH );
+	ALERT(at_console, "Build commit: %s\n", GGM_COMMIT );
+	ALERT(at_console, "Build platform: %s\n", GGM_PLATFORM );
 	#ifdef _DEBUG
 	ALERT(at_console, "Debug build\n");
 	#endif
@@ -3240,9 +3237,6 @@ Call on server load
 */
 void GGM_RegisterCVars( void )
 {
-	CVAR_REGISTER( &ggm_commit );
-	CVAR_REGISTER( &ggm_arch );
-	CVAR_REGISTER( &ggm_platform );
 	CVAR_REGISTER( &ggm_saverestore_enable );
 	CVAR_REGISTER( &cvar_allow_m249 );
 	CVAR_REGISTER( &cvar_allow_shockrifle );
@@ -3300,10 +3294,6 @@ void GGM_RegisterCVars( void )
 	g_engfuncs.pfnAddServerCommand( "ggm_saytext", GGM_SayText_f );
 	if( IS_DEDICATED_SERVER )
 		g_engfuncs.pfnAddServerCommand( "ggm_version", GGM_Version_f );
-
-	g_engfuncs.pfnCvar_DirectSet( &ggm_platform, UTIL_VarArgs( "%s", GGM_PLATFORM ) );
-	g_engfuncs.pfnCvar_DirectSet( &ggm_arch, UTIL_VarArgs( "%s", GGM_ARCH ) );
-	g_engfuncs.pfnCvar_DirectSet( &ggm_commit, UTIL_VarArgs( "%s", GGM_COMMIT ) );
 
 	// Prevent some retarded people to launch coop on their shitty local server
 	if( !IS_DEDICATED_SERVER )
