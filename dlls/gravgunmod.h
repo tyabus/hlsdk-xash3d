@@ -78,7 +78,9 @@ extern cvar_t mp_maxdecals;
 #endif
 // platform defines
 #if defined(_WIN32) && defined(__MINGW32__)
-#define GGM_PLATFORM	"WIN32-MinGW"
+#define GGM_PLATFORM	"Win32-MinGW"
+#elif defined(_WIN32) && defined(_MSC_VER)
+#define GGM_PLATFORM	"Win32-MSVC"
 #elif defined(__ANDROID__)
 #define GGM_PLATFORM	"Android"
 #elif defined(__APPLE__)
