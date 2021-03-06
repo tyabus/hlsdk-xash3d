@@ -2191,7 +2191,7 @@ void CvarValue2( const edict_t *pEnt, int requestID, const char *cvarName, const
 
 	if( mp_anticheat.value && !player->m_ggm.IsAdmin )
 	{
-		if( pEnt && requestID == 112 && FStrEq( cvarName , "r_drawentities" ) && (atoi( value ) == 5 || atoi( value ) == 10 ))
+		if( pEnt && requestID == 112 && FStrEq( cvarName , "r_drawentities" ) && (atoi( value ) == 5 || atoi( value ) == 10 ) && !g_flWeaponCheat )
 			GGM_KickCheater( player, "wallhack" );
 
 		if( pEnt && requestID == 113 && FStrEq( cvarName , "r_lockpvs" ) && atoi( value ) )
