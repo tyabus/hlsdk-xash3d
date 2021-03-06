@@ -1,6 +1,8 @@
 
 # GravGunMod
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e263b81a52bb4c639c7eb7b92dec722e)](https://app.codacy.com/gh/tyabus/hlsdk-xash3d?utm_source=github.com&utm_medium=referral&utm_content=tyabus/hlsdk-xash3d&utm_campaign=Badge_Grade_Settings)
+
 Extended Half-Life mod
 
 ### Main features:
