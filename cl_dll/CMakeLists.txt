@@ -46,10 +46,6 @@ else()
 	add_definitions(-D_CRT_SECURE_NO_WARNINGS -D_CRT_NONSTDC_NO_DEPRECATE)
 endif()
 
-if (GOLDSOURCE_SUPPORT)
-	add_definitions(-DGOLDSOURCE_SUPPORT)
-endif()
-
 
 set (CLDLL_SOURCES
 	ev_hldm.cpp
@@ -124,15 +120,8 @@ if(USE_VOICEMGR)
 endif()
 
 add_library (${CLDLL_LIBRARY} SHARED ${CLDLL_SOURCES})
-if (GOLDSOURCE_SUPPORT)
-	target_link_libraries( ${CLDLL_LIBRARY} ${CMAKE_DL_LIBS} )
-endif()
-
 if(WIN32)
 	target_link_libraries( ${CLDLL_LIBRARY} user32.lib )
-	if (GOLDSOURCE_SUPPORT)
-		target_link_libraries( ${CLDLL_LIBRARY} winmm.lib )
-	endif()
 endif()
 
 set_target_properties (${CLDLL_LIBRARY} PROPERTIES
