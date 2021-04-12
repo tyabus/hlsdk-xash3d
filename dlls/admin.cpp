@@ -15,7 +15,7 @@ void Admin_RegisterCVars( void )
 	CVAR_REGISTER( &admin_password );
 }
 
-void Admin_LogAttempts( CBasePlayer *pPlayer, char *LogType )
+void Admin_LogAttempt( CBasePlayer *pPlayer, char *LogType )
 {
                 FILE *fladminlog = fopen("adminattempts.log", "a");
 		time_t mytime = time(NULL);
@@ -61,12 +61,12 @@ bool Admin_ClientCommand( edict_t *pEntity )
 		{
 			pPlayer->m_ggm.IsAdmin = true;
 			GGM_ChatPrintf( pPlayer, "^2Login successful^7\n" );
-			Admin_LogAttempts( pPlayer, "Became admin:" );
+			Admin_LogAttempt( pPlayer, "Became admin:" );
 		}
 		else
 		{
 			GGM_ChatPrintf( pPlayer, "^1Login failed^7\n" );
-			Admin_LogAttempts( pPlayer, "Failure login:" );
+			Admin_LogAttempt( pPlayer, "Failure login:" );
 		}
 		return true;
 	}
@@ -196,7 +196,7 @@ bool Admin_ClientCommand( edict_t *pEntity )
 	{
 		pPlayer->m_ggm.IsAdmin = false;
 		GGM_ChatPrintf( pPlayer, "^2Successful logout^7\n" );
-		Admin_LogAttempts( pPlayer, "Successful logout:" );
+		Admin_LogAttempt( pPlayer, "Successful logout:" );
 		return true;
 	}
 

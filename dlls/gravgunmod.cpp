@@ -505,7 +505,7 @@ void Ent_RunGC( int flags, const char *userid, const char *pattern )
 				continue;
 			}
 
-			if( !strcmp( classname, "weaponbox" ) && env->v.nextthink < 90 ) // let weaponboxes lay around safely for 30 seconds
+			if( !strcmp( classname, "weaponbox" ) && ent->v.nextthink < 90 ) // let weaponboxes lay around safely for 30 seconds
 			{
 				ent->v.flags |= FL_KILLME;
 				removed++;
