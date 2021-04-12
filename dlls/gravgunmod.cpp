@@ -462,7 +462,7 @@ void Ent_RunGC( int flags, const char *userid, const char *pattern )
 	int i, count = 0, removed = 0;
 	edict_t *ent = g_engfuncs.pfnPEntityOfEntIndex( gpGlobals->maxClients + 5 );
 
-	ALERT( at_warning, "Running garbage collector\n" );
+	ALERT( at_warning, "Running garbage collector, mode: %i\n", flags );
 
 	for( i = gpGlobals->maxClients + 5; i < gpGlobals->maxEntities; i++, ent++ )
 	{
