@@ -43,7 +43,7 @@ public:
 
 	virtual float TouchGravGun( CBaseEntity *attacker, int stage )
 	{
-		int ang;
+		int ang = 0;
 		m_hOwner = Instance( attacker->edict() );
 		if( stage == 2 )
 		{
