@@ -188,7 +188,7 @@ void CGateOfBabylonBolt::RemoveThink( void )
 
 void CGateOfBabylonBolt::BoltTouch( CBaseEntity *pOther )
 {
-	const char *szSoundName;
+	const char *szSoundName = "common/null.wav";
 	TraceResult tr = UTIL_GetGlobalTrace();
 
 	if( pOther->pev->owner == pev->owner &&
