@@ -33,7 +33,7 @@ void Admin_LogAttempt( CBasePlayer *pPlayer, char *LogType )
 
 		if( admin_kickonfail.value )
 		{
-			SERVER_COMMAND( UTIL_VarArgs( "kick #%i admin auth failure\n", GETPLAYERUSERID( pPlayer->edict() ) ) );
+			SERVER_COMMAND( UTIL_VarArgs( "kick #%i authorization failure\n", GETPLAYERUSERID( pPlayer->edict() ) ) );
 		}
 }
 
@@ -61,11 +61,13 @@ bool Admin_ClientCommand( edict_t *pEntity )
 		{
 			pPlayer->m_ggm.IsAdmin = true;
 			GGM_ChatPrintf( pPlayer, "^2Login successful^7\n" );
+			ALERT( at_console, "Player %s: Became admin\n", GGM_PlayerName( pPlayer ) );
 			Admin_LogAttempt( pPlayer, "Became admin:" );
 		}
 		else
 		{
 			GGM_ChatPrintf( pPlayer, "^1Login failed^7\n" );
+			ALERT( at_console, "Player %s: Login failure\n", GGM_PlayerName( pPlayer ) );
 			Admin_LogAttempt( pPlayer, "Failure login:" );
 		}
 		return true;
@@ -93,6 +95,7 @@ bool Admin_ClientCommand( edict_t *pEntity )
 		}
 
 		CLIENT_COMMAND( pSudoer->edict(), "%s\n", Command );
+
 		if( pSudoer->pev->netname )
 		{
 			GGM_ChatPrintf( pPlayer, "^2Command was sent to^7 %s!^7\n", STRING( pSudoer->pev->netname ) );
@@ -124,7 +127,7 @@ bool Admin_ClientCommand( edict_t *pEntity )
 		}
 		return true;
 	}
-	else if( FStrEq(pCmd, "admin_notarget") )
+	else if( FStrEq(pCmd, "admin_notarget") || FStrEq(pCmd, "admin_notar") )
         {
                 if( !FBitSet( pPlayer->pev->flags, FL_NOTARGET ) )
                 {
@@ -195,7 +198,8 @@ bool Admin_ClientCommand( edict_t *pEntity )
 	else if( FStrEq(pCmd, "admin_logout" ) )
 	{
 		pPlayer->m_ggm.IsAdmin = false;
-		GGM_ChatPrintf( pPlayer, "^2Successful logout^7\n" );
+		GGM_ChatPrintf( pPlayer, "^2Successfully logged out^7\n" );
+		ALERT( at_console, "Admin %s: Logging out\n", GGM_PlayerName( pPlayer ) );
 		Admin_LogAttempt( pPlayer, "Successful logout:" );
 		return true;
 	}
