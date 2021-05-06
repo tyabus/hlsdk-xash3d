@@ -52,9 +52,9 @@ void CGrenade::Explode( TraceResult *pTrace, int bitsDamageType )
 {
 	// float flRndSound; // sound randomizer
 
-	UTIL_ScreenShake( pev->origin, 50.0, 140.0, 1.5, 1200 );
+	UTIL_ScreenShake( pev->origin, 40.0, 140.0, 1.5, 1200 );
 
-	pev->model = iStringNull; //invisible
+	pev->model = iStringNull; // invisible
 	pev->solid = SOLID_NOT; // intangible
 
 	pev->takedamage = DAMAGE_NO;

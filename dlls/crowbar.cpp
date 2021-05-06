@@ -328,7 +328,7 @@ int CCrowbar::Swing( int fFirst )
 			m_trHit = tr;
 
 			UTIL_Sparks( tr.vecEndPos );
-			UTIL_ScreenShake( tr.vecEndPos, 15.0, 20.0, 1, 50 );
+			UTIL_ScreenShake( tr.vecEndPos, 10.0, 20.0, 1, 50 );
 		}
 
 		m_pPlayer->m_iWeaponVolume = (int)( flVol * CROWBAR_WALLHIT_VOLUME );
