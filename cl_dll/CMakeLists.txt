@@ -52,6 +52,7 @@ set (CLDLL_SOURCES
 	hl/hl_baseentity.cpp
 	hl/hl_objects.cpp
 	hl/hl_weapons.cpp
+	hl/hl_events.cpp
 	ammo.cpp
 	ammo_secondary.cpp
 	ammohistory.cpp
@@ -62,6 +63,7 @@ set (CLDLL_SOURCES
 	demo.cpp
 	entity.cpp
 	ev_common.cpp
+	events.cpp
 	flashlight.cpp
 	GameStudioModelRenderer.cpp
 	geiger.cpp

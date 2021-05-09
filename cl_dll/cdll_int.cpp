@@ -33,6 +33,7 @@ mobile_engfuncs_t *gMobileEngfuncs = NULL;
 
 extern "C" int g_bhopcap;
 void InitInput( void );
+void EV_HookEvents( void );
 void IN_Commands( void );
 
 int __MsgFunc_Bhopcap( const char *pszName, int iSize, void *pbuf )
@@ -145,6 +146,8 @@ int DLLEXPORT Initialize( cl_enginefunc_t *pEnginefuncs, int iVersion )
 		return 0;
 
 	memcpy( &gEngfuncs, pEnginefuncs, sizeof(cl_enginefunc_t) );
+
+	EV_HookEvents();
 
 	return 1;
 }
