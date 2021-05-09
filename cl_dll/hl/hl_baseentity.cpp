@@ -250,7 +250,6 @@ void CBasePlayer::WaterMove() { }
 BOOL CBasePlayer::IsOnLadder( void ) { return FALSE; }
 void CBasePlayer::PlayerDeathThink(void) { }
 void CBasePlayer::StartDeathCam( void ) { }
-void CBasePlayer::StartObserver( Vector vecPosition, Vector vecViewAngle ) { }
 void CBasePlayer::PlayerUse( void ) { }
 void CBasePlayer::Jump() { }
 void CBasePlayer::Duck() { }

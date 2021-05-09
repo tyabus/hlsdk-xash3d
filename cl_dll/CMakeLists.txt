@@ -31,7 +31,7 @@ if(HAVE_TGMATH_H)
 	add_definitions(-DHAVE_TGMATH_H)
 endif()
 
-add_definitions(-DCLIENT_WEAPONS -DCLIENT_DLL)
+add_definitions(-DCLIENT_DLL)
 
 if(NOT MSVC)
 	add_compile_options(-fno-exceptions) # GCC/Clang flag
@@ -50,23 +50,8 @@ endif()
 set (CLDLL_SOURCES
 	ev_hldm.cpp
 	hl/hl_baseentity.cpp
-	hl/hl_events.cpp
 	hl/hl_objects.cpp
 	hl/hl_weapons.cpp
-	../dlls/crowbar.cpp
-	../dlls/egon.cpp
-	../dlls/crossbow.cpp
-	../dlls/gauss.cpp
-	../dlls/handgrenade.cpp
-	../dlls/hornetgun.cpp
-	../dlls/mp5.cpp
-	../dlls/python.cpp
-	../dlls/rpg.cpp
-	../dlls/satchel.cpp
-	../dlls/shotgun.cpp
-	../dlls/squeakgrenade.cpp
-	../dlls/tripmine.cpp
-	../dlls/glock.cpp
 	ammo.cpp
 	ammo_secondary.cpp
 	ammohistory.cpp
@@ -77,7 +62,6 @@ set (CLDLL_SOURCES
 	demo.cpp
 	entity.cpp
 	ev_common.cpp
-	events.cpp
 	flashlight.cpp
 	GameStudioModelRenderer.cpp
 	geiger.cpp
