@@ -83,25 +83,14 @@ enum sbar_data
 };
 
 #define CHAT_INTERVAL 1.0f
+#define SPECTATE_INTERVAL 0.5f
 
 #include "gravgunmod.h"
 #include "whandle.h"
- 
+
 class CBasePlayer : public CBaseMonster
 {
 public:
-	// Spectator camera
-	void	Observer_FindNextPlayer( bool bReverse );
-	void	Observer_HandleButtons();
-	void	Observer_SetMode( int iMode );
-	void	Observer_CheckTarget();
-	void	Observer_CheckProperties();
-	EHANDLE	m_hObserverTarget;
-	float	m_flNextObserverInput;
-	int		m_iObserverWeapon;	// weapon of current tracked target
-	int		m_iObserverLastMode;// last used observer mode
-	int		IsObserver() { return pev->iuser1; };
-
 	int					random_seed;    // See that is shared between client & server for shared weapons code
 
 	int					m_iPlayerSound;// the index of the sound list slot reserved for this player
@@ -197,6 +186,7 @@ public:
 
 	int m_nCustomSprayFrames;// Custom clan logo frames for this player
 	float	m_flNextDecalTime;// next time this player can spray a decal
+	float	m_flNextSpectateTime; // next time this can player exit/enter spectate mode
 
 	char m_szTeamName[TEAM_NAME_LENGTH];
 
@@ -258,8 +248,6 @@ public:
 	void CheatImpulseCommands( int iImpulse );
 
 	void StartDeathCam( void );
-	void StartObserver( Vector vecPosition, Vector vecViewAngle );
-	void StopObserver();
 
 	void AddPoints( int score, BOOL bAllowNegativeScore );
 	void AddPointsToTeam( int score, BOOL bAllowNegativeScore );

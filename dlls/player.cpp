@@ -1314,72 +1314,6 @@ void CBasePlayer::StartDeathCam( void )
 	pev->modelindex = 0;
 }
 
-void CBasePlayer::StartObserver( Vector vecPosition, Vector vecViewAngle )
-{
-	// clear any clientside entities attached to this player
-	MESSAGE_BEGIN( MSG_PAS, SVC_TEMPENTITY, pev->origin );
-		WRITE_BYTE( TE_KILLPLAYERATTACHMENTS );
-		WRITE_BYTE( (BYTE)entindex() );
-	MESSAGE_END();
-
-	// Holster weapon immediately, to allow it to cleanup
-	if( m_pActiveItem )
-		m_pActiveItem->Holster();
-
-	if( m_pTank != 0 )
-		m_pTank->Use( this, this, USE_OFF, 0 );
-
-	// clear out the suit message cache so we don't keep chattering
-	SetSuitUpdate( NULL, FALSE, 0 );
-
-	// Tell Ammo Hud that the player is dead
-	MESSAGE_BEGIN( MSG_ONE, gmsgCurWeapon, NULL, pev );
-		WRITE_BYTE( 0 );
-		WRITE_BYTE( 0XFF );
-		WRITE_BYTE( 0xFF );
-	MESSAGE_END();
-
-	// reset FOV
-	m_iFOV = m_iClientFOV = 0;
-	pev->fov = m_iFOV;
-	MESSAGE_BEGIN( MSG_ONE, gmsgSetFOV, NULL, pev );
-		WRITE_BYTE( 0 );
-	MESSAGE_END();
-
-	// Setup flags
-	m_iHideHUD = ( HIDEHUD_HEALTH | HIDEHUD_FLASHLIGHT | HIDEHUD_WEAPONS );
-	m_afPhysicsFlags |= PFLAG_OBSERVER;
-	pev->effects = EF_NODRAW;
-	pev->view_ofs = g_vecZero;
-	pev->angles = pev->v_angle = vecViewAngle;
-	pev->fixangle = TRUE;
-	pev->solid = SOLID_NOT;
-	pev->takedamage = DAMAGE_NO;
-	pev->movetype = MOVETYPE_NONE;
-	ClearBits( m_afPhysicsFlags, PFLAG_DUCKING );
-	ClearBits( pev->flags, FL_DUCKING );
-	pev->deadflag = DEAD_RESPAWNABLE;
-	pev->health = 1;
-
-	// Clear out the status bar
-	m_fInitHUD = TRUE;
-
-	pev->team = 0;
-	MESSAGE_BEGIN( MSG_ALL, gmsgTeamInfo );
-		WRITE_BYTE( ENTINDEX(edict()) );
-		WRITE_STRING( "" );
-	MESSAGE_END();
-
-	// Remove all the player's stuff
-	RemoveAllItems( FALSE );
-
-	// Move them to the new position
-	UTIL_SetOrigin( pev, vecPosition );
-
-	// Find a player to watch
-	m_flNextObserverInput = 0;
-	Observer_SetMode( m_iObserverLastMode );
-}
 
 //
 // PlayerUse - handles USE keypress
@@ -1388,7 +1322,7 @@ void CBasePlayer::StartObserver( Vector vecPosition, Vector vecViewAngle )
 
 void CBasePlayer::PlayerUse( void )
 {
-	if( IsObserver() || pev->flags & FL_SPECTATOR )
+	if( pev->flags & FL_SPECTATOR )
 		return;
 
 	// Was use pressed or released?
@@ -1766,11 +1700,8 @@ void CBasePlayer::PreThink( void )
 	CheckSuitUpdate();
 
 	// Observer Button Handling
-	if( IsObserver() )
+	if( pev->flags & FL_SPECTATOR )
 	{
-		Observer_HandleButtons();
-		Observer_CheckTarget();
-		Observer_CheckProperties();
 		pev->impulse = 0;
 		return;
 	}
@@ -2848,6 +2779,7 @@ void CBasePlayer::Spawn( void )
 
 	m_flgeigerDelay = gpGlobals->time + 2.0;	// wait a few seconds until user-defined message registrations
 							// are recieved by all clients
+	m_flNextSpectateTime = 0;
 
 	m_flTimeStepSound = 0;
 	m_iStepLeft = 0;
@@ -3844,8 +3776,6 @@ void CBasePlayer::UpdateClientData( void )
 
 			g_pGameRules->InitHUD( this );
 			m_fGameHUDInitialized = TRUE;
-
-			m_iObserverLastMode = OBS_ROAMING;
 
 			if( g_pGameRules->IsMultiplayer() )
 			{

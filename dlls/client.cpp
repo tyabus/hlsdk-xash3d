@@ -68,7 +68,7 @@ void UTIL_BecomeSpectator( CBasePlayer *pPlayer );
  * ROBIN: Moved here from player.cpp, to allow multiple player models
  */
 void set_suicide_frame(entvars_t* pev)
-{       
+{
 	if (!FStrEq(STRING(pev->model), "models/player.mdl"))
 		return; // allready gibbed
 
@@ -435,7 +435,7 @@ void Host_Say( edict_t *pEntity, int teamonly )
 		return;  // no character found, so say nothing
 
 	// turn on color set 2  (color on,  no sound)
-	if( player->IsObserver() && ( teamonly ) )
+	if( player->pev->flags & FL_SPECTATOR && ( teamonly ) )
 		sprintf( text, "%c(SPEC) %s: ", 2, STRING( pEntity->v.netname ) );
 	else if( teamonly )
 		sprintf( text, "%c(TEAM) %s: ", 2, STRING( pEntity->v.netname ) );
@@ -476,7 +476,7 @@ void Host_Say( edict_t *pEntity, int teamonly )
 			continue;
 #endif
 
-		if( !player->IsObserver() && teamonly && g_pGameRules->PlayerRelationship( client, CBaseEntity::Instance( pEntity ) ) != GR_TEAMMATE )
+		if( !player->pev->flags & FL_SPECTATOR && teamonly && g_pGameRules->PlayerRelationship( client, CBaseEntity::Instance( pEntity ) ) != GR_TEAMMATE )
 			continue;
 
 		// Admins can only talk to other admins
@@ -485,8 +485,8 @@ void Host_Say( edict_t *pEntity, int teamonly )
 				continue;
 
 		// Spectators can only talk to other specs
-		if( player->IsObserver() && teamonly )
-			if ( !client->IsObserver() )
+		if( player->pev->flags & FL_SPECTATOR && teamonly )
+			if ( !client->pev->flags & FL_SPECTATOR )
 				continue;
 
 		MESSAGE_BEGIN( MSG_ONE, gmsgSayText, NULL, client->pev );
@@ -651,32 +651,36 @@ void ClientCommand( edict_t *pEntity )
 	{
 		CBasePlayer *pPlayer = GetClassPtr( (CBasePlayer *)pev );
 
+		if( pPlayer->m_flNextSpectateTime > gpGlobals->time )
+		{
+			return;
+		}
+
 		if ( pPlayer->pev->flags & FL_SPECTATOR )
+		{
 			UTIL_SpawnPlayer( pPlayer );
+		}
 		else
 		{
+			if( pPlayer->m_pTank )
+				pPlayer->m_pTank->Use( pPlayer, pPlayer, USE_OFF, 0 );
+
 			pPlayer->RemoveAllItems( TRUE );
+
 			UTIL_BecomeSpectator( pPlayer );
+
 			pPlayer->m_ggm.iState = STATE_SPECTATOR;
 		}
-	}
-	else if( FStrEq( pcmd, "specmode" ) ) // new spectator mode
-	{
-		CBasePlayer *pPlayer = GetClassPtr( (CBasePlayer *)pev );
 
-		if( pPlayer->IsObserver() )
-			pPlayer->Observer_SetMode( atoi( CMD_ARGV( 1 ) ) );
+		pPlayer->m_flNextSpectateTime = gpGlobals->time + SPECTATE_INTERVAL;
+	}
+	else if( FStrEq( pcmd, "specmode" ) || FStrEq( pcmd, "follownext" ) ) // old spectator mode leftovers
+	{
+		// just ignore it
 	}
 	else if( FStrEq( pcmd, "closemenus" ) )
 	{
 		// just ignore it
-	}
-	else if( FStrEq( pcmd, "follownext" ) )	// follow next player
-	{
-		CBasePlayer *pPlayer = GetClassPtr( (CBasePlayer *)pev );
-
-		if( pPlayer->IsObserver() )
-			pPlayer->Observer_FindNextPlayer( atoi( CMD_ARGV( 1 ) ) ? true : false );
 	}
 	else if( g_pGameRules->ClientCommand( GetClassPtr( (CBasePlayer *)pev ), pcmd ) )
 	{
@@ -685,7 +689,6 @@ void ClientCommand( edict_t *pEntity )
 	else if( FStrEq( pcmd, "VModEnable" ) )
 	{
 		// clear 'Unknown command: VModEnable' in singleplayer
-		return;
 	}
 	else if( !GGM_ClientCommand( GetClassPtr( (CBasePlayer *)pev ), pcmd ))
 	{
@@ -1961,17 +1964,6 @@ void UpdateClientData ( const struct edict_s *ent, int sendweapons, struct clien
 	entvars_t *pev = (entvars_t *)&ent->v;
 	CBasePlayer *pl = (CBasePlayer *)( CBasePlayer::Instance( pev ) );
 	entvars_t *pevOrg = NULL;
-
-	// if user is spectating different player in First person, override some vars
-	if( pl && pl->pev->iuser1 == OBS_IN_EYE )
-	{
-		if( pl->m_hObserverTarget )
-		{
-			pevOrg = pev;
-			pev = pl->m_hObserverTarget->pev;
-			pl = (CBasePlayer *)(CBasePlayer::Instance( pev ) );
-		}
-	}
 
 	cd->flags		= pev->flags;
 	cd->health		= pev->health;

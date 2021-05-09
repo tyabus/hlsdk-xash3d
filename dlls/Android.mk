@@ -87,7 +87,6 @@ LOCAL_SRC_FILES := agrunt.cpp \
            multiplay_gamerules.cpp \
            nihilanth.cpp \
            nodes.cpp \
-	   observer.cpp \
            osprey.cpp \
            pathcorner.cpp \
            plane.cpp \
