@@ -583,3 +583,100 @@ void _DLLEXPORT HUD_PostRunCmd( struct local_state_s *from, struct local_state_s
 	// All games can use FOV state
 	g_lastFOV = to->client.fov;
 }
+
+/*
+=====================
+ViewModel_RenderEffects()
+=====================
+*/
+extern cvar_t *cl_weapon_rendermode;
+extern cvar_t *cl_weapon_color;
+
+void ViewModel_RenderEffects()
+{
+	short int r, g, b = 0;
+	cl_entity_s *ViewModel = gEngfuncs.GetViewModel();
+
+	if( !ViewModel )
+	{
+		return;
+	}
+
+	if( ViewModel->model )
+	{
+		if( sscanf( cl_weapon_color->string, "%d %d %d", &r, &g, &b ) == 3 )
+		{
+			r = Q_max( r, 0 );
+			g = Q_max( g, 0 );
+			b = Q_max( b, 0 );
+
+			r = Q_min( r, 255 );
+			g = Q_min( g, 255 );
+			b = Q_min( b, 255 );
+		}
+
+		ViewModel->curstate.rendercolor.r = r;
+		ViewModel->curstate.rendercolor.g = g;
+		ViewModel->curstate.rendercolor.b = b;
+
+		if(cl_weapon_rendermode->value == 0)
+		{
+			ViewModel->curstate.rendermode = kRenderNormal;
+			ViewModel->curstate.renderfx = kRenderFxNone;
+		}
+		else if(cl_weapon_rendermode->value == 1)
+		{
+			ViewModel->curstate.rendermode = kRenderTransColor;
+			ViewModel->curstate.renderfx = kRenderFxNone;
+		}
+		else if(cl_weapon_rendermode->value == 2)
+		{
+			ViewModel->curstate.rendermode = kRenderTransAdd;
+			ViewModel->curstate.renderfx = kRenderFxNone;
+		}
+		else if(cl_weapon_rendermode->value == 3)
+		{
+			ViewModel->curstate.rendermode = kRenderNormal;
+			ViewModel->curstate.renderamt = 1;
+			ViewModel->curstate.renderfx = kRenderFxGlowShell;
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

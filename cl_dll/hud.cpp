@@ -38,6 +38,8 @@ cvar_t *cl_rollangle;
 cvar_t *cl_rollspeed;
 cvar_t *cl_viewroll;
 cvar_t *cl_bobtilt;
+cvar_t *cl_weapon_rendermode;
+cvar_t *cl_weapon_color;
 
 void ShutdownInput( void );
 
@@ -191,6 +193,8 @@ void CHud::Init( void )
 	cl_rollspeed = CVAR_CREATE( "cl_rollspeed", "300", FCVAR_CLIENTDLL | FCVAR_ARCHIVE );
 	cl_viewroll = CVAR_CREATE( "cl_viewroll", "0", FCVAR_CLIENTDLL | FCVAR_ARCHIVE );
 	cl_bobtilt = CVAR_CREATE( "cl_bobtilt", "0", FCVAR_CLIENTDLL | FCVAR_ARCHIVE );
+	cl_weapon_rendermode = CVAR_CREATE( "cl_weapon_rendermode", "0", FCVAR_CLIENTDLL | FCVAR_ARCHIVE );
+	cl_weapon_color = CVAR_CREATE( "cl_weapon_color", "255 255 255", FCVAR_CLIENTDLL | FCVAR_ARCHIVE );
 	hud_textmode = CVAR_CREATE ( "hud_textmode", "0", FCVAR_ARCHIVE );
 
 	m_iLogo = 0;

@@ -21,6 +21,7 @@
 #include "pm_shared.h"
 
 void Game_AddObjects( void );
+void ViewModel_RenderEffects();
 
 extern vec3_t v_origin;
 
@@ -69,6 +70,8 @@ int DLLEXPORT HUD_AddEntity( int type, struct cl_entity_s *ent, const char *mode
 				ent->index == g_iUser2 )
 			return 0;	// don't draw the player we are following in eye
 	}
+
+	ViewModel_RenderEffects();
 
 	return 1;
 }
