@@ -251,6 +251,7 @@ void CHornet::TrackTarget( void )
 	{
 		SetTouch( NULL );
 		SetThink( &CBaseEntity::SUB_Remove );
+		pev->health = 0;
 		pev->nextthink = gpGlobals->time + 0.1;
 		return;
 	}
@@ -375,7 +376,7 @@ void CHornet::TrackTouch( CBaseEntity *pOther )
 {
 	if( pOther->edict() == pev->owner || pOther->pev->modelindex == pev->modelindex )
 	{
-		// bumped into the guy that shot it.
+		// bumped into another hornet.
 		pev->solid = SOLID_NOT;
 		return;
 	}
@@ -436,6 +437,8 @@ void CHornet::DieTouch( CBaseEntity *pOther )
 	}
 
 	pev->modelindex = 0;// so will disappear for the 0.1 secs we wait until NEXTTHINK gets rid
+	pev->health = 0;// supress SUB_Remove warning
+
 	pev->solid = SOLID_NOT;
 
 	SetThink( &CBaseEntity::SUB_Remove );
