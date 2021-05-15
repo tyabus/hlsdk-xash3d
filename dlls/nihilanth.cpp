@@ -289,7 +289,7 @@ void CNihilanth::Spawn( void )
 	UTIL_SetOrigin( pev, pev->origin );
 
 	pev->flags		|= FL_MONSTER;
-	pev->takedamage		= DAMAGE_AIM;
+	pev->takedamage		= DAMAGE_YES;
 	pev->health		= gSkillData.nihilanthHealth;
 	pev->view_ofs		= Vector( 0, 0, 300 );
 

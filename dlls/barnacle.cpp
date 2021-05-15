@@ -119,7 +119,7 @@ void CBarnacle::Spawn()
 
 	pev->solid = SOLID_SLIDEBOX;
 	pev->movetype = MOVETYPE_NONE;
-	pev->takedamage = DAMAGE_AIM;
+	pev->takedamage = DAMAGE_YES;
 	m_bloodColor = BLOOD_COLOR_RED;
 	pev->effects = EF_INVLIGHT; // take light from the ceiling 
 	pev->health = 25;

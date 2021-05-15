@@ -127,7 +127,7 @@ void CApache::Spawn( void )
 	UTIL_SetOrigin( pev, pev->origin );
 
 	pev->flags |= FL_MONSTER;
-	pev->takedamage = DAMAGE_AIM;
+	pev->takedamage = DAMAGE_YES;
 	pev->health = gSkillData.apacheHealth;
 
 	m_flFieldOfView = -0.707; // 270 degrees

@@ -136,7 +136,7 @@ void CSqueakGrenade::Spawn( void )
 	m_flNextHunt = gpGlobals->time + 1E6;
 
 	pev->flags |= FL_MONSTER;
-	pev->takedamage = DAMAGE_AIM;
+	pev->takedamage = DAMAGE_YES;
 	pev->health = gSkillData.snarkHealth;
 	pev->gravity = 0.5;
 	pev->friction = 0.5;

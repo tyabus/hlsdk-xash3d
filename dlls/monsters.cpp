@@ -1990,7 +1990,7 @@ void CBaseMonster::MonsterInit( void )
 
 	// Set fields common to all monsters
 	pev->effects		= 0;
-	pev->takedamage		= DAMAGE_AIM;
+	pev->takedamage		= DAMAGE_YES;
 	pev->ideal_yaw		= pev->angles.y;
 	pev->max_health		= pev->health;
 	pev->deadflag		= DEAD_NO;

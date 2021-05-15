@@ -259,7 +259,7 @@ void CTentacle::Spawn()
 	SET_MODEL( ENT( pev ), "models/tentacle2.mdl" );
 	UTIL_SetSize( pev, Vector( -32, -32, 0 ), Vector( 32, 32, 64 ) );
 
-	pev->takedamage = DAMAGE_AIM;
+	pev->takedamage = DAMAGE_YES;
 	pev->flags |= FL_MONSTER;
 
 	m_bloodColor = BLOOD_COLOR_YELLOW;

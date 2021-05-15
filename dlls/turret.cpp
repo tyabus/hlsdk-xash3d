@@ -246,7 +246,7 @@ void CBaseTurret::Spawn()
 	pev->sequence		= 0;
 	pev->frame		= 0;
 	pev->solid		= SOLID_SLIDEBOX;
-	pev->takedamage		= DAMAGE_AIM;
+	pev->takedamage		= DAMAGE_YES;
 
 	SetBits( pev->flags, FL_MONSTER );
 	SetUse( &CBaseTurret::TurretUse );

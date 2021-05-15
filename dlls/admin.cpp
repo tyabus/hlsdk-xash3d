@@ -162,7 +162,7 @@ bool Admin_ClientCommand( edict_t *pEntity )
 		}
                 else
 		{
-			pPlayer->pev->takedamage = DAMAGE_AIM;
+			pPlayer->pev->takedamage = DAMAGE_YES;
                         pPlayer->pev->movetype = MOVETYPE_WALK;
                         pPlayer->pev->flags &= ~FL_NOTARGET;
 			pPlayer->pev->flags &= ~FL_GODMODE;

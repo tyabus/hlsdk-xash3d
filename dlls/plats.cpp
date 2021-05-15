@@ -2212,7 +2212,7 @@ void CGunTarget::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE us
 	}
 	else
 	{
-		pev->takedamage = DAMAGE_AIM;
+		pev->takedamage = DAMAGE_YES;
 		m_hTargetEnt = GetNextTarget();
 		if( m_hTargetEnt == 0 )
 			return;
