@@ -95,25 +95,17 @@ bool Admin_ClientCommand( edict_t *pEntity )
 		}
 
 		CLIENT_COMMAND( pSudoer->edict(), "%s\n", Command );
-
-		if( pSudoer->pev->netname )
-		{
-			GGM_ChatPrintf( pPlayer, "^2Command was sent to^7 %s!^7\n", STRING( pSudoer->pev->netname ) );
-		}
-		else
-		{
-			GGM_ChatPrintf( pPlayer, "^1Executor didnt had a netname, but command was sent" );
-		}
-
+		GGM_ChatPrintf( pPlayer, "^2Command was sent to %s^7\n", STRING( pSudoer->pev->netname ) );
 		return true;
 	}
 	else if( FStrEq(pCmd, "admin_strip") )
 	{
 		if( CMD_ARGC() < 1 )
 		{
-			GGM_ChatPrintf( pPlayer, "^1Usage: admin_strip ^2<1/0>" );
+			GGM_ChatPrintf( pPlayer, "^1Usage: admin_strip ^2<1/0>^7\n" );
 			return true;
 		}
+
 		BOOL StripSuit = atoi( CMD_ARGV( 1 ) );
 
 		GGM_ChatPrintf( pPlayer, "^2Your items were removed^7\n" );
@@ -203,6 +195,19 @@ bool Admin_ClientCommand( edict_t *pEntity )
 		Admin_LogAttempt( pPlayer, "Successful logout:" );
 		return true;
 	}
+	else if( FStrEq(pCmd, "admin_say" ) )
+	{
+		if( CMD_ARGC() != 2 )
+		{
+			GGM_ChatPrintf( pPlayer, "^1Usage: admin_say ^2<string>^7\n" );
+			return true;
+		}
+
+		const char *message = (char *)CMD_ARGV( 1 );
+		UTIL_ClientPrintAll( HUD_PRINTTALK, message );
+		return true;
+	}
+
 
 	return false;
 }
