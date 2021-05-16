@@ -43,13 +43,17 @@ def options(opt):
 	grp.add_option('--enable-magx', action = 'store_true', dest = 'MAGX', default = False,
 		help = 'enable targetting for MotoMAGX phones [default: %default]')
 
-	opt.load('xcompile compiler_cxx compiler_c clang_compilation_database strip_on_install')
+	grp.add_option('--enable-simple-mod-hacks', action = 'store_true', dest = 'ENABLE_MOD_HACKS', default = False,
+		help = 'enable hacks for simple mods that mostly compatible with Half-Life but has little changes. Enforced for Android. [default: %default]')
 
+	opt.load('subproject')
+
+	opt.add_subproject(['cl_dll', 'dlls'])
+
+	opt.load('xcompile compiler_cxx compiler_c clang_compilation_database strip_on_install msdev msvs')
 	if sys.platform == 'win32':
-		opt.load('msvc msdev msvs')
-
-	opt.load('reconfigure subproject')
-	opt.add_subproject(["cl_dll", "dlls"])
+		opt.load('msvc')
+	opt.load('reconfigure')
 
 def configure(conf):
 	# Configuration
@@ -59,7 +63,7 @@ def configure(conf):
 	conf.env.SERVER_NAME = 'hl'
 	conf.env.PREFIX = ''
 
-	conf.load('fwgslib reconfigure')
+	conf.load('fwgslib reconfigure enforce_pic')
 
 	enforce_pic = True # modern defaults
 	valid_build_types = ['fastnative', 'fast', 'release', 'debug', 'nooptimize', 'sanitize', 'none']
@@ -70,7 +74,7 @@ def configure(conf):
 		conf.fatal('Please set a build type, for example "-T release"')
 	elif not conf.options.BUILD_TYPE in valid_build_types:
 		conf.end_msg(conf.options.BUILD_TYPE, color='RED')
-		conf.fatal('Invalid build type. Valid are: %s' % valid_build_types.join(', '))
+		conf.fatal('Invalid build type. Valid are: %s' % ', '.join(valid_build_types))
 	conf.end_msg(conf.options.BUILD_TYPE)
 
 	# -march=native should not be used
@@ -84,10 +88,19 @@ def configure(conf):
 	# subsystem=bld.env.MSVC_SUBSYSTEM
 	# TODO: wrapper around bld.stlib, bld.shlib and so on?
 	conf.env.MSVC_SUBSYSTEM = 'WINDOWS,5.01'
-	conf.env.MSVC_TARGETS = ['x86'] # explicitly request x86 target for MSVC
-	if sys.platform == 'win32':
-		conf.load('msvc msdev')
-	conf.load('xcompile compiler_c compiler_cxx strip_on_install')
+	conf.env.MSVC_TARGETS = ['x86' if not conf.options.ALLOW64 else 'x64']
+
+	# Load compilers early
+	conf.load('xcompile compiler_c compiler_cxx')
+
+	# HACKHACK: override msvc DEST_CPU value by something that we understand
+	if conf.env.DEST_CPU == 'amd64':
+		conf.env.DEST_CPU = 'x86_64'
+
+	if conf.env.COMPILER_CC == 'msvc':
+		conf.load('msvc_pdb')
+
+	conf.load('msvs msdev strip_on_install')
 
 	try:
 		conf.env.CC_VERSION[0]
@@ -101,17 +114,8 @@ def configure(conf):
 	conf.env.MAGX = conf.options.MAGX
 	if conf.options.MAGX:
 		enforce_pic = False
-	
-	if enforce_pic:
-		# Every static library must have fPIC
-		if conf.env.DEST_OS != 'win32' and '-fPIC' in conf.env.CFLAGS_cshlib:
-			conf.env.append_unique('CFLAGS_cstlib', '-fPIC')
-			conf.env.append_unique('CXXFLAGS_cxxstlib', '-fPIC')
-	else:
-		conf.env.CFLAGS_cshlib.remove('-fPIC')
-		conf.env.CXXFLAGS_cxxshlib.remove('-fPIC')
-		conf.env.CFLAGS_MACBUNDLE.remove('-fPIC')
-		conf.env.CXXFLAGS_MACBUNDLE.remove('-fPIC')
+
+	conf.check_pic(enforce_pic)
 
 	# We restrict 64-bit builds ONLY for Win/Linux/OSX running on Intel architecture
 	# Because compatibility with original GoldSrc
@@ -122,7 +126,7 @@ def configure(conf):
 	else:
 		conf.env.BIT32_ALLOW64 = True
 	conf.env.BIT32_MANDATORY = not conf.env.BIT32_ALLOW64
-	conf.load('force_32bit')
+	conf.load('force_32bit library_naming')
 
 	linker_flags = {
 		'common': {
@@ -180,8 +184,6 @@ def configure(conf):
 
 	compiler_optional_flags = [
 		'-fdiagnostics-color=always',
-		'-Werror=implicit-function-declaration',
-		'-Werror=int-conversion',
 		'-Werror=return-type',
 		'-Werror=parentheses',
 		'-Werror=vla',
@@ -193,6 +195,8 @@ def configure(conf):
 	]
 
 	c_compiler_optional_flags = [
+		'-Werror=implicit-function-declaration',
+		'-Werror=int-conversion',
 		'-Werror=implicit-int',
 		'-Werror=declaration-after-statement'
 	]
@@ -246,10 +250,16 @@ def configure(conf):
 		conf.define_cond('HAVE_TGMATH_H', tgmath_usable)
 	else:
 		conf.undefine('HAVE_TGMATH_H')
+	cmath_usable = conf.check_cxx(fragment='''#include<cmath>
+			int main(void){ return (int)sqrt(2.0f); }''',
+			msg='Checking if cmath is usable', mandatory = False)
+	conf.define_cond('HAVE_CMATH', cmath_usable)
 
 	if conf.env.COMPILER_CC == 'msvc':
 		conf.define('_CRT_SECURE_NO_WARNINGS', 1)
 		conf.define('_CRT_NONSTDC_NO_DEPRECATE', 1)
+	elif conf.env.COMPILER_CC == 'owcc':
+		pass
 	else:
 		conf.env.append_unique('DEFINES', ['stricmp=strcasecmp', 'strnicmp=strncasecmp', '_snprintf=snprintf', '_vsnprintf=vsnprintf', '_LINUX', 'LINUX'])
 		conf.env.append_unique('CXXFLAGS', ['-Wno-invalid-offsetof', '-fno-rtti', '-fno-exceptions'])
@@ -262,6 +272,13 @@ def configure(conf):
 			conf.env.cxxshlib_PATTERN = conf.env.cxxshlib_PATTERN[3:]
 
 	conf.define('CLIENT_WEAPONS', '1')
+	conf.define('CROWBAR_IDLE_ANIM', False)
+	conf.define('CROWBAR_DELAY_FIX', False)
+	conf.define('CROWBAR_FIX_RAPID_CROWBAR', False)
+	conf.define('GAUSS_OVERCHARGE_FIX', False)
+
+	if conf.env.DEST_OS == 'android' or conf.options.ENABLE_MOD_HACKS:
+		conf.define('MOBILE_HACKS', '1')
 
 	conf.add_subproject(["cl_dll", "dlls"])
 

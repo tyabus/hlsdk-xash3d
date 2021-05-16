@@ -931,7 +931,7 @@ void CBigMomma::StartTask( Task_t *pTask )
 		TaskComplete();
 		break;
 	case TASK_WAIT_NODE:
-		m_flWait = gpGlobals->time + GetNodeDelay();
+		m_flWaitFinished = gpGlobals->time + GetNodeDelay();
 		if( m_hTargetEnt->pev->spawnflags & SF_INFOBM_WAIT )
 			ALERT( at_aiconsole, "BM: Wait at node %s forever\n", STRING( pev->netname ) );
 		else
@@ -1007,8 +1007,10 @@ void CBigMomma::RunTask( Task_t *pTask )
 			return;
 
 		if( gpGlobals->time > m_flWaitFinished )
+		{
 			TaskComplete();
-		ALERT( at_aiconsole, "BM: The WAIT is over!\n" );
+			ALERT( at_aiconsole, "BM: The WAIT is over!\n" );
+		}
 		break;
 	case TASK_PLAY_NODE_PRESEQUENCE:
 	case TASK_PLAY_NODE_SEQUENCE:
@@ -1032,7 +1034,7 @@ Vector VecCheckSplatToss( entvars_t *pev, const Vector &vecSpot1, Vector vecSpot
 	Vector vecScale;
 	Vector vecGrenadeVel;
 	Vector vecTemp;
-	float flGravity = g_psv_gravity->value;
+	float flGravity = Q_max( g_psv_gravity->value, 0.1f );
 
 	// calculate the midpoint and apex of the 'triangle'
 	vecMidPoint = vecSpot1 + ( vecSpot2 - vecSpot1 ) * 0.5f;
@@ -1047,6 +1049,9 @@ Vector VecCheckSplatToss( entvars_t *pev, const Vector &vecSpot1, Vector vecSpot
 	}
 
 	// Don't worry about actually hitting the target, this won't hurt us!
+
+	// TODO: Need another way to calculate height because current calculation is completely wrong
+	// and there posible crash.
 
 	// How high should the grenade travel (subtract 15 so the grenade doesn't hit the ceiling)?
 	float height = vecApex.z - vecSpot1.z - 15.0f;
@@ -1104,7 +1109,7 @@ void CBMortar::Spawn( void )
 
 	UTIL_SetSize( pev, Vector( 0, 0, 0 ), Vector( 0, 0, 0 ) );
 
-	m_maxFrame = (float) MODEL_FRAMES( pev->modelindex ) - 1;
+	m_maxFrame = MODEL_FRAMES( pev->modelindex ) - 1;
 	pev->dmgtime = gpGlobals->time + 0.4f;
 }
 

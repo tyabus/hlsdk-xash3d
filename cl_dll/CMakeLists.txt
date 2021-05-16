@@ -132,6 +132,9 @@ endif()
 
 if(WIN32)
 	target_link_libraries( ${CLDLL_LIBRARY} user32.lib )
+	if (GOLDSOURCE_SUPPORT)
+		target_link_libraries( ${CLDLL_LIBRARY} winmm.lib )
+	endif()
 endif()
 
 set_target_properties (${CLDLL_LIBRARY} PROPERTIES
@@ -139,10 +142,6 @@ set_target_properties (${CLDLL_LIBRARY} PROPERTIES
 
 if(APPLE OR WIN32 OR ${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
 	set(CLDLL_NAME "client")
-	if(64BIT)
-		set(CLDLL_NAME "client64")
-	endif()
-
 	set_target_properties(${CLDLL_LIBRARY} PROPERTIES
 		OUTPUT_NAME ${CLDLL_NAME}
 		PREFIX "")
