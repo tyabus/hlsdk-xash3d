@@ -52,6 +52,8 @@ class CTripmineGrenade : public CGrenade
 
 	int TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType );
 
+	void EXPORT PlayerTouch( CBaseEntity *pOther );
+
 	void EXPORT WarningThink( void );
 	void EXPORT PowerupThink( void );
 	void EXPORT BeamBreakThink( void );
@@ -64,6 +66,8 @@ class CTripmineGrenade : public CGrenade
 	float m_flPowerUp;
 	Vector m_vecDir;
 	Vector m_vecEnd;
+	float m_flStandTime;
+
 	float m_flBeamLength;
 
 	EHANDLE m_hOwner;
@@ -104,7 +108,7 @@ void CTripmineGrenade::Spawn( void )
 	pev->sequence = TRIPMINE_WORLD;
 	ResetSequenceInfo();
 	pev->framerate = 0;
-	
+
 	UTIL_SetSize( pev, Vector( -8, -8, -8 ), Vector( 8, 8, 8 ) );
 	UTIL_SetOrigin( pev, pev->origin );
 
@@ -166,6 +170,41 @@ void CTripmineGrenade::WarningThink( void )
 	pev->nextthink = gpGlobals->time + 1.0;
 }
 
+void CTripmineGrenade::PlayerTouch( CBaseEntity *pOther )
+{
+	if( !pOther || !pOther->IsPlayer() )
+	{
+		return;
+	}
+
+	CBaseEntity *pMine = NULL;
+
+	if( pOther->pev->origin.x > pev->origin.x + 3 && pOther->pev->origin.z > pev->origin.z + 18 )
+	{
+		if( m_flStandTime < 3 )
+		{
+			m_flStandTime += 1;
+			return;
+		}
+
+		if( !pMine )
+			pMine = Create( "weapon_tripmine", pev->origin + m_vecDir * 24, pev->angles );
+			pMine->pev->spawnflags |= SF_NORESPAWN;
+			pMine->pev->solid = SOLID_TRIGGER;
+			pMine->pev->nextthink = gpGlobals->time + 120; // kill it after 2 minutes of wait
+			pMine->SetThink( &CBasePlayerWeapon::Kill );
+			UTIL_SetSize( pMine->pev, Vector( 0,0,0 ), Vector( 0,0,0 ) );
+
+		SetTouch( NULL );
+		SetThink( &CBaseEntity::SUB_Remove );
+		KillBeam();
+
+		m_flStandTime = 0;
+		pev->health = 0;
+		pev->nextthink = gpGlobals->time + 0.1;
+	}
+}
+
 void CTripmineGrenade::PowerupThink( void )
 {
 	TraceResult tr;
@@ -195,6 +234,7 @@ void CTripmineGrenade::PowerupThink( void )
 			STOP_SOUND( ENT( pev ), CHAN_VOICE, "weapons/mine_deploy.wav" );
 			STOP_SOUND( ENT( pev ), CHAN_BODY, "weapons/mine_charge.wav" );
 			SetThink( &CBaseEntity::SUB_Remove );
+			SetUse( NULL );
 			pev->nextthink = gpGlobals->time + 0.1;
 			ALERT( at_console, "WARNING:Tripmine at %.0f, %.0f, %.0f removed\n", pev->origin.x, pev->origin.y, pev->origin.z );
 			KillBeam();
@@ -208,19 +248,29 @@ void CTripmineGrenade::PowerupThink( void )
 		STOP_SOUND( ENT( pev ), CHAN_BODY, "weapons/mine_charge.wav" );
 		CBaseEntity *pMine = Create( "weapon_tripmine", pev->origin + m_vecDir * 24, pev->angles );
 		pMine->pev->spawnflags |= SF_NORESPAWN;
+		pMine->pev->solid = SOLID_TRIGGER;
+		pMine->pev->nextthink = gpGlobals->time + 120; // kill it after 2 minutes
+		pMine->SetThink( &CBasePlayerWeapon::Kill );
+		UTIL_SetSize( pMine->pev, Vector( 0,0,0 ), Vector( 0,0,0 ) );
 
+		SetTouch( NULL );
 		SetThink( &CBaseEntity::SUB_Remove );
 		KillBeam();
+		pev->health = 0;
 		pev->nextthink = gpGlobals->time + 0.1;
 		return;
 	}
 	// ALERT( at_console, "%d %.0f %.0f %0.f\n", pev->owner, m_pOwner->pev->origin.x, m_pOwner->pev->origin.y, m_pOwner->pev->origin.z );
- 
+
 	if( gpGlobals->time > m_flPowerUp )
 	{
 		// make solid
 		pev->solid = SOLID_BBOX;
 		UTIL_SetOrigin( pev, pev->origin );
+
+		m_flStandTime = 0;
+
+		SetTouch( &CTripmineGrenade::PlayerTouch );
 
 		MakeBeam();
 
@@ -317,6 +367,7 @@ int CTripmineGrenade::TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacke
 	{
 		// disable
 		// Create( "weapon_tripmine", pev->origin + m_vecDir * 24, pev->angles );
+		SetTouch( NULL );
 		SetThink( &CBaseEntity::SUB_Remove );
 		pev->nextthink = gpGlobals->time + 0.1;
 		KillBeam();
@@ -335,6 +386,7 @@ void CTripmineGrenade::Killed( entvars_t *pevAttacker, int iGib )
 		pev->owner = ENT( pevAttacker );
 	}
 
+	SetTouch( NULL );
 	SetThink( &CTripmineGrenade::DelayDeathThink );
 	pev->nextthink = gpGlobals->time + RANDOM_FLOAT( 0.1, 0.3 );
 
