@@ -17,19 +17,17 @@ void Admin_RegisterCVars( void )
 
 void Admin_LogAttempt( CBasePlayer *pPlayer, char *LogType )
 {
-                FILE *fladminlog = fopen("adminattempts.log", "a");
+		FILE *fladminlog = fopen("adminattempts.log", "a");
 		time_t mytime = time(NULL);
-                char * time_str = ctime(&mytime);
-                time_str[strlen(time_str)-1] = '\0';
+		char *time_str = ctime(&mytime);
+		time_str[strlen(time_str)-1] = '\0';
 		const char *ip = g_engfuncs.pfnInfoKeyValue( g_engfuncs.pfnGetInfoKeyBuffer( pPlayer->edict() ), "ip" );
 
 		if( !ip )
-		{
 			ip = "UNKNOWN";
-		}
 
-                fprintf( fladminlog, "%s %s %s %s %s\n", time_str, LogType, ip, GETPLAYERAUTHID( pPlayer->edict() ), GGM_PlayerName( pPlayer ) ); // Timestamp, LogType, IP Address, XashID, Nickname
-                fclose( fladminlog );
+		fprintf( fladminlog, "%s %s %s %s %s\n", time_str, LogType, ip, GETPLAYERAUTHID( pPlayer->edict() ), GGM_PlayerName( pPlayer ) ); // Timestamp, LogType, IP Address, XashID, Nickname
+		fclose( fladminlog );
 
 		if( admin_kickonfail.value )
 		{
@@ -44,10 +42,10 @@ bool Admin_ClientCommand( edict_t *pEntity )
 
 	if( FStrEq(pCmd, "admin_login") )
 	{
-	        if( !admin_password.string || pPlayer->m_ggm.IsAdmin )
-                {
-                        return false;
-                }
+		if( !admin_password.string[0] || pPlayer->m_ggm.IsAdmin )
+		{
+			return false;
+		}
 
 		if( CMD_ARGC() != 2 )
 		{
@@ -78,10 +76,10 @@ bool Admin_ClientCommand( edict_t *pEntity )
 	if( FStrEq(pCmd, "admin_sudo") )
 	{
 		if( CMD_ARGC() != 3 )
-                {
-                        GGM_ChatPrintf( pPlayer, "^1Usage: admin_sudo ^2<UserID> <Command>^7\n" );
-                        return true;
-                }
+		{
+			GGM_ChatPrintf( pPlayer, "^1Usage: admin_sudo ^2<UserID> <Command>^7\n" );
+			return true;
+		}
 
 		int UserID = atoi( CMD_ARGV( 1 ) );
 		const char *Command = (char *)CMD_ARGV( 2 );
@@ -120,59 +118,59 @@ bool Admin_ClientCommand( edict_t *pEntity )
 		return true;
 	}
 	else if( FStrEq(pCmd, "admin_notarget") || FStrEq(pCmd, "admin_notar") )
-        {
-                if( !FBitSet( pPlayer->pev->flags, FL_NOTARGET ) )
-                {
-                        pPlayer->pev->flags |= FL_NOTARGET;
-                        GGM_ChatPrintf( pPlayer, "^2Admin notarget ON^7\n" );
-                }
-                else
-                {
-                        pPlayer->pev->flags &= ~FL_NOTARGET;
-                        GGM_ChatPrintf( pPlayer, "^2Admin notarget OFF^7\n" );
-                }
-                return true;
-        }
-	else if( FStrEq(pCmd, "admin_god") || FStrEq(pCmd, "admin_godmode") )
-        {
-                if( !FBitSet( pPlayer->pev->flags, FL_GODMODE ) )
+	{
+		if( !FBitSet( pPlayer->pev->flags, FL_NOTARGET ) )
 		{
-                        pPlayer->pev->flags |= FL_GODMODE;
-                        GGM_ChatPrintf( pPlayer, "^2Admin godmode ON^7\n" );
+			pPlayer->pev->flags |= FL_NOTARGET;
+			GGM_ChatPrintf( pPlayer, "^2Admin notarget ON^7\n" );
 		}
-                else
+		else
 		{
-                        pPlayer->pev->flags &= ~FL_GODMODE;
-                        GGM_ChatPrintf( pPlayer, "^2Admin godmode OFF^7\n" );
+			pPlayer->pev->flags &= ~FL_NOTARGET;
+			GGM_ChatPrintf( pPlayer, "^2Admin notarget OFF^7\n" );
 		}
 		return true;
-        }
-	else if( FStrEq(pCmd, "admin_invis") || FStrEq(pCmd, "admin_invisibility") )
-        {
-                if( pPlayer->pev->solid != SOLID_NOT )
+	}
+	else if( FStrEq(pCmd, "admin_god") || FStrEq(pCmd, "admin_godmode") )
+	{
+		if( !FBitSet( pPlayer->pev->flags, FL_GODMODE ) )
 		{
-                        pPlayer->pev->movetype = MOVETYPE_NOCLIP;
+			pPlayer->pev->flags |= FL_GODMODE;
+			GGM_ChatPrintf( pPlayer, "^2Admin godmode ON^7\n" );
+		}
+		else
+		{
+			pPlayer->pev->flags &= ~FL_GODMODE;
+			GGM_ChatPrintf( pPlayer, "^2Admin godmode OFF^7\n" );
+		}
+		return true;
+	}
+	else if( FStrEq(pCmd, "admin_invis") || FStrEq(pCmd, "admin_invisibility") )
+	{
+		if( pPlayer->pev->solid != SOLID_NOT )
+		{
+			pPlayer->pev->movetype = MOVETYPE_NOCLIP;
 			pPlayer->pev->solid = SOLID_NOT;
 			pPlayer->pev->takedamage = DAMAGE_NO;
 			pPlayer->pev->effects |= EF_NODRAW;
-                        pPlayer->pev->flags |= FL_NOTARGET;
+			pPlayer->pev->flags |= FL_NOTARGET;
 			pPlayer->pev->flags |= FL_GODMODE;
 			pPlayer->m_fNoPlayerSound = TRUE;
-                        GGM_ChatPrintf( pPlayer, "^2Admin invisibility ON^7\n" );
+			GGM_ChatPrintf( pPlayer, "^2Admin invisibility ON^7\n" );
 		}
-                else
+		else
 		{
 			pPlayer->pev->takedamage = DAMAGE_YES;
-                        pPlayer->pev->movetype = MOVETYPE_WALK;
-                        pPlayer->pev->flags &= ~FL_NOTARGET;
+			pPlayer->pev->movetype = MOVETYPE_WALK;
+			pPlayer->pev->flags &= ~FL_NOTARGET;
 			pPlayer->pev->flags &= ~FL_GODMODE;
 			pPlayer->pev->effects &= ~EF_NODRAW;
 			pPlayer->pev->solid = SOLID_SLIDEBOX;
 			pPlayer->m_fNoPlayerSound = FALSE;
-                        GGM_ChatPrintf( pPlayer, "^2Admin invisibility OFF^7\n" );
+			GGM_ChatPrintf( pPlayer, "^2Admin invisibility OFF^7\n" );
 		}
 		return true;
-        }
+	}
 	else if( FStrEq(pCmd, "admin_noclip") )
 	{
 		if( pPlayer->pev->movetype != MOVETYPE_NOCLIP )
