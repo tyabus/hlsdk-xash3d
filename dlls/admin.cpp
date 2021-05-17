@@ -23,7 +23,7 @@ void Admin_LogAttempt( CBasePlayer *pPlayer, char *LogType )
 		time_str[strlen(time_str)-1] = '\0';
 		const char *ip = g_engfuncs.pfnInfoKeyValue( g_engfuncs.pfnGetInfoKeyBuffer( pPlayer->edict() ), "ip" );
 
-		if( !ip )
+		if( !ip || !ip[0] )
 			ip = "UNKNOWN";
 
 		fprintf( fladminlog, "%s %s %s %s %s\n", time_str, LogType, ip, GETPLAYERAUTHID( pPlayer->edict() ), GGM_PlayerName( pPlayer ) ); // Timestamp, LogType, IP Address, XashID, Nickname
