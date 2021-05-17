@@ -256,18 +256,6 @@ void CEgon::Fire( const Vector &vecOrigSrc, const Vector &vecDir )
 
 	if( pEntity == NULL )
 		return;
-
-	if( g_pGameRules->IsMultiplayer() )
-	{
-		if( m_pSprite && pEntity->pev->takedamage )
-		{
-			m_pSprite->pev->effects &= ~EF_NODRAW;
-		}
-		else if( m_pSprite )
-		{
-			m_pSprite->pev->effects |= EF_NODRAW;
-		}
-	}
 #endif
 	float timedist = 0.0f;
 
