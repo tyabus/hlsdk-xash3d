@@ -778,7 +778,6 @@ void CGib::StickyGibTouch( CBaseEntity *pOther )
 	pev->angles = UTIL_VecToAngles( pev->velocity );
 	pev->velocity = g_vecZero;
 	pev->avelocity = g_vecZero;
-	pev->movetype = MOVETYPE_NONE;
 }
 
 //
