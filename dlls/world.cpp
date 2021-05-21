@@ -455,6 +455,13 @@ float g_flWeaponCheat;
 
 void CWorld::Spawn( void )
 {
+	// Check if this is original worldspawn
+	if( ENTINDEX( this->edict() ) != 0 )
+	{
+		pev->flags = FL_KILLME;
+		return;
+	}
+
 	g_fGameOver = FALSE;
 	Precache();
 }
