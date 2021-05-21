@@ -592,11 +592,16 @@ void ClientCommand( edict_t *pEntity )
 	}
 	else if ( FStrEq(pcmd, "give" ) )
 	{
+		if ( CMD_ARGC() < 2 )
+		{
+			return;
+		}
+
 		if ( g_flWeaponCheat || GetClassPtr((CBasePlayer *)pev)->m_ggm.IsAdmin )
 		{
-			int iszItem = ALLOC_STRING( CMD_ARGV(1) );	// Make a copy of the classname
+			const char* iszItem = CMD_ARGV(1);
 
-			GetClassPtr((CBasePlayer *)pev)->GiveNamedItem( STRING(iszItem) );
+			GetClassPtr((CBasePlayer *)pev)->GiveNamedItem( iszItem );
 		}
 	}
 	else if ( FStrEq(pcmd, "fire" ) )
