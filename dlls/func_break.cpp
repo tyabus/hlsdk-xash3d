@@ -963,8 +963,6 @@ void CPushable::Move( CBaseEntity *pOther, int push )
 	}
 	if( playerTouch )
 	{
-		pevToucher->velocity.x = pev->velocity.x;
-		pevToucher->velocity.y = pev->velocity.y;
 		if( ( gpGlobals->time - m_soundTime ) > 0.7 )
 		{
 			m_soundTime = gpGlobals->time;
