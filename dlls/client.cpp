@@ -521,7 +521,7 @@ void Host_Say( edict_t *pEntity, int teamonly )
 		time_str[strlen(time_str)-1] = '\0';
 
 		const char *ip = g_engfuncs.pfnInfoKeyValue( g_engfuncs.pfnGetInfoKeyBuffer( pl->edict() ), "ip" );
-		if( !ip )
+		if( !ip[0] || !ip )
 		{
 			ip = "UNKNOWN";
 		}
