@@ -894,8 +894,9 @@ void PlayerPreThink( edict_t *pEntity )
 			g_engfuncs.pfnQueryClientCvarValue2( pEntity, "gl_wh", 114 );
 			g_engfuncs.pfnQueryClientCvarValue2( pEntity, "cl_wh", 115 );
 			g_engfuncs.pfnQueryClientCvarValue2( pEntity, "cl_aim", 116 );
-			g_engfuncs.pfnQueryClientCvarValue2( pEntity, "gl_wireframe", 117 );
-			g_engfuncs.pfnQueryClientCvarValue2( pEntity, "bae", 118 );
+			g_engfuncs.pfnQueryClientCvarValue2( pEntity, "aim", 117 );
+			g_engfuncs.pfnQueryClientCvarValue2( pEntity, "gl_wireframe", 118 );
+			g_engfuncs.pfnQueryClientCvarValue2( pEntity, "bae", 119 );
 			pPlayer->m_flCheckCvars = gpGlobals->time + 10;
 		}
 	}
@@ -2203,13 +2204,16 @@ void CvarValue2( const edict_t *pEnt, int requestID, const char *cvarName, const
 		if( pEnt && requestID == 116 && FStrEq( cvarName , "cl_aim" ) && atoi( value ) )
 			GGM_KickCheater( player, "cl_aim" );
 
-		if( pEnt && requestID == 117 && FStrEq( cvarName , "gl_wireframe" ) && atoi( value ) )
+		if( pEnt && requestID == 117 && FStrEq( cvarName , "aim" ) && atoi( value ) )
+			GGM_KickCheater( player, "aim" );
+
+		if( pEnt && requestID == 118 && FStrEq( cvarName , "gl_wireframe" ) && atoi( value ) )
                         GGM_KickCheater( player, "gl_wireframe" );
 
-		if( pEnt && requestID == 118 && FStrEq( cvarName , "bae" ) && atoi( value ) )
+		if( pEnt && requestID == 119 && FStrEq( cvarName , "bae" ) && atoi( value ) )
 			GGM_KickCheater( player, "bae" );
 
-		if( pEnt && requestID == 119 && FStrEq( cvarName , "host_ver" ) )
+		if( pEnt && requestID == 120 && FStrEq( cvarName , "host_ver" ) )
 		{
 			if( !strcmp( value , "eee764" ) )
 				GGM_KickCheater( player, "build eee764" );
