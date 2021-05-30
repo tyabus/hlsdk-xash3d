@@ -113,7 +113,7 @@ bool Admin_ClientCommand( edict_t *pEntity )
 		else
 			pStripper = pPlayer;
 
-		if( !pStripper && CMD_ARGV( 2 ) != NULL )
+		if( !pStripper && !UserID && pStripper != pPlayer )
 		{
 			GGM_ChatPrintf( pPlayer, "^1Invalid player!^7\n" );
 			return true;
