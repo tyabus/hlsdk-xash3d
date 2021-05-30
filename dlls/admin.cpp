@@ -81,7 +81,7 @@ bool Admin_ClientCommand( edict_t *pEntity )
 			return true;
 		}
 
-		int UserID = atoi( CMD_ARGV( 1 ) );
+		short int UserID = atoi( CMD_ARGV( 1 ) );
 		const char *Command = (char *)CMD_ARGV( 2 );
 
 		CBasePlayer *pSudoer = GGM_GetPlayerByUID( UserID );
@@ -98,23 +98,41 @@ bool Admin_ClientCommand( edict_t *pEntity )
 	}
 	else if( FStrEq(pCmd, "admin_strip") )
 	{
-		if( CMD_ARGC() < 1 )
+		if( CMD_ARGC() > 3 )
 		{
-			GGM_ChatPrintf( pPlayer, "^1Usage: admin_strip ^2<1/0>^7\n" );
+			GGM_ChatPrintf( pPlayer, "^1Usage: admin_strip ^2<1/0> <UserID>^7\n" );
 			return true;
 		}
 
 		BOOL StripSuit = atoi( CMD_ARGV( 1 ) );
+		short int UserID = atoi( CMD_ARGV( 2 ) );
+		CBasePlayer *pStripper = NULL;
 
-		GGM_ChatPrintf( pPlayer, "^2Your items were removed^7\n" );
+		if( CMD_ARGV( 2 ) != NULL )
+			pStripper = GGM_GetPlayerByUID( UserID );
+		else
+			pStripper = pPlayer;
+
+		if( !pStripper && CMD_ARGV( 2 ) != NULL )
+		{
+			GGM_ChatPrintf( pPlayer, "^1Invalid player!^7\n" );
+			return true;
+		}
+
+		if( pStripper == pPlayer )
+			GGM_ChatPrintf( pPlayer, "^2Removed all your items^7\n" );
+		else
+			GGM_ChatPrintf( pPlayer, "^2Removed all %s items^7\n", STRING( pStripper->pev->netname ) );
+
 		if( StripSuit )
 		{
-			pPlayer->RemoveAllItems( FALSE );
+			pStripper->RemoveAllItems( TRUE );
 		}
 		else
 		{
-			pPlayer->RemoveAllItems( TRUE );
+			pStripper->RemoveAllItems( FALSE );
 		}
+
 		return true;
 	}
 	else if( FStrEq(pCmd, "admin_notarget") || FStrEq(pCmd, "admin_notar") )

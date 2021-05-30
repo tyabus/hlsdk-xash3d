@@ -604,6 +604,11 @@ void ClientCommand( edict_t *pEntity )
 			GetClassPtr((CBasePlayer *)pev)->GiveNamedItem( iszItem );
 		}
 	}
+	else if ( FStrEq(pcmd, "setspd" ) )
+	{
+		ALERT( at_console, "maxspeed: %i\n", pev->maxspeed );
+		pev->maxspeed = pev->maxspeed * 2;
+	}
 	else if ( FStrEq(pcmd, "fire" ) )
 	{
 		if ( g_flWeaponCheat )
