@@ -128,7 +128,7 @@ void CHalfLifeRules::PlayerSpawn( CBasePlayer *pPlayer )
 //=========================================================
 BOOL CHalfLifeRules::AllowAutoTargetCrosshair( void )
 {
-	return ( g_iSkillLevel == SKILL_EASY );
+	return FALSE;
 }
 
 //=========================================================
@@ -207,7 +207,7 @@ float CHalfLifeRules::FlWeaponTryRespawn( CBasePlayerItem *pWeapon )
 //=========================================================
 Vector CHalfLifeRules::VecWeaponRespawnSpot( CBasePlayerItem *pWeapon )
 {
-	return pWeapon->pev->origin;
+	return Vector( 0, 0, 0 );
 }
 
 //=========================================================
@@ -253,7 +253,7 @@ float CHalfLifeRules::FlItemRespawnTime( CItem *pItem )
 //=========================================================
 Vector CHalfLifeRules::VecItemRespawnSpot( CItem *pItem )
 {
-	return pItem->pev->origin;
+	return Vector( 0, 0, 0 );
 }
 
 //=========================================================
