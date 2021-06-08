@@ -74,6 +74,13 @@ TYPEDESCRIPTION	CMonsterMaker::m_SaveData[] =
 	DEFINE_FIELD( CMonsterMaker, m_fFadeChildren, FIELD_BOOLEAN ),
 };
 
+const char *rgpszBadClassNames[] =
+{
+	"worldspawn",
+	"player",
+	"monstermaker",
+};
+
 IMPLEMENT_SAVERESTORE( CMonsterMaker, CBaseMonster )
 
 void CMonsterMaker::KeyValue( KeyValueData *pkvd )
@@ -188,6 +195,16 @@ void CMonsterMaker::MakeMonster( void )
 	{
 		// don't build a stack of monsters!
 		return;
+	}
+
+	for( int i = 0; i < ARRAYSIZE( rgpszBadClassNames ); i++ )
+        {
+		if( !stricmp( rgpszBadClassNames[i], STRING( m_iszMonsterClassname ) ) )
+		{
+			ALERT( at_console, "Banned Ent in MonsterMaker!\n" );
+			UTIL_Remove( this );
+			break;
+		}
 	}
 
 	pent = CREATE_NAMED_ENTITY( m_iszMonsterClassname );
