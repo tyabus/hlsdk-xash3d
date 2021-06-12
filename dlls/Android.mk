@@ -36,7 +36,6 @@ LOCAL_SRC_FILES := agrunt.cpp airtank.cpp \
            barnacle.cpp \
            barney.cpp \
            bigmomma.cpp \
-           bloater.cpp \
            bmodels.cpp \
            bullsquid.cpp \
            buttons.cpp \
@@ -66,7 +65,6 @@ LOCAL_SRC_FILES := agrunt.cpp airtank.cpp \
            h_ai.cpp \
            h_battery.cpp \
            h_cycler.cpp \
-           h_cine.cpp \
            h_export.cpp \
            handgrenade.cpp \
            hassassin.cpp \
@@ -117,7 +115,6 @@ LOCAL_SRC_FILES := agrunt.cpp airtank.cpp \
            talkmonster.cpp \
            teamplay_gamerules.cpp \
            tentacle.cpp \
-           tempmonster.cpp \
            triggers.cpp \
            tripmine.cpp \
            turret.cpp \

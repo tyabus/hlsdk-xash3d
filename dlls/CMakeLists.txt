@@ -53,7 +53,6 @@ set (SVDLL_SOURCES
 	barnacle.cpp
 	barney.cpp
 	bigmomma.cpp
-	bloater.cpp
 	bmodels.cpp
 	bullsquid.cpp
 	buttons.cpp
@@ -82,7 +81,6 @@ set (SVDLL_SOURCES
 	gman.cpp
 	h_ai.cpp
 	h_battery.cpp
-	h_cine.cpp
 	h_cycler.cpp
 	h_export.cpp
 	handgrenade.cpp
@@ -133,7 +131,6 @@ set (SVDLL_SOURCES
 	subs.cpp
 	talkmonster.cpp
 	teamplay_gamerules.cpp
-	tempmonster.cpp
 	tentacle.cpp
 	triggers.cpp
 	tripmine.cpp
