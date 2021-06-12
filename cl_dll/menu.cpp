@@ -52,6 +52,8 @@ void CHudMenu::InitHUDData( void )
 
 void CHudMenu::Reset( void )
 {
+	m_iFlags &= ~HUD_ACTIVE;
+	m_flShutoffTime = 0;
 	g_szPrelocalisedMenuString[0] = 0;
 	m_fWaitingForMore = FALSE;
 }

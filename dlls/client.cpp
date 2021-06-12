@@ -126,6 +126,7 @@ void ClientDisconnect( edict_t *pEntity )
 	if( pPlayer && pPlayer->IsPlayer() )
 	{
 		pPlayer->m_ggm.IsAdmin = false;
+		pPlayer->m_ggm.menu.Clear();
 
 		if( ggm_saverestore_enable.value && !mp_coop.value )
 		{
