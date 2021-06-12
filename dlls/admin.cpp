@@ -29,9 +29,9 @@ void Admin_LogAttempt( CBasePlayer *pPlayer, char *LogType )
 		fprintf( fladminlog, "%s %s %s %s %s\n", time_str, LogType, ip, GETPLAYERAUTHID( pPlayer->edict() ), GGM_PlayerName( pPlayer ) ); // Timestamp, LogType, IP Address, XashID, Nickname
 		fclose( fladminlog );
 
-		if( admin_kickonfail.value )
+		if( admin_kickonfail.value && !strcmp( LogType, "Failure login:" ) )
 		{
-			SERVER_COMMAND( UTIL_VarArgs( "kick #%i authorization failure\n", GETPLAYERUSERID( pPlayer->edict() ) ) );
+			SERVER_COMMAND( UTIL_VarArgs( "kick #%i ""authorization failure""\n", GETPLAYERUSERID( pPlayer->edict() ) ) );
 		}
 }
 
