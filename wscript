@@ -274,7 +274,6 @@ def configure(conf):
 	conf.define('BARNACLE_FIX_VISIBILITY', False)
 	conf.define('CLIENT_WEAPONS', True)
 	conf.define('CROWBAR_IDLE_ANIM', False)
-	conf.define('CROWBAR_DELAY_FIX', False)
 	conf.define('GAUSS_OVERCHARGE_FIX', False)
 	conf.define('OEM_BUILD', False)
 	conf.define('HLDEMO_BUILD', False)
