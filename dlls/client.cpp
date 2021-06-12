@@ -1099,7 +1099,7 @@ Returns the descriptive name of this .dll.  E.g., Half-Life, or Team Fortress 2
 */
 const char *GetGameDescription()
 {
-		return "Extended Half-Life";
+		return "Extended Half-Life Legacy";
 }
 
 /*
