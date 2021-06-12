@@ -1486,7 +1486,7 @@ struct GGMPlayerState *GGM_GetState( const char *uid, const char *name )
 	const char *rgpszBadNames[] = {
 	"player*", // does not even can set own name
 	"*talat*",
-	"*unnamed*",
+	"unnamed*",
 	"*hmse*",
 	"*mhmd*",
 	"*aeman*",
@@ -1497,6 +1497,9 @@ struct GGMPlayerState *GGM_GetState( const char *uid, const char *name )
 	"*aliance*",
 	"*alliance*",
 	"*vladick*",
+	"default*",
+	"pao*",
+	".barney*",
 	};
 
 	if( pLogin )
