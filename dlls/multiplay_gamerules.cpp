@@ -605,6 +605,10 @@ void CHalfLifeMultiplay::PlayerSpawn( CBasePlayer *pPlayer )
 	}
 
 	if( !mp_coop.value )
+		SET_VIEW( pPlayer->edict(), pPlayer->edict() );
+		pPlayer->EnableControl( TRUE );
+
+	if( !mp_coop.value )
 	{
 		if( addDefault )
 		{
