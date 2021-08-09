@@ -19,6 +19,7 @@
 #include "weapons.h"
 #include "nodes.h"
 #include "effects.h"
+#include "coop_util.h"
 
 #define N_SCALE		15
 #define N_SPHERES	20
@@ -437,6 +438,13 @@ void CNihilanth::StartupThink( void )
 
 void CNihilanth::Killed( entvars_t *pevAttacker, int iGib )
 {
+	CBaseEntity *pKiller = CBaseEntity::Instance( pevAttacker );
+
+	if( mp_coop.value && ( pKiller && pKiller->IsPlayer() ) )
+	{
+		UTIL_ClientPrintAll( HUD_PRINTTALK, "%s^7 ^1has killed the nihilanth!^7", STRING( pKiller->pev->netname ) );
+	}
+
 	CBaseMonster::Killed( pevAttacker, iGib );
 }
 
