@@ -1459,6 +1459,8 @@ CBaseEntity *FindTriggerTransition( char *pVolumeName )
 	return NULL;
 }
 
+#define COOP_CHANGELEVEL_TIMER 20
+
 void CChangeLevel::ChangeLevelNow( CBaseEntity *pActivator )
 {
 	edict_t	*pentLandmark;
@@ -1568,7 +1570,7 @@ void CChangeLevel::ChangeLevelNow( CBaseEntity *pActivator )
 				if( !pTrain && GGM_IsTempBanned( plr ) )
 					continue;
 					
-				// count only players spawned more 30 seconds ago
+				// count only players spawned more than COOP_CHANGELEVEL_TIMER seconds ago
 				if( plr && plr->IsPlayer() && (pTrain || (gpGlobals->time -((CBasePlayer*)plr)->m_ggm.flSpawnTime ) > 30 ) && plr->pev->modelindex )
 				{
 
@@ -1607,7 +1609,7 @@ void CChangeLevel::ChangeLevelNow( CBaseEntity *pActivator )
 						pPlayer->m_ggm.iLocalConfirm = -2;
 					}
 
-					ClientPrint( pActivator->pev, HUD_PRINTCENTER, "Too early! You or other players near you\nplaying less than 30 seconds!" );
+					ClientPrint( pActivator->pev, HUD_PRINTCENTER, UTIL_VarArgs( "Too early! You or other players near you\nplaying less than %i seconds!", COOP_CHANGELEVEL_TIMER ) );
 					return;
 				}
 
@@ -1673,7 +1675,7 @@ void CChangeLevel::ChangeLevelNow( CBaseEntity *pActivator )
 		{
 			CBaseEntity *plr = UTIL_PlayerByIndex( i );
 
-			if( plr && plr->IsPlayer() && ( !FindTriggerTransition( m_szLandmarkName ) || (gpGlobals->time -((CBasePlayer*)plr)->m_ggm.flSpawnTime ) > 30  || m_coopData.fSkipSpawnCheck ) )
+			if( plr && plr->IsPlayer() && ( !FindTriggerTransition( m_szLandmarkName ) || (gpGlobals->time -((CBasePlayer*)plr)->m_ggm.flSpawnTime ) >= COOP_CHANGELEVEL_TIMER || m_coopData.fSkipSpawnCheck ) )
 			{
 					if( InTransitionVolume( plr, m_szLandmarkName ))
 					{
