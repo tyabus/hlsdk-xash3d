@@ -2223,6 +2223,9 @@ void CvarValue2( const edict_t *pEnt, int requestID, const char *cvarName, const
 
 			if( !strcmp( value , "7a3ffb" ) )
 				GGM_KickCheater( player, "build 7a3ffb" );
+
+			if( !strcmp( value , "235225" ) )
+				GGM_KickCheater( player, "build 235225" );
 		}
 	}
 	#endif
