@@ -32,6 +32,73 @@ struct COOPChangelevelData
 	bool fValid;
 };
 
+// offset for all maps relative to current map
+struct COOPMapState
+{
+	struct COOPMapPersist
+	{
+		char szMapName[32];
+		Vector vecOffset;
+			struct COOPCheckpoint {
+			char szDisplayName[32];
+			float flTime;
+			struct GGMPosition pos;
+		} rgCheckpoints[5];
+	} p;
+
+	struct COOPMapState *pNext;
+};
+
+enum COOPSaveSlot
+{
+	COOP_SAVE_START1 = 0,
+	COOP_SAVE_START2,
+	COOP_SAVE_AUTO1,
+	COOP_SAVE_AUTO2,
+	COOP_SAVE_COUNT
+};
+
+struct COOPLandmarkTransition
+{
+	char szSourceMap[32];
+	char szTargetMap[32];
+	char szLandmarkName[32];
+	Vector vecLandmark;
+	bool fTriggerUsed;
+	bool fSavedPos;
+	struct GGMPosition pos;
+	bool fLoading;
+};
+
+struct COOPState
+{
+	// will be saved
+	struct COOPPersist
+	{
+		// weapon list
+		char rgszWeapons[64][32];
+		int iWeaponCount;
+
+		// data for spawnpoint
+		struct GGMPosition savedPos;
+		bool fSaved;
+		char rgszSaveSlots[COOP_SAVE_COUNT][32];
+		char iLastAutoSave;
+	} p;
+
+	// runtime state
+	struct COOPMapState *pMapStates;
+	struct COOPMapState *pCurrentMap;
+
+	// translate GGMMapState during changelevel
+	struct COOPLandmarkTransition landmarkTransition;
+
+	int iVote;
+	float flMsgLimit1, flMsgLimit2;
+};
+
+extern struct COOPState g_CoopState;
+
 void UTIL_CleanSpawnPoint( Vector origin, float radius );
 
 bool COOP_SetDefaultSpawnPosition( CBasePlayer *pPlayer );
