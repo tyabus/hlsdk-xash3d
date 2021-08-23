@@ -449,8 +449,10 @@ void UTIL_SpawnPlayer( CBasePlayer *pPlayer )
 		pPlayer->m_ggm.iState = STATE_SPAWNED;
 
 	if( mp_coop.value )
+	{
+		pPlayer->pev->gravity = g_CoopState.p.flGravity;
 		CLIENT_COMMAND( pPlayer->edict(), "touch_show _coopm*\n" );
-
+	}
 }
 
 /*
@@ -696,6 +698,7 @@ void COOP_ServerActivate( void )
 		pNewState->p.vecOffset = Vector(0, 0, 0);
 		strncpy(pNewState->p.szMapName, STRING(gpGlobals->mapname), 31);
 		g_CoopState.pMapStates = g_CoopState.pCurrentMap = pNewState;
+		g_CoopState.p.flGravity = 1.0;
 		GGM_ClearLists();
 	}
 

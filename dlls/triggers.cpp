@@ -2365,6 +2365,9 @@ void CTriggerGravity::GravityTouch( CBaseEntity *pOther )
 		return;
 
 	pOther->pev->gravity = pev->gravity;
+
+	if( mp_coop.value )
+		g_CoopState.p.flGravity = pev->gravity;
 }
 
 // this is a really bad idea.
