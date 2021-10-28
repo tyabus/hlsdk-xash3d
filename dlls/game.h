@@ -43,5 +43,6 @@ extern cvar_t allowmonsters;
 
 // Engine Cvars
 extern cvar_t *g_psv_gravity;
+extern cvar_t *g_psv_cheats;
 extern cvar_t *g_footsteps;
 #endif // GAME_H

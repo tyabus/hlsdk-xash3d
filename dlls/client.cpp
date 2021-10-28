@@ -564,8 +564,6 @@ ClientCommand
 called each time a player uses a "cmd" command
 ============
 */
-extern float g_flWeaponCheat;
-
 // Use CMD_ARGV,  CMD_ARGV, and CMD_ARGC to get pointers the character string command.
 void ClientCommand( edict_t *pEntity )
 {
@@ -598,7 +596,7 @@ void ClientCommand( edict_t *pEntity )
 			return;
 		}
 
-		if ( g_flWeaponCheat || GetClassPtr((CBasePlayer *)pev)->m_ggm.IsAdmin )
+		if ( g_psv_cheats->value || GetClassPtr((CBasePlayer *)pev)->m_ggm.IsAdmin )
 		{
 			const char* iszItem = CMD_ARGV(1);
 
@@ -612,7 +610,7 @@ void ClientCommand( edict_t *pEntity )
 	}
 	else if ( FStrEq(pcmd, "fire" ) )
 	{
-		if ( g_flWeaponCheat )
+		if ( g_psv_cheats->value )
 		{
 			CBaseEntity *pPlayer = CBaseEntity::Instance(pEntity);
 			if (CMD_ARGC() > 1)
@@ -2192,7 +2190,7 @@ void CvarValue2( const edict_t *pEnt, int requestID, const char *cvarName, const
 
 	if( mp_anticheat.value && !player->m_ggm.IsAdmin )
 	{
-		if( pEnt && requestID == 112 && FStrEq( cvarName , "r_drawentities" ) && (atoi( value ) == 5 || atoi( value ) == 10 ) && !g_flWeaponCheat )
+		if( pEnt && requestID == 112 && FStrEq( cvarName , "r_drawentities" ) && (atoi( value ) == 5 || atoi( value ) == 10 ) && !g_psv_cheats->value )
 			GGM_KickCheater( player, "wallhack" );
 
 		if( pEnt && requestID == 113 && FStrEq( cvarName , "r_lockpvs" ) && atoi( value ) )

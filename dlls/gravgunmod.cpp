@@ -2951,7 +2951,7 @@ bool GGM_RegisterCommand( CBasePlayer *pPlayer, const char *pcmd )
 	return true;
 }
 
-extern float g_flWeaponCheat;
+extern cvar_t *g_psv_cheats;
 
 void DumpProps(); // prop.cpp
 
@@ -2985,7 +2985,7 @@ bool GGM_ClientCommand( CBasePlayer *pPlayer, const char *pCmd )
 		return true;
 	else if( FStrEq(pCmd, "dumpprops") )
 	{
-		if ( g_flWeaponCheat != 0.0 )
+		if ( g_psv_cheats->value != 0.0 )
 			DumpProps();
 		return true;
 	}

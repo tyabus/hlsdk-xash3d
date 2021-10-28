@@ -48,6 +48,7 @@ cvar_t mp_chattime	= { "mp_chattime","10", FCVAR_SERVER };
 
 // Engine Cvars
 cvar_t *g_psv_gravity = NULL;
+cvar_t *g_psv_cheats = NULL;
 cvar_t *g_footsteps = NULL;
 
 //CVARS FOR SKILL LEVEL SETTINGS
@@ -459,6 +460,7 @@ void GameDLLInit( void )
 	// Register cvars here:
 
 	g_psv_gravity = CVAR_GET_POINTER( "sv_gravity" );
+	g_psv_cheats = CVAR_GET_POINTER( "sv_cheats" );
 	g_footsteps = CVAR_GET_POINTER( "mp_footsteps" );
 
 	GGM_RegisterCVars();
