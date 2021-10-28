@@ -3024,6 +3024,9 @@ bool GGM_ClientCommand( CBasePlayer *pPlayer, const char *pCmd )
 		if( mp_coop.value && !mp_coop_nofriendlyfire.value )
 			return true;
 
+		if( pPlayer->pev->frags == 0 && pPlayer->m_iDeaths == 0 )
+			return true;
+
 		pPlayer->pev->frags = 0; // pefrect zero
         	pPlayer->m_iDeaths = 0; // perfect zero
 
