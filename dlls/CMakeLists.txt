@@ -38,7 +38,20 @@ if(NOT MSVC)
 	add_compile_options(-Wno-invalid-offsetof) # GCC/Clang flag
 	add_compile_options(-fvisibility=hidden) # GCC/Clang flag
 	add_definitions(-D_LINUX) # It seems enough for all non-Win32 systems
+	add_definitions(-DCXX="${CMAKE_CXX_COMPILER}")
 	add_definitions(-Dstricmp=strcasecmp -Dstrnicmp=strncasecmp -D_snprintf=snprintf -D_vsnprintf=vsnprintf )
+
+	execute_process(COMMAND "git" "rev-parse" "--short" "HEAD"
+		WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
+		OUTPUT_VARIABLE SHORT_HASH
+		OUTPUT_STRIP_TRAILING_WHITESPACE)
+
+	if(SHORT_HASH)
+		message(STATUS "git hash: ${SHORT_HASH}")
+		add_definitions(-DGGM_COMMIT="${SHORT_HASH}")
+	else()
+		message(STATUS "git hash: not set")
+	endif()
 else()
 	add_definitions(-D_CRT_SECURE_NO_WARNINGS -D_CRT_NONSTDC_NO_DEPRECATE)
 endif()
@@ -150,7 +163,7 @@ set (SVDLL_SOURCES
 	h_player.cpp
 	zombie_barney.cpp
 	poisoncrab.cpp
-       gravgun.cpp
+	gravgun.cpp
 	shock.cpp
 	shockrifle.cpp
 	ar2.cpp

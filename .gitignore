@@ -18,6 +18,9 @@ cmake_install.cmake
 *.vsxproj
 *.vsproj
 *.sln
+
+build/*
+
 # Android stuff
 android/libs/*
 android/bin/*
