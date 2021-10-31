@@ -661,13 +661,14 @@ void ClientCommand( edict_t *pEntity )
 		CBasePlayer *pPlayer = GetClassPtr( (CBasePlayer *)pev );
 
 		if( pPlayer->m_flNextSpectateTime > gpGlobals->time )
-		{
 			return;
-		}
 
 		if ( pPlayer->pev->flags & FL_SPECTATOR )
 		{
 			UTIL_SpawnPlayer( pPlayer );
+
+			if( mp_coop.value )
+				COOP_SetDefaultSpawnPosition( pPlayer );
 		}
 		else
 		{
