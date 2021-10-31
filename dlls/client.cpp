@@ -218,7 +218,6 @@ void ClientKill( edict_t *pEntity )
 
 	if( pev->flags & FL_SPECTATOR )
 	{
-		pev->health = 1;
 		return;
 	}
 
