@@ -1,4 +1,4 @@
-# Binaries
+# Objects
 *.o
 *.so
 */*.o
@@ -8,10 +8,8 @@
 *.exe
 *.dll
 *.swp
+*.bak
 *.pdb
-build/
-CMakeLists.txt.user
-cmake_install.cmake
 *.orig
 *.cbp
 *.dsw
@@ -19,7 +17,13 @@ cmake_install.cmake
 *.vsproj
 *.sln
 
-build/*
+# Cmake
+build/
+CMakeFiles/
+CMakeLists.txt.user
+CMakeCache.txt
+cmake_install.cmake
+Makefile
 
 # Android stuff
 android/libs/*
