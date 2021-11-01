@@ -2927,7 +2927,7 @@ void PM_PlayerMove( qboolean server )
 	// PM_ShowClipBox();
 
 	// Special handling for spectator and observers. (iuser1 is set if the player's in observer mode)
-	if( pmove->spectator || pmove->iuser1 > 0 )
+	if( pmove->spectator || pmove->iuser1 > 0 || pmove->flags & FL_SPECTATOR )
 	{
 		PM_SpectatorMove();
 		PM_CatagorizePosition();

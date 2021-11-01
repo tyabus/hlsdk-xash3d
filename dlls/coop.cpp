@@ -4,6 +4,8 @@
 #include "player.h"
 #include "coop_util.h"
 #include "gravgunmod.h"
+#include "pm_shared.h"
+
 bool g_fPause;
 struct COOPState g_CoopState;
 
@@ -417,6 +419,7 @@ void UTIL_BecomeSpectator( CBasePlayer *pPlayer )
 	pPlayer->pev->movetype = MOVETYPE_NOCLIP;
 	pPlayer->pev->modelindex = 0;
 	pPlayer->pev->health = 1;
+	pPlayer->pev->iuser1 = OBS_ROAMING; // PM_SpectatorMove
 	pPlayer->m_pGoalEnt = NULL;
 
 	return;
@@ -443,6 +446,8 @@ void UTIL_SpawnPlayer( CBasePlayer *pPlayer )
 	pPlayer->pev->takedamage = DAMAGE_YES;
 	pPlayer->pev->flags &= ~FL_SPECTATOR;
 	pPlayer->pev->movetype = MOVETYPE_WALK;
+	pPlayer->pev->iuser1 = 0;
+
 	pPlayer->Spawn();
 
 	if( pPlayer->m_ggm.iState == STATE_SPECTATOR )
