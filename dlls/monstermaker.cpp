@@ -202,8 +202,9 @@ void CMonsterMaker::MakeMonster( void )
 		if( !stricmp( rgpszBadClassNames[i], STRING( m_iszMonsterClassname ) ) )
 		{
 			ALERT( at_console, "Banned Ent in MonsterMaker!\n" );
-			UTIL_Remove( this );
-			break;
+			m_fActive = FALSE;
+			SetThink( &CBaseEntity::SUB_Remove );
+			return;
 		}
 	}
 
