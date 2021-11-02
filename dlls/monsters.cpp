@@ -1055,7 +1055,7 @@ int CBaseMonster::CheckEnemy( CBaseEntity *pEnemy )
 	else
 		ClearConditions( bits_COND_ENEMY_OCCLUDED );
 
-	if( !pEnemy->IsAlive() )
+	if( !pEnemy->IsAlive() || ( FClassnameIs( pEnemy->pev, "player" ) && pEnemy->pev->flags & FL_SPECTATOR ) )
 	{
 		SetConditions( bits_COND_ENEMY_DEAD );
 		ClearConditions( bits_COND_SEE_ENEMY | bits_COND_ENEMY_OCCLUDED );
