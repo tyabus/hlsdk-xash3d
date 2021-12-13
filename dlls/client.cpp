@@ -1533,8 +1533,7 @@ int AddToFullPack( struct entity_state_s *state, int e, edict_t *ent, edict_t *h
 			float tdiff = gpGlobals->time - times[ENTINDEX(host) - 1];
 			if( tdiff > 1 )
 				tdiff = 0;
-			int ping, loss;
-
+			int ping, loss = 0.001;
 
 			state->solid = SOLID_NOT;
 			//state->effects |= EF_NOINTERP;
