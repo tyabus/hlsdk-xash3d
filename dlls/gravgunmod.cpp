@@ -62,6 +62,7 @@ cvar_t *zombietime = NULL;
 static char gamedir[MAX_PATH];
 void Ent_RunGC_f( void );
 static bool g_fCmdUsed;
+static float zombietime_old = 0;
 enum GGMVoteMode
 {
 	VOTE_NONE = 0,
@@ -1185,7 +1186,6 @@ void GGM_ConnectSaveBot( void )
 	char cmd[33] = "";
 	float health = client0->v.health;
 	int deadflag = client0->v.deadflag;
-	float zombietime_old;
 	SERVER_EXECUTE();
 
 	// save even with dead player
@@ -1230,7 +1230,6 @@ void GGM_Save( const char *savename )
 	char cmd[33] = "";
 	float health = client0->v.health;
 	int deadflag = client0->v.deadflag;
-	float zombietime_old;
 	bool fNeedKick = false;
 	SERVER_EXECUTE();
 
