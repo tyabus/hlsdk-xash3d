@@ -1117,10 +1117,12 @@ bool GGM_ReadPlayers( const char *path )
 	GGM_ClearLists();
 
 	if( !fread( &tsize, 4, 1, f ) )
+		fclose( f );
 		return false;
 
 	// do not allow shrink structure
 	if( tsize > sizeof( struct GGMTempState ) )
+		fclose( f );
 		return false;
 
 	while( true )

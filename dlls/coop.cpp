@@ -71,13 +71,16 @@ bool COOP_ReadState( const char *path )
 	g_CoopState.landmarkTransition.fLoading = true;
 
 	if( !fread( &tsize, 4, 1, f ) )
+		fclose( f );
 		return false;
 
 	// do not allow shrink structure
 	if( tsize > sizeof( g_CoopState.p ) )
+		fclose( f );
 		return false;
 
 	if( !fread( &g_CoopState.p, tsize, 1, f ) )
+		fclose( f );
 		return false;
 
 	if( mp_coop_pause.value )
