@@ -28,7 +28,7 @@ server:
   - export CC="gcc -m32 -g -ggdb"
   - export CXX="gcc -m32 -g -ggdb"
   - cmake ../
-  - make -j2
+  - make server -j2
   after_script:
   - export CCACHE_DIR="$PWD/ccache"
   - ccache --show-stats
@@ -55,7 +55,7 @@ client:
   - export CC="gcc -m32 -g -ggdb"
   - export CXX="gcc -m32 -g -ggdb"
   - cmake ../
-  - make -j2
+  - make client -j2
   after_script:
   - export CCACHE_DIR="$PWD/ccache"
   - ccache --show-stats
