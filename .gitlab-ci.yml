@@ -1,0 +1,64 @@
+image: ubuntu:xenial
+
+stages:
+  - server 
+  - client
+
+cache:
+  key: $CI_JOB_NAME
+  paths:
+    - ccache
+
+server:
+  stage: server
+  before_script:
+  - dpkg --add-architecture i386
+  - apt update
+  - apt install -y git cmake ccache p7zip-full gcc-multilib g++-multilib build-essential zlib1g:i386 libstdc++6:i386
+  - mkdir -p ccache
+  - export PATH="/usr/lib/ccache:$PATH"
+  - export CCACHE_BASEDIR="$PWD"
+  - export CCACHE_DIR="$PWD/ccache"
+  - export CCACHE_COMPILERCHECK=content
+  - ccache --zero-stats || true
+  - ccache --show-stats || true
+  script:
+  - mkdir -p build
+  - cd build
+  - export CC="gcc -m32 -g -ggdb"
+  - export CXX="gcc -m32 -g -ggdb"
+  - cmake ../
+  - make -j2
+  after_script:
+  - export CCACHE_DIR="$PWD/ccache"
+  - ccache --show-stats
+  artifacts:
+    paths:
+    - build/dlls/hl.so
+
+client:
+  stage: client
+  before_script:
+  - dpkg --add-architecture i386
+  - apt update
+  - apt install -y git cmake ccache p7zip-full gcc-multilib g++-multilib build-essential zlib1g:i386 libstdc++6:i386
+  - mkdir -p ccache
+  - export PATH="/usr/lib/ccache:$PATH"
+  - export CCACHE_BASEDIR="$PWD"
+  - export CCACHE_DIR="$PWD/ccache"
+  - export CCACHE_COMPILERCHECK=content
+  - ccache --zero-stats || true
+  - ccache --show-stats || true
+  script:
+  - mkdir -p build
+  - cd build
+  - export CC="gcc -m32 -g -ggdb"
+  - export CXX="gcc -m32 -g -ggdb"
+  - cmake ../
+  - make -j2
+  after_script:
+  - export CCACHE_DIR="$PWD/ccache"
+  - ccache --show-stats
+  artifacts:
+    paths:
+    - build/cl_dll/client.so
