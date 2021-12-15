@@ -1125,8 +1125,8 @@ bool Ent_ProcessClientCommand( edict_t *player )
 	ucmd_t	*u;
 	CBasePlayer *pl = (CBasePlayer*)CBaseEntity::Instance(player);
 
-        if( !pl || !pl->IsPlayer() )
-                return false;
+        if( !pl )
+		return false;
 
 	if( !pl->m_ggm.IsAdmin )
 	{
