@@ -3234,7 +3234,7 @@ int GGM_ConnectionlessPacket( const struct netadr_s *net_from, const char *args,
 {
 	if( !strncmp( args, "ggm_chat ", 9 ) )
 	{
-		ALERT( at_console, "ggm_chat: %s from %s", args + 9, net_from );
+		ALERT( at_console, "ggm_chat: %s from %s\n", args + 9, net_from );
 		GGM_SayText( args + 9 );
 		*response_buffer_size = 0;
 		return 1;
