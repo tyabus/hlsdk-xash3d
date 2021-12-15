@@ -451,7 +451,8 @@ void Host_Say( edict_t *pEntity, int teamonly )
 	strcat( text, p );
 	strcat( text, "\n" );
 
-	player->m_flNextChatTime = gpGlobals->time + CHAT_INTERVAL;
+	if( !player->m_ggm.IsAdmin )
+		player->m_flNextChatTime = gpGlobals->time + CHAT_INTERVAL;
 
 	// loop through all players
 	// Start with the first player.
