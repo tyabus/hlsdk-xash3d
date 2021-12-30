@@ -139,9 +139,9 @@ LOCAL_SRC_FILES := agrunt.cpp \
            big_cock.cpp \
 	   agtimer.cpp \
            unpredictedweapon.cpp \
-	   ../pm_shared/pm_debug.cpp \
-	   ../pm_shared/pm_math.cpp \
-	   ../pm_shared/pm_shared.cpp \
+	   ../pm_shared/pm_debug.c \
+	   ../pm_shared/pm_math.c \
+	   ../pm_shared/pm_shared.c \
 	   coop.cpp \
 	   gateofbabylon.cpp \
 	   gravgunmod.cpp \

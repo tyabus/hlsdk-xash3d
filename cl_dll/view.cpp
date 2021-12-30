@@ -49,17 +49,16 @@ extern "C"
 
 	void PM_ParticleLine( float *start, float *end, int pcolor, float life, float vert );
 	int PM_GetVisEntInfo( int ent );
+	int PM_GetPhysEntInfo( int ent );
 
 	void InterpolateAngles( float * start, float * end, float * output, float frac );
-	float AngleBetweenVectors(  const float * v1,  const float * v2 );
+	void NormalizeAngles( float * angles );
+	float Distance( const float * v1, const float * v2 );
+	float AngleBetweenVectors( const float * v1,  const float * v2 );
 
 	float vJumpOrigin[3];
 	float vJumpAngles[3];
 }
-
-extern float Distance( const float * v1, const float * v2 );
-extern void NormalizeAngles( float * angles );
-extern int PM_GetPhysEntInfo( int ent );
 
 void V_DropPunchAngle( float frametime, float *ev_punchangle );
 void VectorAngles( const float *forward, float *angles );

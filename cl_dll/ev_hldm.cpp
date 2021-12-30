@@ -40,7 +40,7 @@ extern engine_studio_api_t IEngineStudio;
 
 static int g_tracerCount[32];
 
-extern char PM_FindTextureType( const char *name );
+extern "C" char PM_FindTextureType( const char *name );
 
 void V_PunchAxis( int axis, float punch );
 void VectorAngles( const float *forward, float *angles );

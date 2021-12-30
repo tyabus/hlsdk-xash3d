@@ -80,8 +80,8 @@ set (CLDLL_SOURCES
 	message.cpp
 	overview.cpp
 	parsemsg.cpp
-	../pm_shared/pm_math.cpp
- 	../pm_shared/pm_shared.cpp
+	../pm_shared/pm_math.c
+ 	../pm_shared/pm_shared.c
 	saytext.cpp
 	status_icons.cpp
 	statusbar.cpp

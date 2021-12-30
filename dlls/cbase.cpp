@@ -21,10 +21,13 @@
 #include	"decals.h"
 #include	"gamerules.h"
 #include	"game.h"
-#include	"pm_shared.h"
+
+extern "C"
+{
+#include "pm_shared.h"
+}
 
 void EntvarsKeyvalue( entvars_t *pev, KeyValueData *pkvd );
-
 extern Vector VecBModelOrigin( entvars_t* pevBModel );
 extern DLL_GLOBAL Vector g_vecAttackDir;
 extern DLL_GLOBAL int g_iSkillLevel;

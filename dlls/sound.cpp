@@ -1504,7 +1504,7 @@ static char *memfgets( byte *pMemFile, int fileSize, int &filePos, char *pBuffer
 // NOTE: this routine should ONLY be called if the 
 // current texture under the player changes!
 
-extern char PM_FindTextureType( const char *name );
+extern "C" char PM_FindTextureType( const char *name );
 
 char TEXTURETYPE_Find( char *name )
 {
