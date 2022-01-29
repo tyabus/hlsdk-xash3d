@@ -59,12 +59,7 @@ void AgTimer::Print(char *sText, int fHoldTime, float x, float y, int iChannel)
         hText.fadeoutTime = 0.000;
         hText.fxTime = 0.25;
 
-        for( int i = 1; i <= gpGlobals->maxClients; i++ )
-        {
-        	CBaseEntity* pPlayerLoop = UTIL_PlayerByIndex(i);
-                if( pPlayerLoop )
-                	UTIL_HudMessage(pPlayerLoop, hText, sText);
-	}
+	UTIL_HudMessageAll( hText, sText );
 }
 
 void AgTimer::Think()
