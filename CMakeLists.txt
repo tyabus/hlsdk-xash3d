@@ -45,7 +45,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 
 if(CMAKE_SIZEOF_VOID_P EQUAL 8 AND NOT 64BIT)
 	if(MSVC)
-		error("UNDONE: set 32 build flags")
+		message(FATAL_ERROR "UNDONE: set 32 build flags")
 	else()
 		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32")
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CMAKE_C_FLAGS}")
@@ -82,6 +82,9 @@ endif()
 if(NOT MSVC)
 	#add_compile_options(-Wempty-body) # GCC/Clang flag
 	add_compile_options(-Wreturn-type) # GCC/Clang flag
+elseif(MSVC)
+	# Build with Multiple Processes (/MP)
+	add_compile_options("/MP")
 endif()
 
 

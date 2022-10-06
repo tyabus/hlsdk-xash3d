@@ -26,6 +26,10 @@
 #include "customweapons.h"
 #include "unpredictedweapon.h"
 
+#ifdef _MSC_VER
+#include <cstdlib>
+#endif
+
 #ifndef CLIENT_DLL
 #define BOLT_AIR_VELOCITY	2700
 #define BOLT_WATER_VELOCITY	2000

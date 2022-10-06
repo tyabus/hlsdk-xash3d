@@ -143,7 +143,12 @@ void COOP_AutoSave( CBaseEntity *pPlayer )
 	UTIL_CoopPrintMessage("%s activated autosave!\n", GGM_PlayerName( pPlayer ) );
 }
 
+#ifndef _MSC_VER
 #include <dirent.h>
+#else
+#include "dirent_msvc.h"
+#endif
+
 #ifdef _WIN32
 #define PATHSEP "\\"
 #else
