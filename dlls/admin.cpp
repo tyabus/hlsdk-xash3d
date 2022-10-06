@@ -81,7 +81,13 @@ bool Admin_ClientCommand( edict_t *pEntity )
 			return true;
 		}
 
-		short int UserID = atoi( CMD_ARGV( 1 ) );
+		short int UserID;
+
+		if( CMD_ARGV(1)[0] == '#' )
+			UserID = atoi( CMD_ARGV( 1 ) + 1 );
+		else
+			UserID = atoi( CMD_ARGV( 1 ) );
+
 		const char *Command = (char *)CMD_ARGV( 2 );
 
 		CBasePlayer *pSudoer = GGM_GetPlayerByUID( UserID );
@@ -219,11 +225,12 @@ bool Admin_ClientCommand( edict_t *pEntity )
 			return true;
 		}
 
-		const char *message = (char *)CMD_ARGV( 1 );
+		char *message = (char *)CMD_ARGV( 1 );
+
+		strncat( message, "\n", sizeof( message ) - 1 );
 		UTIL_ClientPrintAll( HUD_PRINTTALK, message );
 		return true;
 	}
-
 
 	return false;
 }
