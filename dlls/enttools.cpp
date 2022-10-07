@@ -703,6 +703,15 @@ void Ent_Fire_f( edict_t *player )
 
 		i = ENTINDEX( ent );
 	}
+	else if( ( single = !stricmp( CMD_ARGV( 1 ), "!self" ) ) )
+	{
+		ent = player;
+
+		if( !Ent_IsValidEdict( ent ) )
+			return;
+
+		i = ENTINDEX( ent );
+	}
 	else if( ( single = ( CMD_ARGV( 1 )[0] == '!') ) ) // Check for correct instanse with !(num)_(serial)
 	{
 		const char *cmd = CMD_ARGV( 1 ) + 1;
