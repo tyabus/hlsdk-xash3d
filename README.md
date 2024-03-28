@@ -363,7 +363,7 @@ Force 64-bit build:
 
 Some useful build options that can be set during the cmake step.
 
-* **GOLDSOURCE_SUPPORT** - allows to turn off/on the support for GoldSource input. Set to **ON** by default on x86 Windows and x86 Linux, **OFF** on other platforms.
+* **GOLDSOURCE_SUPPORT** - allows to turn off/on the support for GoldSource input. Set to **OFF** by default.
 * **64BIT** - allows to turn off/on 64-bit build. Set to **OFF** by default on x86_64 Windows, x86_64 Linux and 32-bit platforms, **ON** on other 64-bit platforms.
 * **USE_VGUI** - whether to use VGUI library. **OFF** by default. You need to init `vgui_support` submodule in order to build with VGUI.
 
@@ -372,5 +372,5 @@ This list is incomplete. Look at `CMakeLists.txt` to see all available options.
 Prepend option names with `-D` when passing to cmake. Boolean options can take values **OFF** and **ON**. Example:
 
 ```
-cmake .. -DUSE_VGUI=ON -DGOLDSOURCE_SUPPORT=ON -DCROWBAR_IDLE_ANIM=ON
+cmake .. -DUSE_VGUI=ON -DCROWBAR_IDLE_ANIM=ON
 ```

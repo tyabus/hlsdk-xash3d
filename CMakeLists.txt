@@ -48,6 +48,7 @@ option(BUILD_CLIENT "Build client dll" ON)
 option(BUILD_SERVER "Build server dll" ON)
 option(LTO "Enable interprocedural optimization" OFF)
 option(POLLY "Enable pollyhedral optimization" OFF)
+option(GOLDSOURCE_SUPPORT "Build goldsource compatible client library" OFF)
 
 if(CMAKE_SIZEOF_VOID_P EQUAL 4 OR
 	((WIN32 OR ${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
@@ -79,9 +80,6 @@ if((WIN32 OR ${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
 	OR CMAKE_SYSTEM_PROCESSOR STREQUAL "i486"
 	OR CMAKE_SYSTEM_PROCESSOR STREQUAL "i586"
 	OR CMAKE_SYSTEM_PROCESSOR STREQUAL "i686"))
-	option(GOLDSOURCE_SUPPORT "Build goldsource compatible client library" ON)
-else()
-	option(GOLDSOURCE_SUPPORT "Build goldsource compatible client library" OFF)
 endif()
 
 #-----------------

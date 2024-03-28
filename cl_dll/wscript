@@ -14,8 +14,8 @@ def options(opt):
 		help = 'Prefer non-VGUI MOTD when USE_VGUI is enabled')
 	grp.add_option('--enable-novgui-scoreboard', action = 'store_true', dest = 'USE_NOVGUI_SCOREBOARD', default = False,
 		help = 'Prefer non-VGUI Scoreboard when USE_VGUI is enabled')
-	grp.add_option('--disable-goldsrc-support', action = 'store_false', dest = 'GOLDSOURCE_SUPPORT',
-		default=True, help = 'disable GoldSource compatibility on i386 Win/Mac/Linux')
+	grp.add_option('--enable-goldsrc-support', action = 'store_true', dest = 'GOLDSOURCE_SUPPORT', default = False,
+		help = 'disable GoldSource compatibility on i386 Win/Mac/Linux')
 
 	opt.load('vgui')
 
