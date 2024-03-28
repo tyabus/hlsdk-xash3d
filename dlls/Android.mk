@@ -117,7 +117,6 @@ LOCAL_SRC_FILES := agrunt.cpp airtank.cpp \
            talkmonster.cpp \
            teamplay_gamerules.cpp \
            tentacle.cpp \
-           tempmonster.cpp \
            triggers.cpp \
            tripmine.cpp \
            turret.cpp \

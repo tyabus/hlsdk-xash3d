@@ -134,7 +134,6 @@ set (SVDLL_SOURCES
 	subs.cpp
 	talkmonster.cpp
 	teamplay_gamerules.cpp
-	tempmonster.cpp
 	tentacle.cpp
 	triggers.cpp
 	tripmine.cpp
