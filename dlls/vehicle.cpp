@@ -952,6 +952,7 @@ void CFuncVehicle::Precache()
 	case 6: PRECACHE_SOUND( "plats/vehicle7.wav" );pev->noise = MAKE_STRING( "plats/vehicle7.wav" ); break;
 	}
 
+	PRECACHE_SOUND( "plats/vehicle_ignition.wav" );
 	PRECACHE_SOUND( "plats/vehicle_brake1.wav" );
 	PRECACHE_SOUND( "plats/vehicle_start1.wav" );
 
