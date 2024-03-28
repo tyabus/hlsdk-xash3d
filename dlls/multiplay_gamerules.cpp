@@ -466,6 +466,7 @@ void CHalfLifeMultiplay::ClientDisconnected( edict_t *pClient )
 					GETPLAYERUSERID( pPlayer->edict() ) );
 			}
 
+			DeactivateTripmines( pPlayer );
 			pPlayer->RemoveAllItems( TRUE );// destroy all of the players weapons and items
 		}
 	}

@@ -70,7 +70,12 @@ class CTripmineGrenade : public CGrenade
 	CBeam *m_pBeam;
 	Vector m_posOwner;
 	Vector m_angleOwner;
+
+public:
 	edict_t *m_pRealOwner;// tracelines don't hit PEV->OWNER, which means a player couldn't detonate his own trip mine, so we store the owner here.
+#if !CLIENT_DLL
+	void Deactivate( void );
+#endif
 };
 
 LINK_ENTITY_TO_CLASS( monster_tripmine, CTripmineGrenade )
@@ -542,3 +547,46 @@ void CTripmine::WeaponIdle( void )
 
 	SendWeaponAnim( iAnim );
 }
+
+#if !CLIENT_DLL
+//=========================================================
+// Deactivate - do whatever it is we do to an orphaned 
+// tripmine when we don't want it in the world anymore.
+//=========================================================
+void CTripmineGrenade::Deactivate( void )
+{
+	KillBeam();
+	pev->solid = SOLID_NOT;
+	pev->takedamage = DAMAGE_NO;
+	UTIL_Remove( this );
+}
+
+//=========================================================
+// DeactivateTripmines - removes all tripmines owned by
+// the provided player. Should only be used upon death.
+//
+// Made this global on purpose.
+//=========================================================
+void DeactivateTripmines( CBasePlayer *pOwner )
+{
+	edict_t *pFind;
+
+	pFind = FIND_ENTITY_BY_CLASSNAME( NULL, "monster_tripmine" );
+
+	while( !FNullEnt( pFind ) )
+	{
+		CBaseEntity *pEnt = CBaseEntity::Instance( pFind );
+		CTripmineGrenade *pTripmine = (CTripmineGrenade *)pEnt;
+
+		if( pTripmine )
+		{
+			if( pTripmine->m_pRealOwner == pOwner->edict() )
+			{
+				pTripmine->Deactivate();
+			}
+		}
+
+		pFind = FIND_ENTITY_BY_CLASSNAME( pFind, "monster_tripmine" );
+	}
+}
+#endif

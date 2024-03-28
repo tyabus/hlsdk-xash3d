@@ -21,7 +21,10 @@
 class CBasePlayer;
 extern int gmsgWeapPickup;
 
+#if !CLIENT_DLL
 void DeactivateSatchels( CBasePlayer *pOwner );
+void DeactivateTripmines( CBasePlayer *pOwner );
+#endif
 
 // Contact Grenade / Timed grenade / Satchel Charge
 class CGrenade : public CBaseMonster
