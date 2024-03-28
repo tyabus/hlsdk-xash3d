@@ -26,7 +26,6 @@ Bugfix-related macros that can be enabled during the compilation:
 - **GAUSS_OVERCHARGE_FIX** fixes tau-cannon (gauss) charge sound not stopping after the overcharge.
 - **CROWBAR_IDLE_ANIM** makes crowbar play idle animations.
 - **TRIPMINE_BEAM_DUPLICATION_FIX** fixes tripmine's beam duplication on level transition.
-- **HANDGRENADE_DEPLOY_FIX** makes handgrenade play draw animation after finishing a throw.
 - **WEAPONS_ANIMATION_TIMES_FIX** fixes deploy and idle animation times of some weapons.
 
 Bugfix-related server cvars:
