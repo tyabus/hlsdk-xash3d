@@ -24,7 +24,6 @@ Half-Life SDK for GoldSource & Xash3D with some bugfixes.
 Bugfix-related macros that can be enabled during the compilation:
 
 - **CROWBAR_DELAY_FIX** fixes a bug when crowbar has a longer delay after the first hit.
-- **CROWBAR_FIX_RAPID_CROWBAR** fixes a "rapid crowbar" bug when hitting corpses of killed monsters.
 - **GAUSS_OVERCHARGE_FIX** fixes tau-cannon (gauss) charge sound not stopping after the overcharge.
 - **CROWBAR_IDLE_ANIM** makes crowbar play idle animations.
 - **TRIPMINE_BEAM_DUPLICATION_FIX** fixes tripmine's beam duplication on level transition.
@@ -375,5 +374,5 @@ This list is incomplete. Look at `CMakeLists.txt` to see all available options.
 Prepend option names with `-D` when passing to cmake. Boolean options can take values **OFF** and **ON**. Example:
 
 ```
-cmake .. -DUSE_VGUI=ON -DGOLDSOURCE_SUPPORT=ON -DCROWBAR_IDLE_ANIM=ON -DCROWBAR_FIX_RAPID_CROWBAR=ON
+cmake .. -DUSE_VGUI=ON -DGOLDSOURCE_SUPPORT=ON -DCROWBAR_IDLE_ANIM=ON
 ```
