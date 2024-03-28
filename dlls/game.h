@@ -30,7 +30,6 @@ extern cvar_t weaponstay;
 extern cvar_t selfgauss;
 extern cvar_t chargerfix;
 extern cvar_t satchelfix;
-extern cvar_t explosionfix;
 extern cvar_t corpsephysics;
 extern cvar_t pushablemode;
 extern cvar_t forcerespawn;
