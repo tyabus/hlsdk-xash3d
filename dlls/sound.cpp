@@ -1341,15 +1341,6 @@ void SENTENCEG_Init()
 
 	g_engfuncs.pfnFreeFile( pMemFile );
 
-	if( gcallsentences >= 2048 )
-	{
-		ALERT( at_warning, "NOTE: this mod might not work properly under GoldSource (post-anniversary update) engine: more than 2048 sentences\n" );
-	}
-	else if( gcallsentences >= 1536 )
-	{
-		ALERT( at_warning, "NOTE: this mod might not work properly under GoldSource (pre-anniversary update) engine: more than 1536 sentences\n" );
-	}
-
 	fSentencesInit = TRUE;
 
 	// init lru lists
