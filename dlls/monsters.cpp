@@ -2501,23 +2501,14 @@ float CBaseMonster::FlYawDiff( void )
 //=========================================================
 float CBaseMonster::ChangeYaw( int yawSpeed )
 {
-	float		ideal, current, move, speed;
+	float		ideal, current, move, speed, delta;
 
 	current = UTIL_AngleMod( pev->angles.y );
 	ideal = pev->ideal_yaw;
 	if( current != ideal )
 	{
-		if( monsteryawspeedfix.value )
-		{
-			float delta;
-
-			delta = Q_min( gpGlobals->time - m_flLastYawTime, 0.25f );
-
-			speed = (float)yawSpeed * delta * 2;
-		}
-		else
-			speed = (float)yawSpeed * gpGlobals->frametime * 10;
-
+		delta = Q_min( gpGlobals->time - m_flLastYawTime, 0.25f );
+		speed = (float)yawSpeed * delta * 2;
 		move = ideal - current;
 
 		if( ideal > current )

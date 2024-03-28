@@ -34,7 +34,6 @@ cvar_t selfgauss	= { "selfgauss", "1", FCVAR_SERVER };
 cvar_t chargerfix	= { "chargerfix", "0", FCVAR_SERVER };
 cvar_t satchelfix	= { "satchelfix", "1", FCVAR_SERVER };
 cvar_t explosionfix	= { "explosionfix", "0", FCVAR_SERVER };
-cvar_t monsteryawspeedfix	= { "monsteryawspeedfix", "1", FCVAR_SERVER };
 cvar_t corpsephysics = { "corpsephysics", "0", FCVAR_SERVER };
 cvar_t pushablemode = { "pushablemode", "0", FCVAR_SERVER };
 cvar_t forcerespawn	= { "mp_forcerespawn","1", FCVAR_SERVER };
@@ -487,7 +486,6 @@ void GameDLLInit( void )
 	CVAR_REGISTER( &chargerfix );
 	CVAR_REGISTER( &satchelfix );
 	CVAR_REGISTER( &explosionfix );
-	CVAR_REGISTER( &monsteryawspeedfix );
 	CVAR_REGISTER( &corpsephysics );
 	CVAR_REGISTER( &pushablemode );
 	CVAR_REGISTER( &forcerespawn );
