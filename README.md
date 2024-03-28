@@ -23,7 +23,6 @@ Half-Life SDK for GoldSource & Xash3D with some bugfixes.
 
 Bugfix-related macros that can be enabled during the compilation:
 
-- **CROWBAR_DELAY_FIX** fixes a bug when crowbar has a longer delay after the first hit.
 - **GAUSS_OVERCHARGE_FIX** fixes tau-cannon (gauss) charge sound not stopping after the overcharge.
 - **CROWBAR_IDLE_ANIM** makes crowbar play idle animations.
 - **TRIPMINE_BEAM_DUPLICATION_FIX** fixes tripmine's beam duplication on level transition.
