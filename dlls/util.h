@@ -486,7 +486,7 @@ extern DLL_GLOBAL const Vector g_vecZero;
 
 // sentence groups
 #define CBSENTENCENAME_MAX 16
-#define CVOXFILESENTENCEMAX		4096		// max number of sentences in game. NOTE: this must match
+#define CVOXFILESENTENCEMAX		2048		// max number of sentences in game. NOTE: this must match
 							// CVOXFILESENTENCEMAX in engine\sound.h!!!
 
 extern char gszallsentencenames[CVOXFILESENTENCEMAX][CBSENTENCENAME_MAX];
