@@ -24,7 +24,6 @@ Half-Life SDK for GoldSource & Xash3D with some bugfixes.
 Bugfix-related macros that can be enabled during the compilation:
 
 - **GAUSS_OVERCHARGE_FIX** fixes tau-cannon (gauss) charge sound not stopping after the overcharge.
-- **CROWBAR_IDLE_ANIM** makes crowbar play idle animations.
 - **TRIPMINE_BEAM_DUPLICATION_FIX** fixes tripmine's beam duplication on level transition.
 - **WEAPONS_ANIMATION_TIMES_FIX** fixes deploy and idle animation times of some weapons.
 
@@ -359,5 +358,5 @@ This list is incomplete. Look at `CMakeLists.txt` to see all available options.
 Prepend option names with `-D` when passing to cmake. Boolean options can take values **OFF** and **ON**. Example:
 
 ```
-cmake .. -DUSE_VGUI=ON -DCROWBAR_IDLE_ANIM=ON
+cmake .. -DUSE_VGUI=ON
 ```

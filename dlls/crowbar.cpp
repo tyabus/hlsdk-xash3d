@@ -37,13 +37,9 @@ enum crowbar_e
 	CROWBAR_ATTACK2MISS,
 	CROWBAR_ATTACK2HIT,
 	CROWBAR_ATTACK3MISS,
-#if !CROWBAR_IDLE_ANIM	
-	CROWBAR_ATTACK3HIT
-#else
 	CROWBAR_ATTACK3HIT,
 	CROWBAR_IDLE2,
 	CROWBAR_IDLE3
-#endif
 };
 
 void CCrowbar::Spawn()
@@ -214,9 +210,8 @@ int CCrowbar::Swing( int fFirst )
 		{
 			// miss
 			m_flNextPrimaryAttack = GetNextAttackDelay( 0.5 );
-#if CROWBAR_IDLE_ANIM
 			m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat( m_pPlayer->random_seed, 10, 15 );
-#endif
+
 			// player "shoot" animation
 			m_pPlayer->SetAnimation( PLAYER_ATTACK1 );
 		}
@@ -337,13 +332,11 @@ int CCrowbar::Swing( int fFirst )
 #endif
 		m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 0.25f;
 	}
-#if CROWBAR_IDLE_ANIM
 	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat( m_pPlayer->random_seed, 10, 15 );
-#endif
+
 	return fDidHit;
 }
 
-#if CROWBAR_IDLE_ANIM
 void CCrowbar::WeaponIdle( void )
 {
 	if( m_flTimeWeaponIdle < UTIL_WeaponTimeBase() )
@@ -371,4 +364,3 @@ void CCrowbar::WeaponIdle( void )
 		SendWeaponAnim( iAnim );
 	}
 }
-#endif
