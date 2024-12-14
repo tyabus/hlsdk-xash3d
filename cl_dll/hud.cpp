@@ -259,6 +259,10 @@ int __MsgFunc_ServerName( const char *pszName, int iSize, void *pbuf )
 #if USE_VGUI
 	if (gViewPort)
 		return gViewPort->MsgFunc_ServerName( pszName, iSize, pbuf );
+#elif USE_NOVGUI_SCOREBOARD || !NO_VGUI
+	BEGIN_READ( pbuf, iSize );
+	strncpy( gHUD.m_szServerName, READ_STRING(), MAX_SERVERNAME_LENGTH );
+	gHUD.m_szServerName[sizeof( gHUD.m_szServerName ) - 1] = 0;
 #endif
 	return 0;
 }
@@ -383,6 +387,10 @@ void CHud::Init( void )
 	cl_viewbob = CVAR_CREATE( "cl_viewbob", "1", FCVAR_ARCHIVE );
 
 	m_pSpriteList = NULL;
+
+#if USE_NOVGUI_SCOREBOARD || !NO_VGUI
+	m_szServerName[0] = 0;
+#endif
 
 	// Clear any old HUD list
 	if( m_pHudList )

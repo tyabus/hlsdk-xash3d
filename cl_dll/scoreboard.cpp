@@ -29,6 +29,9 @@
 cvar_t *cl_scoreboard_bg;
 cvar_t *cl_showpacketloss;
 
+#if !USE_VGUI || USE_NOVGUI_SCOREBOARD
+cvar_t *cl_showhostname;
+#endif
 
 #if USE_VGUI
 #include "vgui_TeamFortressViewport.h"
@@ -61,6 +64,10 @@ int CHudScoreboard::Init( void )
 
 	cl_scoreboard_bg = CVAR_CREATE( "cl_scoreboard_bg", "1", FCVAR_ARCHIVE );
 	cl_showpacketloss = CVAR_CREATE( "cl_showpacketloss", "0", FCVAR_ARCHIVE );
+
+#if !USE_VGUI || USE_NOVGUI_SCOREBOARD
+	cl_showhostname = CVAR_CREATE( "cl_showhostname", "1", FCVAR_ARCHIVE );
+#endif
 
 	return 1;
 }
@@ -155,7 +162,14 @@ int CHudScoreboard::Draw( float fTime )
 
 	if( cl_scoreboard_bg && cl_scoreboard_bg->value )
 		gHUD.DrawDarkRectangle( xpos - 5, ypos - 5, FAR_RIGHT, ROW_RANGE_MAX );
+
+#if !USE_VGUI || USE_NOVGUI_SCOREBOARD
+	if( gHUD.m_szServerName[0] && ( cl_showhostname && cl_showhostname->value ) )
+		DrawUtfString( xpos, ypos, NAME_RANGE_MAX + xpos_rel, gHUD.m_szServerName, 255, 140, 0 );
+	else if( !gHUD.m_Teamplay )
+#else
 	if( !gHUD.m_Teamplay )
+#endif
 		DrawUtfString( xpos, ypos, NAME_RANGE_MAX + xpos_rel, "Player", 255, 140, 0 );
 	else
 		DrawUtfString( xpos, ypos, NAME_RANGE_MAX + xpos_rel, "Teams", 255, 140, 0 );

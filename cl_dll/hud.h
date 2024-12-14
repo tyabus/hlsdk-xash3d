@@ -646,6 +646,10 @@ public:
 	float GetSensitivity();
 
 	void GetAllPlayersInfo( void );
+
+#if USE_NOVGUI_SCOREBOARD || !NO_VGUI
+	char m_szServerName[MAX_SERVERNAME_LENGTH+1];
+#endif
 };
 
 extern CHud gHUD;
