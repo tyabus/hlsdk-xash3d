@@ -1,4 +1,5 @@
 CLIENT_WEAPONS=ON # Client local weapons prediction
+CROWBAR_IDLE_ANIM=OFF # Crowbar idle animation
 GAUSS_OVERCHARGE_FIX=OFF # Gauss overcharge fix
 TRIPMINE_BEAM_DUPLICATION_FIX=OFF # Fix of tripmine beam duplication on level transition
 WEAPONS_ANIMATION_TIMES_FIX=OFF # Animation times fix for some weapons
